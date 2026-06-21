@@ -555,7 +555,7 @@ function Index() {
         </div>
 
         <div className="post-strip-background relative z-10">
-          <div className="mx-auto max-w-[700px] pt-[160px] pb-[160px] text-center">
+          <div className="mx-auto max-w-[700px] pt-[160px] pb-[80px] text-center">
             <h1 className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]">
               Everything You Need,
               <br />
@@ -573,7 +573,7 @@ function Index() {
       </section>
 
       {/* Features + How it works */}
-      <section className="post-strip-background relative overflow-hidden px-6 pt-[80px] pb-[140px]">
+      <section className="post-strip-background relative overflow-hidden px-6 pt-[20px] pb-[140px]">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_62%,rgba(168,85,247,0.18),transparent_30%)]" />
         <div className="relative mx-auto max-w-[1100px]">
           <div className="grid gap-[16px] md:grid-cols-2">

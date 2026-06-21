@@ -107,7 +107,7 @@ function PricingCard({ plan }: { plan: (typeof plans)[number] }) {
 
       <ul className="relative z-10 mt-8 space-y-4 text-[#ded8e7]">
         {plan.features.map((feature) => (
-          <li key={feature} className="flex items-center gap-3 text-xs md:text-sm">
+          <li key={feature} className="font-body flex items-center gap-3 text-xs md:text-sm">
             <span
               className={`flex h-5 w-5 shrink-0 items-center justify-center ${
                 plan.featured ? "rounded-lg bg-white text-black" : "text-white"
@@ -225,12 +225,12 @@ function Pricing() {
             <br />
             Enterprise <span className="text-[#a985ff]">Security.</span>
           </h1>
-          <p className="mt-3 text-xs leading-relaxed text-[#ded8e7] md:text-sm">
+          <p className="font-body mx-auto mt-2.5 max-w-[520px] text-lg leading-relaxed text-[#d7d0df]">
             Choose the plan that fits your needs.
           </p>
         </div>
 
-        <div className="relative z-10 mx-auto mt-12 grid max-w-5xl items-center gap-5 px-6 md:grid-cols-3">
+        <div className="relative z-10 mx-auto mt-12 grid max-w-5xl items-center gap-5 px-6 pb-[80px] md:grid-cols-3">
           {plans.map((plan) => (
             <PricingCard key={plan.name} plan={plan} />
           ))}
@@ -249,8 +249,10 @@ function Pricing() {
           <div className="inline-flex rounded-full bg-black px-12 py-2 text-sm text-[#eee8f8] shadow-[0_0_32px_rgba(168,85,247,0.34)]">
             FAQs
           </div>
-          <h2 className="mt-8 text-3xl font-medium md:text-4xl">Frequently Asked Questions</h2>
-          <p className="mt-4 text-sm text-[#ded8e7] md:text-base">
+          <h2 className="font-heading mt-8 text-3xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-4xl">
+            Frequently Asked Questions
+          </h2>
+          <p className="font-body mt-4 text-sm text-[#ded8e7] md:text-base">
             Everything you need to know about our pricing
           </p>
 
