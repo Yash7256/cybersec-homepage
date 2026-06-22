@@ -7,7 +7,11 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+bun.lockb
+
+# Build outputs
 dist
 dist-ssr
 .output
@@ -16,6 +20,12 @@ dist-ssr
 .nitro
 *.local
 
+# Environment files
+.env
+.env.local
+.env.*.local
+!.env.example
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
@@ -23,6 +33,15 @@ dist-ssr
 # Vercel
 .vercel/
 .output
+
+# Test coverage
+coverage
+.nyc_output
+
+# Cache
+.cache
+.turbo
+*.tsbuildinfo
 
 # Editor directories and files
 .vscode/*

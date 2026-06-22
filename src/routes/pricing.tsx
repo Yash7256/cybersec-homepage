@@ -1,6 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, ChevronDown } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import heroGrid from "../../assets/GRID.png";
 import previewVector from "../../assets/Vector.png";
 
@@ -51,20 +58,120 @@ const plans = [
 ];
 
 const faqs = [
-  "Can I change my plan later ?",
-  "Can I change my plan later ?",
-  "Can I change my plan later ?",
-  "Can I change my plan later ?",
-  "Can I change my plan later ?",
+  {
+    question: "What counts as one scan or lookup?",
+    answer:
+      "Each time you run a tool against a target — a Port Scanner run, a Geo IP lookup, a WHOIS query, a Ping, etc. — counts as one scan against your plan's limit.",
+  },
+  {
+    question: "Do unused scans roll over to the next month?",
+    answer: "No rollover policy — unused scans do not carry over to the next billing period.",
+  },
+  {
+    question: "What happens when I hit my plan's scan limit?",
+    answer:
+      "You'll see a notice in the tool letting you know you've reached your limit, and further scans will be blocked until your limit resets (or you upgrade). Results from scans you've already run remain accessible.",
+  },
+  {
+    question: "Can I switch plans at any time?",
+    answer:
+      "Yes. Upgrades take effect immediately; downgrades take effect at the start of your next billing cycle so you don't lose access mid-cycle.",
+  },
+  {
+    question: "Is there a free trial of Pro, Team, or Enterprise?",
+    answer: "No free trial is currently offered for paid plans.",
+  },
+  {
+    question: "Do you offer monthly and annual billing?",
+    answer: "Yes. Annual billing is offered at a discount compared to paying monthly.",
+  },
+  {
+    question: "What payment methods do you accept?",
+    answer: "We accept credit card payments and PayPal. Enterprise customers can pay via invoice.",
+  },
+  {
+    question: "Can I cancel anytime?",
+    answer:
+      "Yes. Canceling stops future billing; you keep access through the end of your current paid period. No long-term contract is required outside Enterprise agreements.",
+  },
+  {
+    question: "Do you offer refunds?",
+    answer: "Full refund within 7 days of a new subscription, no refunds on renewals.",
+  },
+  {
+    question: "What can I do on the Free plan?",
+    answer:
+      "You get full access to every tool in the toolkit — there are no feature-locked tools — but with a lower number of scans per day than the paid plans. It's meant for occasional use, testing the toolkit out, or light personal projects.",
+  },
+  {
+    question: "Is the Free plan really free forever?",
+    answer: "Yes, the Free plan is free forever with no credit card required.",
+  },
+  {
+    question: "Why is my Free plan scan limit measured per day, not per month?",
+    answer:
+      "Smaller, more frequent resets keep the Free tier usable for casual needs without requiring a long wait if you hit the limit.",
+  },
+  {
+    question: "Who is the Pro plan for?",
+    answer:
+      "Individual users — freelancers, students, independent security researchers, or developers — who scan regularly enough that the Free plan's daily limit isn't enough, but who don't need multiple seats or team features.",
+  },
+  {
+    question: "How many scans do I get on Pro?",
+    answer: "Scans per month, reset on your billing date (not the calendar month).",
+  },
+  {
+    question: "Does Pro include every tool?",
+    answer:
+      "Yes — every plan, including Free, includes every tool in the toolkit. Plans differ by scan volume and seats, not by which tools you can access.",
+  },
+  {
+    question: "What's different about Team vs. Pro?",
+    answer:
+      "Team includes multiple seats, so multiple people on the same organization can run scans under one subscription, plus a higher combined scan allowance than a single Pro seat.",
+  },
+  {
+    question: "How are scans shared across the team?",
+    answer:
+      "All seats on a Team plan draw from one shared monthly scan pool, not per individual seat.",
+  },
+  {
+    question: "Can I add more seats to my Team plan?",
+    answer:
+      "Yes, additional seats can be added per seat/month, billed at a prorated rate for the remainder of your current cycle.",
+  },
+  {
+    question: "Do Team members share scan history and results?",
+    answer: "Each member's history stays private within their own account.",
+  },
+  {
+    question: "What does Enterprise include that Team doesn't?",
+    answer:
+      "Custom/unlimited scan volume, dedicated support, SSO, custom contract terms, on-premise or private deployment options, SLA guarantees, and audit logs.",
+  },
+  {
+    question: "How is Enterprise pricing determined?",
+    answer:
+      "Enterprise pricing is custom, based on scan volume, number of seats, and any additional requirements like SSO or dedicated support. Contact us for a quote.",
+  },
+  {
+    question: "Can Enterprise customers get a custom scan limit or unlimited usage?",
+    answer: "Enterprise plans can have custom scan limits or unlimited usage based on your needs.",
+  },
+  {
+    question: "Do you offer dedicated support for Enterprise customers?",
+    answer: "Yes, Enterprise customers get dedicated support with guaranteed response time SLA.",
+  },
 ];
 
 function PricingCard({ plan }: { plan: (typeof plans)[number] }) {
   return (
     <article
-      className={`relative flex min-h-[410px] flex-col overflow-hidden rounded-xl border p-6 shadow-[0_24px_80px_rgba(0,0,0,0.34)] ${
+      className={`relative flex flex-col overflow-hidden rounded-xl border p-6 shadow-[0_24px_80px_rgba(0,0,0,0.34)] ${
         plan.featured
-          ? "border-[#8062af] bg-[linear-gradient(180deg,rgba(110,54,170,0.82)_0%,rgba(0,0,0,0.94)_42%)]"
-          : "border-white/18 bg-[#403b4e]/72 backdrop-blur-md"
+          ? "min-h-[480px] border-[#8062af] bg-[linear-gradient(180deg,rgba(110,54,170,0.82)_0%,rgba(0,0,0,0.94)_42%)]"
+          : "min-h-[410px] border-white/18 bg-[#403b4e]/72 backdrop-blur-md"
       }`}
     >
       {!plan.featured && (
@@ -256,16 +363,23 @@ function Pricing() {
             Everything you need to know about our pricing
           </p>
 
-          <div className="mt-9 space-y-3 text-left">
-            {faqs.map((faq, index) => (
-              <button
-                key={`${faq}-${index}`}
-                className="flex w-full items-center justify-between rounded-xl border border-[#6c588c] bg-[#24173d] px-6 py-5 text-sm text-[#eee8f8] transition hover:border-[#9478c4] md:text-base"
-              >
-                <span>{faq}</span>
-                <ChevronDown className="h-5 w-5" />
-              </button>
-            ))}
+          <div className="mt-9 text-left">
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={`${faq.question}-${index}`}
+                  value={`item-${index}`}
+                  className="rounded-xl border border-[#6c588c] bg-[#24173d]"
+                >
+                  <AccordionTrigger className="px-6 py-5 text-sm text-[#eee8f8] hover:text-[#eee8f8] hover:no-underline md:text-base">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-5 text-sm text-[#ded8e7] md:text-base">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
 
           <p className="mt-10 text-base text-[#ded8e7]">
@@ -276,6 +390,7 @@ function Pricing() {
           </p>
         </div>
       </section>
+      <SiteFooter />
     </div>
   );
 }

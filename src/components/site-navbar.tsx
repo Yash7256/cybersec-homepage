@@ -95,6 +95,20 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
             ),
           )}
         </nav>
+        <div className="flex items-center justify-end gap-5 pr-[42px]">
+          <Link
+            to="/auth/login"
+            className="font-body flex h-14 min-w-[150px] items-center justify-center rounded-full border border-white/70 bg-black/70 px-8 text-base font-normal text-[#e8e3ec] transition hover:border-white hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+          >
+            Sign Up
+          </Link>
+          <Link
+            to="/auth/login"
+            className="font-body flex h-14 min-w-[160px] items-center justify-center rounded-full border border-white/45 bg-gradient-to-b from-[#f4efff] to-[#b7b1bd] px-8 text-base font-normal text-[#151019] shadow-[inset_0_1px_0_rgba(255,255,255,0.78)] transition hover:scale-[1.02] hover:from-white hover:to-[#cbc5d1] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+          >
+            Log In
+          </Link>
+        </div>
       </div>
     </div>
   );

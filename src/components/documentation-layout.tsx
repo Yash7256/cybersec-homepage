@@ -1,4 +1,5 @@
 import { ExternalLink } from "lucide-react";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import heroGrid from "../../assets/GRID.png";
 import previewVector from "../../assets/Vector.png";
@@ -200,6 +201,7 @@ export function DocumentationLayout({
             {/* Body Content */}
             <div className="prose prose-invert max-w-none">{children}</div>
           </div>
+          <SiteFooter />
         </main>
       </div>
 

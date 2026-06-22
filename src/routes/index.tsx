@@ -30,6 +30,7 @@ import ptIcon from "../../assets/pt.png";
 import vsIcon from "../../assets/vs.png";
 import srIcon from "../../assets/sr.png";
 import allIcon from "../../assets/all.png";
+import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 
 export const Route = createFileRoute("/")({
@@ -629,6 +630,7 @@ function Index() {
           </div>
         </div>
       </section>
+      <SiteFooter />
     </div>
   );
 }
