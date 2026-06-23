@@ -54,7 +54,7 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
       >
         <div className="pl-[48px]">
           <a href="/" aria-label="CyberSec home">
-            <Logo className={small ? "w-36" : "w-44"} />
+            <Logo className={small ? "w-44" : "w-52"} />
           </a>
         </div>
         <nav className="relative grid grid-cols-4 items-center justify-self-center overflow-hidden rounded-full border border-white/12 bg-[#7d61aa]/58 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-md">
