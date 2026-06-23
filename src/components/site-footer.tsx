@@ -45,7 +45,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
           <h2 className="text-3xl leading-tight font-normal text-white md:text-4xl">
             Ready to scan your first target?
           </h2>
-          <p className="mt-2 text-xs font-normal text-[#cfc4de]">
+          <p className="mt-2 text-sm font-normal text-[#cfc4de]">
             Start a vulnerability assessment in under 60 seconds.
           </p>
           <button
@@ -60,7 +60,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
         <div className="grid gap-10 border-b border-[#3d2959] py-12 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:gap-8 md:py-14">
           <div className="max-w-[280px]">
             <img src={footerLogo} alt="CyberSec" className="h-auto w-40 object-contain" />
-            <p className="mt-5 text-xs leading-relaxed font-normal text-[#bdb0cf]">
+            <p className="mt-5 text-sm leading-relaxed font-normal text-[#bdb0cf]">
               Cybersec-CLI helps teams uncover vulnerabilities faster with AI-powered scanning.
             </p>
           </div>
@@ -73,7 +73,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-xs font-normal text-[#c6bad5] transition hover:text-white"
+                      className="text-sm font-normal text-[#c6bad5] transition hover:text-white"
                     >
                       {link.label}
                     </a>
@@ -85,7 +85,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
         </div>
 
         <div className="py-11">
-          <p className="mb-3 text-xs font-normal text-[#c6bad5]">Get security tips & updates.</p>
+          <p className="mb-3 text-sm font-normal text-[#c6bad5]">Get security tips & updates.</p>
           <form
             className="flex max-w-none overflow-hidden rounded-full bg-[#352541]"
             onSubmit={(event) => event.preventDefault()}
@@ -94,7 +94,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
               type="email"
               aria-label="Email address"
               placeholder="Email Address"
-              className="min-w-0 flex-1 px-6 py-4 text-xs font-normal text-white placeholder:text-[#8f839c]"
+              className="min-w-0 flex-1 px-6 py-4 text-sm font-normal text-white placeholder:text-[#8f839c]"
             />
             <button
               type="submit"
@@ -106,7 +106,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
         </div>
 
         <div className="border-t border-[#3d2959] pt-8 text-center">
-          <p className="text-xs leading-relaxed font-normal text-[#8f839c]">
+          <p className="text-sm leading-relaxed font-normal text-[#8f839c]">
             &copy; 2026 - Cybersec CLI
             <br />
             All Rights Reserved
