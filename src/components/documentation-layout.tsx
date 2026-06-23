@@ -1,7 +1,6 @@
 import { ExternalLink } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import heroGrid from "../../assets/GRID.png";
 import previewVector from "../../assets/Vector.png";
 import { useEffect, useState } from "react";
 
@@ -86,12 +85,6 @@ export function DocumentationLayout({
       {/* Fixed Background Effects */}
       <div className="pointer-events-none fixed top-[-56px] left-1/2 z-0 h-[390px] w-[min(780px,100vw)] -translate-x-1/2 rounded-[780px] bg-[#8f43dd] opacity-75 blur-[190px]" />
       <img
-        src={heroGrid}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none fixed top-0 left-1/2 z-0 h-[300px] w-[min(820px,100vw)] -translate-x-1/2 object-fill opacity-65 mix-blend-screen"
-      />
-      <img
         src={previewVector}
         alt=""
         aria-hidden="true"
@@ -105,7 +98,7 @@ export function DocumentationLayout({
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="fixed left-0 top-[88px] h-[calc(100vh-88px)] w-[280px] border-r border-white/12 bg-[#0c0c12]/50 backdrop-blur-sm">
+        <aside className="fixed left-0 top-[88px] h-[calc(100vh-88px)] w-[40%] border-r border-white/12 bg-[linear-gradient(180deg,#3A1B57_0%,#130C20_4%,#1A0D2E_100%)]">
           <div className="flex h-full flex-col">
             {/* On This Page Label */}
             <div className="px-6 pt-8 pb-4">
@@ -175,8 +168,8 @@ export function DocumentationLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="ml-[280px] flex-1 pt-[88px]">
-          <div className="max-w-4xl px-8 py-12 text-left">
+        <main className="ml-[40%] flex-1 pt-[88px]">
+          <div className="w-full px-8 py-12 text-left">
             {/* Header Block */}
             <div className="mb-8">
               {/* Eyebrow */}
@@ -188,7 +181,7 @@ export function DocumentationLayout({
               {/* Subtitle */}
               {subtitle && <p className="mb-4 text-sm text-[#ffffff]">{subtitle}</p>}
               {/* Metadata */}
-              <div className="flex items-center gap-4 text-xs text-[#71717a]">
+              <div className="flex items-center gap-4 text-xs text-[#aaaaaa]">
                 <span>{version}</span>
                 <span>•</span>
                 <span>Last updated: {lastUpdated}</span>

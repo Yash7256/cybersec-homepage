@@ -84,7 +84,8 @@ function Docs() {
         </p>
       </div>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="getting-around">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="getting-around">
         Getting Around
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -111,7 +112,8 @@ function Docs() {
         from the internet (like a private home IP).
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="unified-scan">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="unified-scan">
         1. Unified Scan
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -123,7 +125,8 @@ function Docs() {
         the best starting point if you're not sure which specific tool you need yet.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="geo-ip">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="geo-ip">
         2. Geo IP
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -137,7 +140,7 @@ function Docs() {
         <code>127.0.0.1</code>) are blocked on purpose - they can't be looked up externally and
         would never give a meaningful result.
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         Reading the results:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -195,7 +198,8 @@ function Docs() {
         email/login came from an unexpected country, or confirming a CDN is active.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="whois">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="whois">
         3. WHOIS
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -217,7 +221,8 @@ function Docs() {
         trusting it, or investigating a suspicious link.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="subdomains">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="subdomains">
         4. Subdomains
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -230,7 +235,7 @@ function Docs() {
         <strong>What to type in:</strong> A root domain (<code>example.com</code> - no{" "}
         <code>https://</code>, no <code>www.</code>).
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         Reading the results:
       </h3>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -266,7 +271,8 @@ function Docs() {
         staging servers) during a security review of your own domain.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="port-scanner">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="port-scanner">
         5. Port Scanner
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -274,7 +280,7 @@ function Docs() {
         identify what service (web server, database, SSH, etc.) is running on each one - plus flags
         any known vulnerabilities tied to outdated software it detects.
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         What to type in:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -328,8 +334,9 @@ function Docs() {
         </p>
       </div>
 
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
       <h2
-        className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8"
         id="os-fingerprinting"
       >
         6. OS Fingerprinting
@@ -342,7 +349,7 @@ function Docs() {
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
         <strong>What to type in:</strong> A hostname or IP, e.g. <code>scanme.nmap.org</code>.
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         Reading the results:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -391,7 +398,8 @@ function Docs() {
         deeper testing, or as a sanity check that a server is running the OS version you expect.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="ping">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="ping">
         7. Ping
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -399,7 +407,7 @@ function Docs() {
         and measures how fast it answers, how consistent the response time is, and whether any
         requests get lost along the way.
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         What to type in:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -424,7 +432,7 @@ function Docs() {
           </span>
         </li>
       </ul>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         Reading the results:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -469,14 +477,15 @@ function Docs() {
         a server is reachable and responsive.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="traceroute">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="traceroute">
         8. Traceroute
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
         <strong>What it does:</strong> Maps the path your traffic takes, hop by hop, to reach a
         target - showing every router along the way and how much delay each one adds.
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         What to type in:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -501,7 +510,7 @@ function Docs() {
           </span>
         </li>
       </ul>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         Reading the results:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -541,7 +550,8 @@ function Docs() {
         unexpected routing.
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="http-headers">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="http-headers">
         9. HTTP Headers
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -553,7 +563,7 @@ function Docs() {
         <strong>What to type in:</strong> A full URL, including <code>https://</code> (e.g.{" "}
         <code>https://example.com</code>).
       </p>
-      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#ba9cff] mb-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-[#aaaaaa] mb-3">
         Reading the results:
       </h3>
       <ul className="space-y-3 text-sm text-[#ffffff] mb-6">
@@ -606,7 +616,8 @@ function Docs() {
         understanding what a site is built on (CDN, WAF, server software).
       </p>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="ssl-check">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="ssl-check">
         10. SSL Check
       </h2>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-4">
@@ -628,8 +639,9 @@ function Docs() {
         isn't misconfigured, which browsers will otherwise flag to your visitors as "not secure."
       </p>
 
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
       <h2
-        className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8"
         id="web-app-scanner"
       >
         11. Web App Scanner
@@ -656,8 +668,9 @@ function Docs() {
         </p>
       </div>
 
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
       <h2
-        className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8"
         id="ai-executive-report"
       >
         12. AI Executive Report
@@ -677,8 +690,9 @@ function Docs() {
         needing to explain every technical term yourself.
       </p>
 
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
       <h2
-        className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8"
         id="quick-reference"
       >
         Quick Reference Table
@@ -757,16 +771,17 @@ function Docs() {
         </table>
       </div>
 
-      <h2 className="text-2xl font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq">
+      <div className="pointer-events-none mx-auto my-16 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
+      <h2 className="text-2xl font-semibold text-[#ba9cff] font-mono mb-4 mt-8" id="faq">
         Frequently Asked Questions
       </h2>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-general">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-general">
         General
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Do I need an account to use these tools?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -774,7 +789,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why did my scan return an error instead of results?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed mb-2">The most common causes:</p>
@@ -796,7 +811,7 @@ function Docs() {
           </ul>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why are private/local IP addresses blocked?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -808,7 +823,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Is it legal to scan a website with these tools?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -819,7 +834,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Can I scan the same target repeatedly without being rate-limited?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -830,7 +845,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does my result say "Cached" instead of "Fresh"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -842,12 +857,12 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-geo-ip">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-geo-ip">
         Geo IP
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does the location shown not match where the website's content actually is?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -860,7 +875,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why are there multiple IPs listed for one domain?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -870,7 +885,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What does "confidence" mean in the results?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -881,7 +896,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Can I look up a hostname instead of an IP?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -890,12 +905,12 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-whois">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-whois">
         WHOIS
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does the registrant information say "Redacted" or "Privacy Service"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -905,7 +920,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Is a recently registered domain automatically suspicious?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -916,12 +931,12 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-subdomains">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-subdomains">
         Subdomains
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does the result count keep climbing while the scan is running?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -931,7 +946,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What is "Wildcard DNS" and why does it matter?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -942,7 +957,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why do some subdomains show as resolved but not "verified"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -954,14 +969,14 @@ function Docs() {
       </div>
 
       <h3
-        className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8"
         id="faq-port-scanner"
       >
         Port Scanner
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What's the difference between "Common Ports" and "All Ports"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -971,7 +986,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             How do I scan specific ports only?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -980,7 +995,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does a port show as open but the service is "Unknown"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -990,7 +1005,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Is port scanning a target I don't own allowed?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1000,14 +1015,14 @@ function Docs() {
       </div>
 
       <h3
-        className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8"
         id="faq-os-fingerprinting"
       >
         OS Fingerprinting
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             How accurate is the OS guess?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1018,7 +1033,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does it show multiple possible operating systems?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1029,12 +1044,12 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-ping">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-ping">
         Ping
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What counts as "good" latency?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1045,7 +1060,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What is "jitter" and why does it matter?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1055,7 +1070,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why are some packets shown as "dropped"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1065,7 +1080,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What does Live mode do, and will it run forever?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1076,12 +1091,12 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-traceroute">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-traceroute">
         Traceroute
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why do some hops show "No ICMP response"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1092,7 +1107,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What does "Route Changed" mean in Live mode?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1102,7 +1117,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does the route cross international borders unexpectedly?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1115,14 +1130,14 @@ function Docs() {
       </div>
 
       <h3
-        className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8"
         id="faq-http-headers"
       >
         HTTP Headers
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What does the security score actually measure?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1132,7 +1147,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             My site is missing some headers - does that mean it's hackable?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1142,7 +1157,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Why does the tool show cookies as "high risk"?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1153,12 +1168,12 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8" id="faq-ssl-check">
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8" id="faq-ssl-check">
         SSL Check
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             What happens if my certificate is about to expire?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1168,7 +1183,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Do I need to type "https://" for the SSL Check tool?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1178,14 +1193,14 @@ function Docs() {
       </div>
 
       <h3
-        className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8"
+        className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8"
         id="faq-web-app-scanner"
       >
         Web App Scanner / AI Executive Report
       </h3>
       <div className="space-y-6 mb-8">
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             How is the Web App Scanner different from the Port Scanner?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1195,7 +1210,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Do I need to run other scans before using the AI Executive Report?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1205,7 +1220,7 @@ function Docs() {
           </p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-[#ba9cff] mb-2">
+          <h4 className="text-sm font-semibold text-[#aaaaaa] mb-2">
             Who is the Executive Report meant for?
           </h4>
           <p className="text-sm text-[#ffffff] leading-relaxed">
@@ -1215,7 +1230,7 @@ function Docs() {
         </div>
       </div>
 
-      <h3 className="text-lg font-semibold text-[#ffffff] font-mono mb-4 mt-8">Still stuck?</h3>
+      <h3 className="text-lg font-semibold text-[#aaaaaa] font-mono mb-4 mt-8">Still stuck?</h3>
       <p className="text-sm text-[#ffffff] leading-relaxed mb-6">
         If a tool consistently fails on a target you're confident is correct and reachable, try a
         known-good target first (e.g. <code>8.8.8.8</code> or <code>example.com</code>) to confirm
