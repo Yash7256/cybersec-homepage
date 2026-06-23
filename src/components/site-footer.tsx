@@ -57,7 +57,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
 
         <div className="grid gap-10 border-b border-[#3d2959] py-12 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:gap-8 md:py-14">
           <div className="max-w-[280px]">
-            <img src={footerLogo} alt="CyberSec" className="h-auto w-40 object-contain" />
+            <img src={footerLogo} alt="CyberSec" className="h-auto w-60 object-contain" />
             <p className="mt-5 text-sm leading-relaxed font-normal text-[#bdb0cf]">
               Cybersec-CLI helps teams uncover vulnerabilities faster with AI-powered scanning.
             </p>
