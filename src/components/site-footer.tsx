@@ -34,14 +34,10 @@ const footerLinks = [
 export function SiteFooter({ className = "" }: { className?: string }) {
   return (
     <footer
-      className={cn(
-        "font-body relative border-t border-[#3d2959] bg-[#13081f] px-6 font-normal text-[#efe8ff]",
-        className,
-      )}
+      className={cn("font-body relative bg-[#13081f] px-6 font-normal text-[#efe8ff]", className)}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#8b5cf6]/45 to-transparent" />
-      <div className="mx-auto max-w-[1160px] pt-10 pb-8 md:pt-12">
-        <div className="rounded-lg border border-[#5f4a82] bg-[#07050d]/55 px-6 py-14 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:px-10">
+      <div className="pt-10 pb-8 md:pt-12">
+        <div className="mx-auto max-w-[1160px] rounded-lg border border-[#5f4a82] bg-[#07050d]/55 px-6 py-14 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:px-10">
           <h2 className="text-3xl leading-tight font-normal text-white md:text-4xl">
             Ready to scan your first target?
           </h2>
@@ -56,6 +52,8 @@ export function SiteFooter({ className = "" }: { className?: string }) {
             Start Scanning
           </button>
         </div>
+
+        <div className="pointer-events-none mx-auto my-10 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
 
         <div className="grid gap-10 border-b border-[#3d2959] py-12 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:gap-8 md:py-14">
           <div className="max-w-[280px]">
