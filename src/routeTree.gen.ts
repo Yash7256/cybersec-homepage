@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as ProductRouteImport } from './routes/product'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as DocsRouteImport } from './routes/docs'
@@ -18,6 +19,11 @@ import { Route as AuthSsoRouteImport } from './routes/auth.sso'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProductRoute = ProductRouteImport.update({
   id: '/product',
   path: '/product',
@@ -65,6 +71,7 @@ export interface FileRoutesByFullPath {
   '/docs': typeof DocsRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
+  '/terms': typeof TermsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/sso': typeof AuthSsoRoute
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/docs': typeof DocsRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
+  '/terms': typeof TermsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/sso': typeof AuthSsoRoute
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/docs': typeof DocsRoute
   '/pricing': typeof PricingRoute
   '/product': typeof ProductRoute
+  '/terms': typeof TermsRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/sso': typeof AuthSsoRoute
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/pricing'
     | '/product'
+    | '/terms'
     | '/auth/callback'
     | '/auth/login'
     | '/auth/sso'
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/pricing'
     | '/product'
+    | '/terms'
     | '/auth/callback'
     | '/auth/login'
     | '/auth/sso'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/docs'
     | '/pricing'
     | '/product'
+    | '/terms'
     | '/auth/callback'
     | '/auth/login'
     | '/auth/sso'
@@ -129,6 +141,7 @@ export interface RootRouteChildren {
   DocsRoute: typeof DocsRoute
   PricingRoute: typeof PricingRoute
   ProductRoute: typeof ProductRoute
+  TermsRoute: typeof TermsRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthSsoRoute: typeof AuthSsoRoute
@@ -136,6 +149,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/product': {
       id: '/product'
       path: '/product'
@@ -201,6 +221,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocsRoute: DocsRoute,
   PricingRoute: PricingRoute,
   ProductRoute: ProductRoute,
+  TermsRoute: TermsRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthSsoRoute: AuthSsoRoute,
