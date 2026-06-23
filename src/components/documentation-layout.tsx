@@ -176,17 +176,17 @@ export function DocumentationLayout({
 
         {/* Main Content */}
         <main className="ml-[280px] flex-1 pt-[88px]">
-          <div className="mx-auto max-w-4xl px-8 py-12">
+          <div className="max-w-4xl px-8 py-12 text-left">
             {/* Header Block */}
             <div className="mb-8">
               {/* Eyebrow */}
-              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#a855f7]">
+              <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#ba9cff]">
                 {eyebrow}
               </p>
               {/* Title */}
-              <h1 className="mb-3 text-4xl font-bold text-[#fafafa] font-mono">{title}</h1>
+              <h1 className="mb-3 text-4xl font-bold text-[#ffffff] font-mono">{title}</h1>
               {/* Subtitle */}
-              {subtitle && <p className="mb-4 text-base text-[#a1a1aa]">{subtitle}</p>}
+              {subtitle && <p className="mb-4 text-sm text-[#ffffff]">{subtitle}</p>}
               {/* Metadata */}
               <div className="flex items-center gap-4 text-xs text-[#71717a]">
                 <span>{version}</span>
