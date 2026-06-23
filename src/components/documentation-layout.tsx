@@ -98,7 +98,7 @@ export function DocumentationLayout({
 
       <div className="flex">
         {/* Sidebar */}
-        <aside className="fixed left-0 top-[88px] h-[calc(100vh-88px)] w-[40%] border-r border-white/12 bg-[linear-gradient(180deg,#3A1B57_0%,#130C20_4%,#1A0D2E_100%)]">
+        <aside className="fixed left-0 top-[88px] h-[calc(100vh-88px)] w-[280px] border-r border-white/12 bg-[linear-gradient(180deg,#3A1B57_0%,#130C20_4%,#1A0D2E_100%)]">
           <div className="flex h-full flex-col">
             {/* On This Page Label */}
             <div className="px-6 pt-8 pb-4">
@@ -168,8 +168,8 @@ export function DocumentationLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="ml-[40%] flex-1 pt-[88px]">
-          <div className="w-full px-8 py-12 text-left">
+        <main className="ml-[280px] flex-1 pt-[88px]">
+          <div className="max-w-4xl px-8 py-12 text-left">
             {/* Header Block */}
             <div className="mb-8">
               {/* Eyebrow */}
