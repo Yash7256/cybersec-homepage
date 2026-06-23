@@ -169,7 +169,7 @@ export function DocumentationLayout({
 
         {/* Main Content */}
         <main className="ml-[280px] flex-1 pt-[88px]">
-          <div className="max-w-4xl px-8 py-12 text-left">
+          <div className="w-full px-8 py-12 text-left">
             {/* Header Block */}
             <div className="mb-8">
               {/* Eyebrow */}
