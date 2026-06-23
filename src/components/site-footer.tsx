@@ -37,7 +37,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
       className={cn("font-body relative bg-[#13081f] px-6 font-normal text-[#efe8ff]", className)}
     >
       <div className="pt-10 pb-8 md:pt-12">
-        <div className="mx-auto max-w-[1160px] rounded-lg border border-[#5f4a82] bg-[#07050d]/55 px-6 py-14 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:px-10">
+        <div className="rounded-lg border border-[#5f4a82] bg-[#07050d]/55 px-6 py-14 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:px-10">
           <h2 className="text-3xl leading-tight font-normal text-white md:text-4xl">
             Ready to scan your first target?
           </h2>
