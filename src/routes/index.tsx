@@ -430,11 +430,9 @@ function Step({
       </div>
       <div className="mt-4 flex items-baseline gap-1.5">
         <span className="font-heading text-4xl leading-none font-bold text-[#f8f5ff]">{num}</span>
-        <span className="font-body text-sm text-[#d4cde3]">{title}</span>
+        <span className="font-body text-lg text-[#d4cde3]">{title}</span>
       </div>
-      <p className="font-body mt-2 max-w-[150px] text-[11px] leading-tight text-[#bcb2cd]">
-        {desc}
-      </p>
+      <p className="font-body mt-2 max-w-[200px] text-sm leading-snug text-[#bcb2cd]">{desc}</p>
     </div>
   );
 }
@@ -601,7 +599,7 @@ function Index() {
           </div>
 
           <div className="mt-[64px] flex justify-center">
-            <div className="rounded-full bg-black px-7 py-2 text-xs text-[#d7d0df] shadow-[0_0_42px_rgba(168,85,247,0.72)]">
+            <div className="rounded-full bg-black px-7 py-2 text-sm text-[#d7d0df] shadow-[0_0_42px_rgba(168,85,247,0.72)]">
               How it works
             </div>
           </div>
