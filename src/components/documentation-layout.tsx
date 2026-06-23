@@ -42,25 +42,25 @@ export function DocumentationLayout({
     const handleScroll = () => {
       const scrollPosition = window.scrollY + 150; // Offset for navbar
 
-      // Find the section that's currently in view
+      // Active section = the last heading whose top has scrolled past the offset line.
+      let current = allHrefs[0] ?? "";
       for (const href of allHrefs) {
         const element = document.querySelector(href);
         if (element) {
-          const { top, bottom } = element.getBoundingClientRect();
-          const absoluteTop = top + window.scrollY;
-          const absoluteBottom = bottom + window.scrollY;
-
-          if (scrollPosition >= absoluteTop && scrollPosition < absoluteBottom) {
-            setActiveHref(href);
-            return;
+          const absoluteTop = element.getBoundingClientRect().top + window.scrollY;
+          if (absoluteTop <= scrollPosition) {
+            current = href;
           }
         }
       }
 
-      // If no section is in view, default to the first one
-      if (allHrefs.length > 0) {
-        setActiveHref(allHrefs[0]);
+      // Snap to the last section when scrolled to the bottom of the page.
+      const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 2;
+      if (atBottom && allHrefs.length > 0) {
+        current = allHrefs[allHrefs.length - 1];
       }
+
+      setActiveHref(current);
     };
 
     // Initial check
