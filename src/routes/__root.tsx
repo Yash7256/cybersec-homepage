@@ -53,6 +53,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "theme-color", content: "#100d1d" },
+      {
+        name: "google-site-verification",
+        content: "kF9YHpx4zhXVSqZrFNzGbnd-zpk-BExQcOhsCmfww4U",
+      },
       ...seoMeta({
         title: "CyberSec Toolkit — Async Vulnerability Scanning with Live AI Analysis",
         description:
