@@ -3,6 +3,7 @@ import { cors } from "hono/cors";
 import { errorHandler } from "./middleware/error.js";
 import { authRoutes } from "./routes/auth.js";
 import { productRoutes } from "./routes/products.js";
+import { blogRoutes } from "./routes/blog.js";
 
 const app = new Hono();
 
@@ -13,5 +14,6 @@ app.get("/api/health", (c) => c.json({ status: "ok" }));
 
 app.route("/api/auth", authRoutes);
 app.route("/api/products", productRoutes);
+app.route("/api/blog", blogRoutes);
 
 export default app;
