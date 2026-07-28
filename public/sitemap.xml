@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://home.cybersec.tech/</loc>
+    <loc>https://home.cybersec1.tech/</loc>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://home.cybersec.tech/pricing</loc>
+    <loc>https://home.cybersec1.tech/pricing</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://home.cybersec.tech/docs</loc>
+    <loc>https://home.cybersec1.tech/docs</loc>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://home.cybersec.tech/security</loc>
+    <loc>https://home.cybersec1.tech/security</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://home.cybersec.tech/privacy</loc>
+    <loc>https://home.cybersec1.tech/privacy</loc>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://home.cybersec.tech/terms</loc>
+    <loc>https://home.cybersec1.tech/terms</loc>
     <priority>0.6</priority>
   </url>
 </urlset>

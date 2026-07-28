@@ -1,5 +1,5 @@
-const SITE_URL = "https://cybersec-toolkit.com";
-export const DEFAULT_OG_IMAGE = "https://home.cybersec.tech/og-image.png";
+const SITE_URL = "https://home.cybersec1.tech";
+export const DEFAULT_OG_IMAGE = "https://home.cybersec1.tech/og-image.png";
 
 export interface SeoMetaOptions {
   title: string;

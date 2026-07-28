@@ -73,7 +73,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
           name: "CyberSec Toolkit",
-          url: "https://cybersec-toolkit.com",
+          url: "https://home.cybersec1.tech",
           description:
             "Async vulnerability scanning with live AI analysis for security professionals who don't wait for batch reports.",
           applicationCategory: "SecurityApplication",
