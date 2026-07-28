@@ -57,6 +57,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "google-site-verification",
         content: "kF9YHpx4zhXVSqZrFNzGbnd-zpk-BExQcOhsCmfww4U",
       },
+      {
+        name: "msvalidate.01",
+        content: "CFEB1D676D105C6E0A075518D19734F4",
+      },
       ...seoMeta({
         title: "CyberSec Toolkit — Async Vulnerability Scanning with Live AI Analysis",
         description:
