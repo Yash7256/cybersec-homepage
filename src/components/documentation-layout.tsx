@@ -1,7 +1,8 @@
 import { ExternalLink } from "lucide-react";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import previewVector from "../../assets/Vector.png";
+import heroGrid from "../../assets/GRID.webp";
+import previewVector from "../../assets/Vector.webp";
 import { useEffect, useState } from "react";
 
 interface DocSection {

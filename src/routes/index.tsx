@@ -23,13 +23,13 @@ import {
   X,
   ArrowRight,
 } from "lucide-react";
-import heroGrid from "../../assets/GRID.png";
-import previewVector from "../../assets/Vector.png";
+import heroGrid from "../../assets/GRID.webp";
+import previewVector from "../../assets/Vector.webp";
 import playIcon from "../../assets/play icon.png";
-import ptIcon from "../../assets/pt.png";
-import vsIcon from "../../assets/vs.png";
-import srIcon from "../../assets/sr.png";
-import allIcon from "../../assets/all.png";
+import ptIcon from "../../assets/pt.webp";
+import vsIcon from "../../assets/vs.webp";
+import srIcon from "../../assets/sr.webp";
+import allIcon from "../../assets/all.webp";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 
@@ -333,9 +333,9 @@ function HeroPreview() {
           </div>
 
           {/* Scan summary */}
-          <div className="mt-4 text-[10px] font-semibold tracking-wider text-[#b7a3e8]">
+          <h3 className="mt-4 text-[10px] font-semibold tracking-wider text-[#b7a3e8]">
             SCAN SUMMARY
-          </div>
+          </h3>
           <div className="mt-2 grid grid-cols-6 gap-2">
             {summaryItems.map((item, index) => (
               <SummaryCard
@@ -366,7 +366,7 @@ function SummaryCard({ title, big, tag }: { title: string; big: string; tag?: st
 
   return (
     <div className="rounded-lg border border-[#8B5CF6]/35 bg-black/90 p-2.5">
-      <div className="font-body text-[9px] text-[#b7a3e8]">{title}</div>
+      <h4 className="font-body text-[9px] text-[#b7a3e8]">{title}</h4>
       <div className="mt-1 flex items-end justify-between">
         <div className="font-heading text-2xl font-bold text-foreground">{big}</div>
         {tag && <div className="font-body text-[9px] text-[#fb7185]">{tag}</div>}
@@ -390,7 +390,11 @@ function FeatureCard({
   return (
     <div className="flex min-h-[138px] items-center gap-4 rounded-[20px] border border-[#5f4a82] bg-[#25193E] px-12 py-14 shadow-[0_22px_70px_rgba(0,0,0,0.24)] md:gap-5">
       {image ? (
-        <img src={image} alt="" className="h-[80px] w-[80px] shrink-0 md:h-[80px] md:w-[80px]" />
+        <img
+          src={image}
+          alt={title}
+          className="h-[80px] w-[80px] shrink-0 md:h-[80px] md:w-[80px]"
+        />
       ) : Icon ? (
         <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#dbc5ff] via-[#ae7aff] to-[#9b48f4] shadow-[0_12px_22px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.45)] md:h-[58px] md:w-[58px]">
           <Icon className="h-5 w-5 text-[#13091f] md:h-6 md:w-6" />
@@ -430,7 +434,7 @@ function Step({
       </div>
       <div className="mt-4 flex items-baseline gap-1.5">
         <span className="font-heading text-4xl leading-none font-bold text-[#f8f5ff]">{num}</span>
-        <span className="font-body text-lg text-[#d4cde3]">{title}</span>
+<h3 className="font-body text-lg text-[#d4cde3]">{title}</h3>
       </div>
       <p className="font-body mt-2 max-w-[200px] text-sm leading-snug text-[#bcb2cd]">{desc}</p>
     </div>
@@ -501,17 +505,19 @@ function Index() {
           <div className="mt-5 flex items-center justify-center gap-5">
             <div className="scan-cta-glow relative inline-block rounded-full">
               <div className="scan-cta-gradient relative z-10 inline-block overflow-hidden rounded-full p-[1.5px]">
-                <button
+                <a
+                  href="https://cybersec1.tech"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="relative z-10 cursor-pointer rounded-full px-12 py-4 text-base font-medium text-[#efe9f8] transition-all duration-200 hover:scale-[1.03] hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
                   style={{
                     borderRadius: "40px",
                     border: "none",
                     background: "#0a0810",
                   }}
-                  onClick={() => window.open("https://cybersec1.tech", "_blank")}
                 >
                   Start Scanning
-                </button>
+                </a>
               </div>
             </div>
             <button
@@ -555,13 +561,13 @@ function Index() {
 
         <div className="post-strip-background relative z-10">
           <div className="mx-auto max-w-[700px] pt-[160px] pb-[80px] text-center">
-            <h1 className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]">
+            <h2 className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]">
               Everything You Need,
               <br />
               <span className="bg-gradient-to-br from-primary to-white bg-clip-text text-transparent">
                 In One Place
               </span>
-            </h1>
+            </h2>
             <p className="mt-4 text-[16px] text-[#ffffff] font-body">
               Powerful tools to find vulnerabilities, save time and
               <br />
@@ -599,9 +605,9 @@ function Index() {
           </div>
 
           <div className="mt-[64px] flex justify-center">
-            <div className="rounded-full bg-black px-7 py-2 text-sm text-[#d7d0df] shadow-[0_0_42px_rgba(168,85,247,0.72)]">
+<h2 className="rounded-full bg-black px-7 py-2 text-sm text-[#d7d0df] shadow-[0_0_42px_rgba(168,85,247,0.72)]">
               How it works
-            </div>
+            </h2>
           </div>
 
           <div className="mt-[48px] grid grid-cols-1 items-start gap-[48px] md:grid-cols-[1fr_auto_1fr_auto_1fr] md:gap-[48px]">

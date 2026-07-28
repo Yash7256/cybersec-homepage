@@ -8,8 +8,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import heroGrid from "../../assets/GRID.png";
-import previewVector from "../../assets/Vector.png";
+import heroGrid from "../../assets/GRID.webp";
+import previewVector from "../../assets/Vector.webp";
 
 export const Route = createFileRoute("/pricing")({
   component: Pricing,

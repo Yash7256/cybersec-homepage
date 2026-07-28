@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
-import navbarLogo from "../../assets/logo.png";
+import navbarLogo from "../../assets/logo.webp";
 
 function Logo({ className = "" }: { className?: string }) {
   return <img src={navbarLogo} alt="CyberSec" className={`h-auto object-contain ${className}`} />;
@@ -95,7 +95,7 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
             ),
           )}
         </nav>
-        <div className="flex items-center justify-end gap-3 pr-[28px]">
+<div className="flex items-center justify-end gap-3 pr-[28px]">
           <Link
             to="/auth/login"
             className="font-body flex h-10 min-w-[110px] items-center justify-center rounded-full border border-white/70 bg-black/70 px-5 text-sm font-normal text-[#e8e3ec] transition hover:border-white hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"

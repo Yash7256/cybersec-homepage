@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import heroGrid from "../../assets/GRID.png";
+import heroGrid from "../../assets/GRID.webp";
 
 export function NotFoundPage() {
   return (

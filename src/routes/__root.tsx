@@ -7,6 +7,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { NotFoundPage } from "@/components/not-found-page";
+import { seoMeta, seoLinks } from "@/lib/seo";
 
 import appCss from "../styles.css?url";
 import faviconSvg from "../../assets/favicon.svg";
@@ -51,24 +52,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CyberSec" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "theme-color", content: "#100d1d" },
+      ...seoMeta({
+        title: "CyberSec Toolkit — Async Vulnerability Scanning with Live AI Analysis",
+        description:
+          "Async vulnerability scanning with live AI analysis for security professionals who don't wait for batch reports.",
+        path: "/",
+        isHome: true,
+      }),
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", type: "image/svg+xml", href: faviconSvg },
+      ...seoLinks("/"),
+    ],
+    scripts: [
       {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      {
-        rel: "icon",
-        type: "image/svg+xml",
-        href: faviconSvg,
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "CyberSec Toolkit",
+          url: "https://cybersec-toolkit.com",
+          description:
+            "Async vulnerability scanning with live AI analysis for security professionals who don't wait for batch reports.",
+          applicationCategory: "SecurityApplication",
+          operatingSystem: "Web",
+        }),
       },
     ],
   }),

@@ -1,4 +1,4 @@
-import footerLogo from "../../assets/logo.png";
+import footerLogo from "../../assets/logo.webp";
 import { cn } from "@/lib/utils";
 
 const footerLinks = [
@@ -44,13 +44,14 @@ export function SiteFooter({ className = "" }: { className?: string }) {
           <p className="mt-2 text-sm font-normal text-[#cfc4de]">
             Start a vulnerability assessment in under 60 seconds.
           </p>
-          <button
-            type="button"
-            className="mt-6 rounded-full border border-[#f97316]/70 bg-black px-9 py-3 text-sm font-normal text-white shadow-[0_0_28px_rgba(249,115,22,0.26)] transition hover:scale-[1.03] hover:border-[#c084fc] focus-visible:ring-2 focus-visible:ring-[#c084fc] focus-visible:ring-offset-2 focus-visible:ring-offset-[#13081f] focus-visible:outline-none"
-            onClick={() => window.open("https://cybersec1.tech", "_blank")}
+          <a
+            href="https://cybersec1.tech"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block rounded-full border border-[#f97316]/70 bg-black px-9 py-3 text-sm font-normal text-white shadow-[0_0_28px_rgba(249,115,22,0.26)] transition hover:scale-[1.03] hover:border-[#c084fc] focus-visible:ring-2 focus-visible:ring-[#c084fc] focus-visible:ring-offset-2 focus-visible:ring-offset-[#13081f] focus-visible:outline-none"
           >
             Start Scanning
-          </button>
+          </a>
         </div>
 
         <div className="pointer-events-none mx-auto my-10 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
