@@ -1,22 +1,16 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { supabase } from "@/lib/supabase";
 import { seoMeta } from "@/lib/seo";
-import { getSupabaseClient } from "@/lib/supabase";
-
-const requireAuth = createServerFn({ method: "GET" }).handler(async () => {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase.auth.getSession();
-
-  if (error || !data.session) {
-    throw redirect({ to: "/auth/login" });
-  }
-
-  return data.session;
-});
 
 export const Route = createFileRoute("/dashboard")({
   beforeLoad: async () => {
-    await requireAuth();
+    const { data, error } = await supabase.auth.getSession();
+
+    if (error || !data.session) {
+      throw redirect({ to: "/auth/login" });
+    }
+
+    return data.session;
   },
   component: DashboardPage,
   head: () => ({

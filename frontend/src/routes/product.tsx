@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createServerFn } from "@tanstack/react-start";
+import { supabase } from "@/lib/supabase";
 import { seoMeta } from "@/lib/seo";
-import { getSupabaseClient } from "../lib/supabase";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 
@@ -11,22 +10,16 @@ interface Product {
   description: string | null;
 }
 
-const getProductsFn = createServerFn({ method: "GET" }).handler(async () => {
-  const supabase = getSupabaseClient();
-  const { data, error } = await supabase.from("products").select("*").limit(10);
-
-  if (error) {
-    console.error("Supabase error:", error);
-    return [];
-  }
-  return data ?? [];
-});
-
 export const Route = createFileRoute("/product")({
   component: ProductPage,
   loader: async () => {
-    const products = await getProductsFn();
-    return { products };
+    const { data, error } = await supabase.from("products").select("*").limit(10);
+
+    if (error) {
+      console.error("Supabase error:", error);
+      return { products: [] as Product[] };
+    }
+    return { products: data ?? [] };
   },
   head: () => ({
     meta: [
