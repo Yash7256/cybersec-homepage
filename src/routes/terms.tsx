@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { seoMeta, seoLinks } from "@/lib/seo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 
@@ -6,12 +7,13 @@ export const Route = createFileRoute("/terms")({
   component: Terms,
   head: () => ({
     meta: [
-      { title: "CyberSec — Terms of Use" },
-      {
-        name: "description",
-        content: "Terms of Use for the CyberSec Toolkit.",
-      },
+      ...seoMeta({
+        title: "CyberSec Toolkit — Terms of Use",
+        description: "Terms of Use for the CyberSec Toolkit.",
+        path: "/terms",
+      }),
     ],
+    links: [...seoLinks("/terms")],
   }),
 });
 

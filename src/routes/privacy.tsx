@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { seoMeta, seoLinks } from "@/lib/seo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 
@@ -6,12 +7,13 @@ export const Route = createFileRoute("/privacy")({
   component: Privacy,
   head: () => ({
     meta: [
-      { title: "CyberSec — Privacy Policy" },
-      {
-        name: "description",
-        content: "Privacy Policy for the CyberSec Toolkit.",
-      },
+      ...seoMeta({
+        title: "CyberSec Toolkit — Privacy Policy",
+        description: "Privacy Policy for the CyberSec Toolkit.",
+        path: "/privacy",
+      }),
     ],
+    links: [...seoLinks("/privacy")],
   }),
 });
 

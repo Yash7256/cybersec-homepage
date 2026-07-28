@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, ChevronDown } from "lucide-react";
+import { seoMeta, seoLinks } from "@/lib/seo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import {
@@ -15,12 +16,13 @@ export const Route = createFileRoute("/pricing")({
   component: Pricing,
   head: () => ({
     meta: [
-      { title: "CyberSec — Pricing" },
-      {
-        name: "description",
-        content: "Simple pricing plans for CyberSec vulnerability scanning and reporting.",
-      },
+      ...seoMeta({
+        title: "CyberSec Toolkit — Pricing",
+        description: "Simple pricing plans for CyberSec vulnerability scanning and reporting.",
+        path: "/pricing",
+      }),
     ],
+    links: [...seoLinks("/pricing")],
   }),
 });
 

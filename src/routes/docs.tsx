@@ -1,16 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { seoMeta, seoLinks } from "@/lib/seo";
 import { DocumentationLayout } from "@/components/documentation-layout";
 
 export const Route = createFileRoute("/docs")({
   component: Docs,
   head: () => ({
     meta: [
-      { title: "CyberSec - Documentation" },
-      {
-        name: "description",
-        content: "Comprehensive documentation for CyberSec vulnerability scanning platform.",
-      },
+      ...seoMeta({
+        title: "CyberSec Toolkit — Documentation",
+        description:
+          "Comprehensive documentation for CyberSec vulnerability scanning platform.",
+        path: "/docs",
+      }),
     ],
+    links: [...seoLinks("/docs")],
   }),
 });
 

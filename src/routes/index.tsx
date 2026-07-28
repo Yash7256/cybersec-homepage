@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type { CSSProperties } from "react";
 import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { seoMeta, seoLinks } from "@/lib/seo";
 import {
   Crosshair,
   MapPin,
@@ -37,13 +38,16 @@ export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
-      { title: "CyberSec" },
-      {
-        name: "description",
-        content:
+      ...seoMeta({
+        title:
+          "CyberSec Toolkit — Async Vulnerability Scanning with Live AI Analysis",
+        description:
           "Async vulnerability scanning with live AI analysis built for security professionals who don't wait for batch reports.",
-      },
+        path: "/",
+        isHome: true,
+      }),
     ],
+    links: [...seoLinks("/")],
   }),
 });
 

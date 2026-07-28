@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { seoMeta, seoLinks } from "@/lib/seo";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 
@@ -6,13 +7,14 @@ export const Route = createFileRoute("/security")({
   component: Security,
   head: () => ({
     meta: [
-      { title: "CyberSec — Security Policy" },
-      {
-        name: "description",
-        content:
+      ...seoMeta({
+        title: "CyberSec Toolkit — Security Policy",
+        description:
           "Security Policy for the CyberSec Toolkit, including how to report a vulnerability.",
-      },
+        path: "/security",
+      }),
     ],
+    links: [...seoLinks("/security")],
   }),
 });
 
