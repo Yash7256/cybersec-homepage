@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { cors } from "hono/cors";
-import { errorHandler } from "./middleware/error";
-import { authRoutes } from "./routes/auth";
-import { productRoutes } from "./routes/products";
+import { errorHandler } from "./middleware/error.js";
+import { authRoutes } from "./routes/auth.js";
+import { productRoutes } from "./routes/products.js";
 
 const app = new Hono();
 

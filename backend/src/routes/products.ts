@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { getSupabaseClient } from "../db/supabase";
+import { getSupabaseClient } from "../db/supabase.js";
 
 export const productRoutes = new Hono();
 
