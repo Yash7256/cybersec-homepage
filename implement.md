@@ -1,171 +1,338 @@
-# Blog Implementation
+# Production-Ready Blog Module Implementation Plan
 
-## Schema (`supabase/migrations/002_create_blog.sql`)
+## Overall Goals
 
-```sql
-create table public.posts (
-  id          uuid primary key default gen_random_uuid(),
-  title       text not null,
-  slug        text not null unique,
-  excerpt     text,
-  content     text,
-  cover_url   text,
-  author_id   uuid references auth.users(id) not null,
-  status      text not null default 'draft' check (status in ('draft', 'published')),
-  published_at timestamptz,
-  created_at  timestamptz not null default now(),
-  updated_at  timestamptz not null default now()
-);
+- Keep existing Hono + Supabase backend.
+- Continue using React + TanStack Router on the frontend.
+- Use TanStack Query for all API requests and caching.
+- Store blog cover images in **Cloudinary** (not Supabase Storage).
+- Blog content should be written in **Markdown**.
+- Architecture is modular and future-proof.
 
-create table public.tags (
-  id   uuid primary key default gen_random_uuid(),
-  name text not null unique,
-  slug text not null unique
-);
+---
 
-create table public.categories (
-  id   uuid primary key default gen_random_uuid(),
-  name text not null unique,
-  slug text not null unique
-);
+## 1. Database Improvements
 
-create table public.post_tags (
-  post_id uuid references public.posts(id) on delete cascade,
-  tag_id  uuid references public.tags(id) on delete cascade,
-  primary key (post_id, tag_id)
-);
+### Posts Table
 
-create table public.post_categories (
-  post_id     uuid references public.posts(id) on delete cascade,
-  category_id uuid references public.categories(id) on delete cascade,
-  primary key (post_id, category_id)
-);
+Extend the `posts` table with:
 
-alter table public.posts enable row level security;
-alter table public.tags enable row level security;
-alter table public.categories enable row level security;
-alter table public.post_tags enable row level security;
-alter table public.post_categories enable row level security;
+**SEO fields**
+- `meta_title`
+- `meta_description`
+- `canonical_url`
+- `og_image`
 
--- RLS: public read for published posts, admin write
-create policy "Anyone can read published posts"
-  on public.posts for select
-  using (status = 'published');
+**Blog metadata**
+- `reading_time INTEGER`
+- `featured BOOLEAN DEFAULT false`
+- `views INTEGER DEFAULT 0`
 
-create policy "Admins can manage all posts"
-  on public.posts for all
-  using (auth.role() = 'authenticated'); -- refine with admin check
+**Indexes** on `status`, `published_at`, `slug`
 
--- similar policies for tags, categories, etc.
+**`updated_at` trigger** — auto-updates on row change.
+
+### Author Profiles
+
+Create a `profiles` table (extends `auth.users`):
+
+| Column | Type |
+|--------|------|
+| id | UUID PK → auth.users |
+| name | TEXT |
+| avatar_url | TEXT |
+| bio | TEXT |
+| twitter | TEXT |
+| linkedin | TEXT |
+| github | TEXT |
+| role | TEXT ('user', 'admin') |
+
+`posts.author_id` → `profiles.id`
+
+Frontend displays author name, avatar, bio on blog pages.
+
+---
+
+## 2. Markdown Support
+
+Content stored as Markdown.
+
+**Frontend rendering deps:**
+- `react-markdown`
+- `remark-gfm`
+- `rehype-highlight`
+
+Supports: headings, tables, task lists, images, code blocks with syntax highlighting, links.
+
+---
+
+## 3. Backend Architecture
+
+```
+backend/src/
+├── controllers/
+│   └── blog.controller.ts
+├── services/
+│   └── blog.service.ts
+├── repositories/
+│   └── blog.repository.ts
+├── routes/
+│   └── blog.ts
+├── middleware/
+│   └── verify-admin.ts
+├── lib/
+│   ├── supabase.ts       (existing)
+│   └── cache.ts          (new)
+└── types/
+    └── blog.ts           (new)
 ```
 
-## Backend
+Separation: Routes → Controllers → Services → Repository (DB queries).
 
-### Files
+---
 
-| File | Purpose |
-|------|---------|
-| `backend/src/routes/blog.ts` | Blog CRUD routes |
-| `backend/src/lib/verify-admin.ts` | Auth middleware for admin routes |
-
-### API Endpoints
+## 4. API Endpoints
 
 | Method | Path | Auth | Description |
 |--------|------|------|-------------|
-| GET | `/api/blog/posts` | No | List published posts (query: `?page=&limit=&tag=&category=&search=`) |
-| GET | `/api/blog/posts/:slug` | No | Get single published post by slug |
-| POST | `/api/blog/posts` | Admin | Create post |
-| PUT | `/api/blog/posts/:id` | Admin | Update post |
-| DELETE | `/api/blog/posts/:id` | Admin | Delete post |
-| GET | `/api/blog/tags` | No | List all tags |
-| GET | `/api/blog/categories` | No | List all categories |
-| POST | `/api/blog/tags` | Admin | Create tag |
-| POST | `/api/blog/categories` | Admin | Create category |
+| GET | `/api/blog/posts` | No | List published posts (paginated, filterable) |
+| GET | `/api/blog/posts/:slug` | No | Get single published post |
+| GET | `/api/blog/admin/posts/:slug` | Admin | Get any post (including drafts) |
+| POST | `/api/blog/admin/posts` | Admin | Create post |
+| PUT | `/api/blog/admin/posts/:id` | Admin | Update post |
+| DELETE | `/api/blog/admin/posts/:id` | Admin | Delete post |
+| GET | `/api/blog/tags` | No | List tags |
+| POST | `/api/blog/admin/tags` | Admin | Create tag |
+| GET | `/api/blog/categories` | No | List categories |
+| POST | `/api/blog/admin/categories` | Admin | Create category |
 
-### Example route structure (`backend/src/routes/blog.ts`)
+### Consistent Response Format
 
-```
-/BlogRoutes
-  GET    /posts          → list published, paginated
-  GET    /posts/:slug    → single post with tags + categories
-  POST   /posts          → create (admin)
-  PUT    /posts/:id      → update (admin)
-  DELETE /posts/:id      → delete (admin)
-  GET    /tags            → list all
-  POST   /tags            → create (admin)
-  GET    /categories      → list all
-  POST   /categories      → create (admin)
-```
-
-### Supabase queries
-
-- **List posts**: `supabase.from("posts").select("id, title, slug, excerpt, cover_url, published_at, author_id").eq("status", "published").order("published_at", { ascending: false }).range(from, to)`
-- **Single post**: `supabase.from("posts").select("*, tags(*), categories(*)").eq("slug", slug).eq("status", "published").single()`
-- **Admin list**: same but without `status` filter
-
-## Frontend
-
-### Files
-
-| File | Purpose |
-|------|---------|
-| `frontend/src/routes/blog.tsx` | Blog listing page `/blog` |
-| `frontend/src/routes/blog.$slug.tsx` | Single post page `/blog/:slug` |
-| `frontend/src/components/blog-card.tsx` | Reusable card component |
-| `frontend/src/lib/blog.ts` | API client functions |
-
-### Pages
-
-#### `/blog` — Blog listing
-
-- Fetch posts from `GET /api/blog/posts`
-- Display grid of blog cards (title, excerpt, date, cover image)
-- Pagination (load more or page numbers)
-- Sidebar with tag/category filters
-
-#### `/blog/:slug` — Single post
-
-- Fetch post from `GET /api/blog/posts/:slug`
-- Render markdown content (need `react-markdown` + `remark-gfm`)
-- Display cover image, title, author, date, tags, categories
-- 404 state if slug not found
-
-### API client (`frontend/src/lib/blog.ts`)
-
-```ts
-export async function getPosts(params?: { page?: number; tag?: string; category?: string; search?: string }) {
-  const searchParams = new URLSearchParams()
-  if (params?.page) searchParams.set("page", String(params.page))
-  if (params?.tag) searchParams.set("tag", params.tag)
-  if (params?.category) searchParams.set("category", params.category)
-  if (params?.search) searchParams.set("search", params.search)
-  const res = await fetch(`/api/blog/posts?${searchParams}`)
-  return res.json()
-}
-
-export async function getPost(slug: string) {
-  const res = await fetch(`/api/blog/posts/${slug}`)
-  if (!res.ok) return null
-  return res.json()
+```json
+{
+  "success": true,
+  "data": [],
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 48,
+    "pages": 5,
+    "hasNext": true,
+    "hasPrevious": false
+  }
 }
 ```
+
+Error format:
+```json
+{
+  "success": false,
+  "error": "Post not found"
+}
+```
+
+---
+
+## 5. Pagination
+
+Query params: `?page=1&limit=10`
+
+Response includes: `total`, `pages`, `hasNext`, `hasPrevious`.
+
+Default limit: 10, max: 50.
+
+---
+
+## 6. Search
+
+- Search by `title` and `excerpt` using PostgreSQL ILIKE.
+- Query param: `?search=term`
+
+---
+
+## 7. Filtering
+
+Query params:
+- `?tag=<slug>` — filter by tag
+- `?category=<slug>` — filter by category
+- `?featured=true` — featured posts only
+
+Filters can be combined.
+
+---
+
+## 8. Cloudinary Integration
+
+- Do NOT use Supabase Storage.
+- Store only the secure Cloudinary URL in `cover_url` and `og_image`.
+- Future admin panel uploads to Cloudinary → receives URL → saves to DB.
+
+---
+
+## 9. Caching
+
+- In-memory cache with configurable TTL.
+- Cache keys: `posts:{params}`, `post:slug={slug}`, `tags:all`, `categories:all`.
+- Cache invalidation on create/update/delete.
+- Cache adapter interface so Redis can be swapped in later.
+
+---
+
+## 10. Authentication & Authorization
+
+- Admin check via `profiles.role = 'admin'`.
+- `requireAdmin()` middleware verifies JWT + checks role.
+- Only admins can create/edit/delete posts, tags, categories.
+
+---
+
+## 11. Transactions
+
+Create/update post is a multi-step operation:
+1. Insert/update post row
+2. Attach tags (replace all)
+3. Attach categories (replace all)
+
+Rollback on failure (handled by Supabase transaction or application-level rollback).
+
+---
+
+## 12. Frontend Components
+
+```
+frontend/src/components/
+├── BlogCard.tsx          — cover, title, excerpt, date, author, reading time, featured badge
+├── BlogHero.tsx          — hero section for listing page
+├── BlogFilters.tsx       — tag/category filter chips
+├── Pagination.tsx        — page navigation
+├── SearchBar.tsx         — search input
+├── TagBadge.tsx          — clickable tag badge
+├── CategoryBadge.tsx     — category badge
+└── AuthorCard.tsx        — author avatar, name, bio
+```
+
+Pages remain lightweight, components handle rendering.
+
+---
+
+## 13. TanStack Query
+
+Query keys:
+- `["posts", { page, filters }]`
+- `["post", slug]`
+- `["tags"]`
+- `["categories"]`
+
+Mutation invalidation after admin operations.
+
+---
+
+## 14. Blog Listing Page (`/blog`)
+
+Displays:
+- Cover image
+- Title
+- Excerpt
+- Reading time
+- Published date
+- Author (avatar + name)
+- Featured badge (if applicable)
+
+Includes:
+- Search bar
+- Category filter
+- Tag filter
+- Pagination
+
+---
+
+## 15. Blog Detail Page (`/blog/:slug`)
+
+Displays:
+- Cover image
+- Title
+- Author (avatar, name, bio)
+- Published date
+- Reading time
+- Markdown content (rendered)
+- Tags
+- Categories
+- SEO meta tags
+
+404 page when slug is invalid.
+
+---
+
+## 16. SEO
+
+Dynamic meta tags per post:
+- `title` → `meta_title` or `title`
+- `description` → `meta_description` or `excerpt`
+- Open Graph (`og:title`, `og:description`, `og:image`, `og:url`)
+- Twitter cards
+- Canonical URL
+- JSON-LD `BlogPosting` schema
+
+Prepare for: `sitemap.xml`, RSS feed, `robots.txt`.
+
+---
+
+## 17. Performance
+
+- Lazy loading images
+- Responsive image sizes
+- Memoized components
+- TanStack Query caching/stale-while-revalidate
+
+---
+
+## 18. Future Features (Architecture Ready)
+
+Design so these can be added without major refactoring:
+- Admin dashboard UI
+- Draft preview with secret link
+- Scheduled publishing
+- Related posts (by shared tags)
+- Reading progress bar
+- Newsletter subscription
+- Comments
+- Author pages (`/blog/author/:slug`)
+- RSS feed
+- View counter
+- Table of contents
+- Full-text search (Postgres `tsvector`)
+- Multi-author support
+
+---
+
+## 19. Code Quality
+
+- Strong TypeScript typing throughout
+- Reusable utility functions
+- Proper error handling at every layer
+- Input validation with Zod
+- Clean separation of concerns (controller → service → repository)
+- Consistent naming conventions
+- Minimal duplication
+- Well-documented APIs
+
+---
 
 ## Implementation Order
 
-1. Database migration (create tables, RLS policies)
-2. Backend routes (`blog.ts`)
-3. Wire routes into `backend/src/app.ts`
-4. Frontend API client (`frontend/src/lib/blog.ts`)
-5. Blog listing page (`/blog`)
-6. Single post page (`/blog/:slug`)
-7. Add `react-markdown` and `remark-gfm` to frontend deps
-8. Regenerate route tree (`bun run dev` to trigger auto-gen)
-
-## Future Enhancements
-
-- Admin UI for creating/editing posts
-- Image upload to Supabase Storage
-- RSS feed
-- Related posts by tags
-- Reading time estimate
-- SEO meta tags per post
+1. Database migration (`supabase/migrations/002_create_blog.sql`)
+2. Backend types (`backend/src/types/blog.ts`)
+3. Cache layer (`backend/src/lib/cache.ts`)
+4. Blog repository (`backend/src/repositories/blog.repository.ts`)
+5. Blog service (`backend/src/services/blog.service.ts`)
+6. Blog controller (`backend/src/controllers/blog.controller.ts`)
+7. Admin middleware (`backend/src/middleware/verify-admin.ts`)
+8. Blog routes (`backend/src/routes/blog.ts`)
+9. Wire into `app.ts`
+10. Frontend deps: `react-markdown`, `remark-gfm`, `rehype-highlight`
+11. Frontend API client + hooks (`frontend/src/lib/blog.ts`)
+12. Frontend components
+13. Blog listing page (`/blog`)
+14. Blog detail page (`/blog/:slug`)
+15. SEO meta tags
+16. Regenerate route tree
