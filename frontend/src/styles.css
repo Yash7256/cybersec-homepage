@@ -1,6 +1,8 @@
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
+@import "highlight.js/styles/atom-one-dark.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -190,6 +192,107 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+  }
+}
+
+/* ── Blog prose overrides ──────────────────────────────────────────────────── */
+@layer components {
+  .prose-blog {
+    /* Base text */
+    --tw-prose-body: oklch(0.88 0.01 285);
+    --tw-prose-headings: oklch(0.97 0.005 285);
+    --tw-prose-lead: oklch(0.78 0.02 285);
+    --tw-prose-links: oklch(0.78 0.18 295);
+    --tw-prose-bold: oklch(0.97 0.005 285);
+    --tw-prose-counters: oklch(0.65 0.03 285);
+    --tw-prose-bullets: oklch(0.45 0.08 295);
+    --tw-prose-hr: oklch(0.28 0.05 285);
+    --tw-prose-quotes: oklch(0.88 0.01 285);
+    --tw-prose-quote-borders: oklch(0.7 0.18 295);
+    --tw-prose-captions: oklch(0.6 0.03 285);
+    --tw-prose-code: oklch(0.85 0.12 295);
+    --tw-prose-pre-code: oklch(0.9 0.01 285);
+    --tw-prose-pre-bg: oklch(0.12 0.04 285);
+    --tw-prose-th-borders: oklch(0.32 0.06 285);
+    --tw-prose-td-borders: oklch(0.22 0.04 285);
+  }
+
+  /* Code blocks — hljs handles color; we just handle shape */
+  .prose-blog pre {
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  .prose-blog pre code.hljs {
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.7;
+  }
+
+  /* Inline code */
+  .prose-blog :not(pre) > code {
+    background: oklch(0.18 0.05 285);
+    color: oklch(0.85 0.15 295);
+    border: 1px solid oklch(0.28 0.06 285);
+    border-radius: 0.3rem;
+    padding: 0.15em 0.4em;
+    font-size: 0.85em;
+  }
+
+  .prose-blog :not(pre) > code::before,
+  .prose-blog :not(pre) > code::after {
+    content: none;
+  }
+
+  /* Links */
+  .prose-blog a {
+    text-decoration-color: oklch(0.7 0.18 295 / 0.4);
+    text-underline-offset: 3px;
+    transition: color 0.15s, text-decoration-color 0.15s;
+  }
+
+  .prose-blog a:hover {
+    color: oklch(0.9 0.18 300);
+    text-decoration-color: oklch(0.7 0.18 295);
+  }
+
+  /* Blockquotes — callout style */
+  .prose-blog blockquote {
+    background: oklch(0.18 0.06 285 / 0.6);
+    border-left: 3px solid oklch(0.7 0.18 295);
+    border-radius: 0 0.375rem 0.375rem 0;
+    padding: 0.75rem 1.25rem;
+    font-style: normal;
+  }
+
+  .prose-blog blockquote p::before,
+  .prose-blog blockquote p::after {
+    content: none;
+  }
+
+  /* Tables */
+  .prose-blog table {
+    font-size: 0.9rem;
+  }
+
+  .prose-blog thead {
+    background: oklch(0.18 0.05 285);
+  }
+
+  .prose-blog tbody tr:nth-child(even) {
+    background: oklch(0.14 0.03 285 / 0.4);
+  }
+
+  /* Images */
+  .prose-blog img {
+    border-radius: 0.5rem;
+    border: 1px solid oklch(0.28 0.05 285);
+  }
+
+  /* Headings */
+  .prose-blog h2 {
+    border-bottom: 1px solid oklch(0.22 0.04 285);
+    padding-bottom: 0.4rem;
   }
 }
 

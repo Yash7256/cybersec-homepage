@@ -11,6 +11,7 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Pricing", path: "/pricing" },
+    { label: "Blog", path: "/blog" },
     { label: "Docs", path: "/docs" },
     { label: "Product", path: "/product" },
   ];
@@ -57,11 +58,11 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
             <Logo className={small ? "w-52" : "w-60"} />
           </a>
         </div>
-        <nav className="relative grid grid-cols-4 items-center justify-self-center overflow-hidden rounded-full border border-white/12 bg-[#7d61aa]/58 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-md">
+        <nav className="relative grid grid-cols-5 items-center justify-self-center overflow-hidden rounded-full border border-white/12 bg-[#7d61aa]/58 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-md">
           <div
             className="absolute top-1.5 bottom-1.5 left-1.5 rounded-full border border-white/20 bg-[#000000] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
             style={{
-              width: "calc((100% - 12px) / 4)",
+              width: "calc((100% - 12px) / 5)",
               transform: `translateX(${indicatorIndex * 100}%)`,
             }}
           />

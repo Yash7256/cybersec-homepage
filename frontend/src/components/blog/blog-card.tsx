@@ -1,29 +1,66 @@
 import React from "react";
 import { Link } from "@tanstack/react-router";
 import type { Post } from "@/lib/blog";
-import { AuthorCard } from "./author-card";
 
 interface Props {
   post: Post;
+  onSelect?: (post: Post) => void;
 }
 
-export const BlogCard = React.memo(function BlogCard({ post }: Props) {
+/** Small card used in the "Read More Blogs" grid */
+export const BlogCard = React.memo(function BlogCard({ post, onSelect }: Props) {
   const date = post.published_at
     ? new Date(post.published_at).toLocaleDateString("en-US", {
         year: "numeric",
-        month: "long",
+        month: "short",
         day: "numeric",
       })
     : null;
+
+  if (onSelect) {
+    return (
+      <button
+        onClick={() => onSelect(post)}
+        className="group flex w-full cursor-pointer gap-3 rounded-xl border border-[#2e1f4a] bg-[#0e0818]/60 p-3 text-left transition-all hover:border-[#7c3aed]/60 hover:bg-[#130a20]"
+      >
+        {post.cover_url ? (
+          <div className="h-[72px] w-[100px] shrink-0 overflow-hidden rounded-lg">
+            <img
+              src={post.cover_url}
+              alt={post.title}
+              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className="h-[72px] w-[100px] shrink-0 rounded-lg bg-[#1e1133]" />
+        )}
+        <div className="flex min-w-0 flex-col justify-between">
+          <h3 className="line-clamp-2 text-sm font-medium leading-snug text-[#ede8f6] group-hover:text-[#c084fc]">
+            {post.title}
+          </h3>
+          {post.excerpt && (
+            <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#8f7aaa]">
+              {post.excerpt}
+            </p>
+          )}
+          <div className="mt-1.5 flex items-center gap-2 text-[10px] text-[#6b5a85]">
+            {date && <time dateTime={post.published_at!}>{date}</time>}
+            {post.reading_time && <span>{post.reading_time} min read</span>}
+          </div>
+        </div>
+      </button>
+    );
+  }
 
   return (
     <Link
       to="/blog/$slug"
       params={{ slug: post.slug }}
-      className="group block overflow-hidden rounded-xl border border-border bg-card transition-all hover:border-primary/50 hover:shadow-lg"
+      className="group flex gap-3 rounded-xl border border-[#2e1f4a] bg-[#0e0818]/60 p-3 transition-all hover:border-[#7c3aed]/60 hover:bg-[#130a20]"
     >
-      {post.cover_url && (
-        <div className="aspect-video overflow-hidden">
+      {post.cover_url ? (
+        <div className="h-[72px] w-[100px] shrink-0 overflow-hidden rounded-lg">
           <img
             src={post.cover_url}
             alt={post.title}
@@ -31,28 +68,22 @@ export const BlogCard = React.memo(function BlogCard({ post }: Props) {
             loading="lazy"
           />
         </div>
+      ) : (
+        <div className="h-[72px] w-[100px] shrink-0 rounded-lg bg-[#1e1133]" />
       )}
-      <div className="p-5">
-        <div className="mb-3 flex items-center gap-2 text-xs text-muted-foreground">
-          {post.featured && (
-            <span className="rounded-full bg-primary/20 px-2 py-0.5 text-xs font-medium text-primary">
-              Featured
-            </span>
-          )}
-          {date && <time dateTime={post.published_at!}>{date}</time>}
-          {post.reading_time && (
-            <span>{post.reading_time} min read</span>
-          )}
-        </div>
-        <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary">
+      <div className="flex min-w-0 flex-col justify-between">
+        <h3 className="line-clamp-2 text-sm font-medium leading-snug text-[#ede8f6] group-hover:text-[#c084fc]">
           {post.title}
         </h3>
         {post.excerpt && (
-          <p className="mb-4 line-clamp-2 text-sm text-muted-foreground">
+          <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-[#8f7aaa]">
             {post.excerpt}
           </p>
         )}
-        {post.author && <AuthorCard author={post.author} />}
+        <div className="mt-1.5 flex items-center gap-2 text-[10px] text-[#6b5a85]">
+          {date && <time dateTime={post.published_at!}>{date}</time>}
+          {post.reading_time && <span>{post.reading_time} min read</span>}
+        </div>
       </div>
     </Link>
   );

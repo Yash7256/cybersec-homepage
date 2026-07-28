@@ -1,30 +1,18 @@
 import React from "react";
-import type { AuthorProfile } from "@/lib/blog";
 
 interface Props {
-  author: AuthorProfile;
+  author: string;
 }
 
 export const AuthorCard = React.memo(function AuthorCard({ author }: Props) {
+  const initial = author.trim()[0]?.toUpperCase() ?? "A";
+
   return (
     <div className="flex items-center gap-3">
-      {author.avatar_url ? (
-        <img
-          src={author.avatar_url}
-          alt={author.name ?? "Author"}
-          className="h-10 w-10 rounded-full object-cover"
-        />
-      ) : (
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20 text-sm font-medium text-primary">
-          {(author.name ?? "A")[0]}
-        </div>
-      )}
-      <div>
-        <p className="text-sm font-medium text-foreground">{author.name ?? "Anonymous"}</p>
-        {author.bio && (
-          <p className="text-xs text-muted-foreground">{author.bio}</p>
-        )}
+      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-purple-900/40 text-sm font-semibold text-purple-300 ring-1 ring-purple-500/30">
+        {initial}
       </div>
+      <span className="text-sm font-medium text-foreground">{author}</span>
     </div>
   );
 });

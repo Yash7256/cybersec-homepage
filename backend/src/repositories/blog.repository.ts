@@ -11,70 +11,26 @@ import type {
   PaginatedResult,
 } from "../types/blog.js";
 
-type SupabasePostRow = {
-  id: string;
-  title: string;
-  slug: string;
-  excerpt: string | null;
-  content: string | null;
-  cover_url: string | null;
-  meta_title: string | null;
-  meta_description: string | null;
-  canonical_url: string | null;
-  og_image: string | null;
-  reading_time: number | null;
-  featured: boolean;
-  views: number;
-  status: "draft" | "published";
-  author_id: string;
-  published_at: string | null;
-  created_at: string;
-  updated_at: string;
-  author: {
-    id: string;
-    name: string | null;
-    avatar_url: string | null;
-    bio: string | null;
-    twitter: string | null;
-    linkedin: string | null;
-    github: string | null;
-  } | null;
-  tags: { id: string; name: string; slug: string }[];
-  categories: { id: string; name: string; slug: string }[];
-};
-
-function mapRow(row: SupabasePostRow): PostWithRelations {
-  return {
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    excerpt: row.excerpt,
-    content: row.content,
-    cover_url: row.cover_url,
-    meta_title: row.meta_title,
-    meta_description: row.meta_description,
-    canonical_url: row.canonical_url,
-    og_image: row.og_image,
-    reading_time: row.reading_time,
-    featured: row.featured,
-    views: row.views,
-    status: row.status,
-    author_id: row.author_id,
-    published_at: row.published_at,
-    created_at: row.created_at,
-    updated_at: row.updated_at,
-    author: row.author,
-    tags: row.tags ?? [],
-    categories: row.categories ?? [],
-  };
-}
-
+// Columns to select on posts (no author_id / profiles join)
 const POST_SELECT = `
   id, title, slug, excerpt, content, cover_url,
   meta_title, meta_description, canonical_url, og_image,
-  reading_time, featured, views, status,
-  author_id, published_at, created_at, updated_at
+  reading_time, featured, views, status, author,
+  published_at, created_at, updated_at,
+  post_tags(tags(id, name, slug)),
+  post_categories(categories(id, name, slug))
 `;
+
+function shapePost(row: any): PostWithRelations {
+  return {
+    ...row,
+    tags: (row.post_tags ?? []).map((pt: any) => pt.tags).filter(Boolean),
+    categories: (row.post_categories ?? []).map((pc: any) => pc.categories).filter(Boolean),
+    // remove join columns from the top-level object
+    post_tags: undefined,
+    post_categories: undefined,
+  };
+}
 
 export const blogRepository = {
   async listPosts(
@@ -88,8 +44,9 @@ export const blogRepository = {
 
     let query = supabase
       .from("posts")
-      .select("*, author:author_id(id, name, avatar_url, bio, twitter, linkedin, github), tags:post_tags(id, name, slug), categories:post_categories(id, name, slug)", { count: "exact" });
+      .select(POST_SELECT, { count: "exact" });
 
+    // Status filter (defaults to published for public reads)
     if (params.status) {
       query = query.eq("status", params.status);
     } else {
@@ -100,43 +57,39 @@ export const blogRepository = {
       query = query.eq("featured", params.featured);
     }
 
-    if (params.tag) {
-      const { data: tagData } = await supabase
-        .from("tags")
-        .select("id")
-        .eq("slug", params.tag)
-        .single();
-      if (tagData) {
-        query = query.contains("post_tags.tag_id", [tagData.id]);
-      }
-    }
-
-    if (params.category) {
-      const { data: catData } = await supabase
-        .from("categories")
-        .select("id")
-        .eq("slug", params.category)
-        .single();
-      if (catData) {
-        query = query.contains("post_categories.category_id", [catData.id]);
-      }
-    }
-
     if (params.search) {
-      query = query.or(`title.ilike.%${params.search}%,excerpt.ilike.%${params.search}%`);
+      query = query.or(
+        `title.ilike.%${params.search}%,excerpt.ilike.%${params.search}%`,
+      );
     }
 
     const { data, count, error } = await query
-      .order("published_at", { ascending: false })
+      .order("published_at", { ascending: false, nullsFirst: false })
       .range(from, to);
 
     if (error) throw error;
+
+    // Tag / category slug filtering: done in-memory after fetch because
+    // Supabase JS doesn't expose a clean way to filter through a junction
+    // table by slug without a raw SQL filter. For small result sets this is
+    // fine; for large datasets consider a Postgres view or RPC.
+    let rows: PostWithRelations[] = ((data as any[]) ?? []).map(shapePost);
+
+    if (params.tag) {
+      const tagSlug = params.tag.toLowerCase();
+      rows = rows.filter((p) => p.tags.some((t) => t.slug === tagSlug));
+    }
+
+    if (params.category) {
+      const catSlug = params.category.toLowerCase();
+      rows = rows.filter((p) => p.categories.some((c) => c.slug === catSlug));
+    }
 
     const total = count ?? 0;
     const pages = Math.ceil(total / limit);
 
     return {
-      data: ((data as SupabasePostRow[]) ?? []).map(mapRow),
+      data: rows,
       pagination: {
         page,
         limit,
@@ -152,24 +105,24 @@ export const blogRepository = {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from("posts")
-      .select("*, author:author_id(id, name, avatar_url, bio, twitter, linkedin, github), tags:post_tags(id, name, slug), categories:post_categories(id, name, slug)")
+      .select(POST_SELECT)
       .eq("slug", slug)
       .single();
 
-    if (error) return null;
-    return mapRow(data as SupabasePostRow);
+    if (error || !data) return null;
+    return shapePost(data);
   },
 
   async getPostById(id: string): Promise<PostWithRelations | null> {
     const supabase = getSupabaseClient();
     const { data, error } = await supabase
       .from("posts")
-      .select("*, author:author_id(id, name, avatar_url, bio, twitter, linkedin, github), tags:post_tags(id, name, slug), categories:post_categories(id, name, slug)")
+      .select(POST_SELECT)
       .eq("id", id)
       .single();
 
-    if (error) return null;
-    return mapRow(data as SupabasePostRow);
+    if (error || !data) return null;
+    return shapePost(data);
   },
 
   async createPost(input: CreatePostInput): Promise<Post> {
@@ -180,16 +133,20 @@ export const blogRepository = {
       .from("posts")
       .insert({
         ...postData,
+        author: postData.author ?? "Admin",
         published_at:
           postData.status === "published"
             ? (postData.published_at ?? new Date().toISOString())
             : null,
       })
-      .select(POST_SELECT)
+      .select(
+        "id, title, slug, excerpt, content, cover_url, meta_title, meta_description, canonical_url, og_image, reading_time, featured, views, status, author, published_at, created_at, updated_at",
+      )
       .single();
 
     if (error) throw error;
 
+    // Attach tags and categories; roll back post on failure
     try {
       if (tag_ids?.length) {
         const { error: tagError } = await supabase
@@ -201,13 +158,16 @@ export const blogRepository = {
       if (category_ids?.length) {
         const { error: catError } = await supabase
           .from("post_categories")
-          .insert(category_ids.map((category_id) => ({ post_id: data.id, category_id })));
+          .insert(
+            category_ids.map((category_id) => ({ post_id: data.id, category_id })),
+          );
         if (catError) throw catError;
       }
     } catch (err) {
-      await supabase.from("post_tags").delete().eq("post_id", data.id).maybeSingle();
-      await supabase.from("post_categories").delete().eq("post_id", data.id).maybeSingle();
-      await supabase.from("posts").delete().eq("id", data.id).maybeSingle();
+      // Best-effort rollback
+      await supabase.from("post_tags").delete().eq("post_id", data.id);
+      await supabase.from("post_categories").delete().eq("post_id", data.id);
+      await supabase.from("posts").delete().eq("id", data.id);
       throw err;
     }
 
@@ -219,7 +179,7 @@ export const blogRepository = {
     const { tag_ids, category_ids, ...postData } = input;
 
     const updateData: Record<string, unknown> = { ...postData };
-    if (postData.status === "published") {
+    if (postData.status === "published" && !postData.published_at) {
       updateData.published_at = new Date().toISOString();
     }
 
@@ -227,7 +187,9 @@ export const blogRepository = {
       .from("posts")
       .update(updateData)
       .eq("id", id)
-      .select(POST_SELECT)
+      .select(
+        "id, title, slug, excerpt, content, cover_url, meta_title, meta_description, canonical_url, og_image, reading_time, featured, views, status, author, published_at, created_at, updated_at",
+      )
       .single();
 
     if (error) throw error;
@@ -248,7 +210,9 @@ export const blogRepository = {
       if (category_ids.length) {
         const { error: catError } = await supabase
           .from("post_categories")
-          .insert(category_ids.map((category_id) => ({ post_id: id, category_id })));
+          .insert(
+            category_ids.map((category_id) => ({ post_id: id, category_id })),
+          );
         if (catError) throw catError;
       }
     }
@@ -265,23 +229,16 @@ export const blogRepository = {
 
   async incrementViews(id: string): Promise<void> {
     const supabase = getSupabaseClient();
-    const { data: post } = await supabase
-      .from("posts")
-      .select("views")
-      .eq("id", id)
-      .single();
-
-    if (post) {
-      await supabase
-        .from("posts")
-        .update({ views: (post.views ?? 0) + 1 })
-        .eq("id", id);
-    }
+    // Use the increment() RPC defined in the migration to avoid a read-then-write race
+    await supabase.rpc("increment_post_views", { post_id: id });
   },
 
   async listTags(): Promise<Tag[]> {
     const supabase = getSupabaseClient();
-    const { data, error } = await supabase.from("tags").select("*").order("name");
+    const { data, error } = await supabase
+      .from("tags")
+      .select("id, name, slug")
+      .order("name");
     if (error) throw error;
     return (data as Tag[]) ?? [];
   },
@@ -291,7 +248,7 @@ export const blogRepository = {
     const { data, error } = await supabase
       .from("tags")
       .insert({ name, slug })
-      .select("*")
+      .select("id, name, slug")
       .single();
     if (error) throw error;
     return data as Tag;
@@ -299,7 +256,10 @@ export const blogRepository = {
 
   async listCategories(): Promise<Category[]> {
     const supabase = getSupabaseClient();
-    const { data, error } = await supabase.from("categories").select("*").order("name");
+    const { data, error } = await supabase
+      .from("categories")
+      .select("id, name, slug")
+      .order("name");
     if (error) throw error;
     return (data as Category[]) ?? [];
   },
@@ -309,7 +269,7 @@ export const blogRepository = {
     const { data, error } = await supabase
       .from("categories")
       .insert({ name, slug })
-      .select("*")
+      .select("id, name, slug")
       .single();
     if (error) throw error;
     return data as Category;

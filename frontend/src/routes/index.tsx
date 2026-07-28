@@ -513,7 +513,7 @@ function Index() {
                   href="https://cybersec1.tech"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative z-10 cursor-pointer rounded-full px-12 py-4 text-base font-medium text-[#efe9f8] transition-all duration-200 hover:scale-[1.03] hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+                  className="relative z-10 cursor-pointer rounded-full px-10 py-4 text-base font-medium text-[#efe9f8] transition-all duration-200 hover:scale-[1.03] hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
                   style={{
                     borderRadius: "40px",
                     border: "none",

@@ -13,26 +13,15 @@ export interface Post {
   featured: boolean;
   views: number;
   status: "draft" | "published";
-  author_id: string;
+  author: string;
   published_at: string | null;
   created_at: string;
   updated_at: string;
 }
 
 export interface PostWithRelations extends Post {
-  author: AuthorProfile | null;
   tags: Tag[];
   categories: Category[];
-}
-
-export interface AuthorProfile {
-  id: string;
-  name: string | null;
-  avatar_url: string | null;
-  bio: string | null;
-  twitter: string | null;
-  linkedin: string | null;
-  github: string | null;
 }
 
 export interface Tag {
@@ -60,7 +49,7 @@ export interface CreatePostInput {
   reading_time?: number;
   featured?: boolean;
   status?: "draft" | "published";
-  author_id: string;
+  author?: string;
   published_at?: string;
   tag_ids?: string[];
   category_ids?: string[];
@@ -79,6 +68,7 @@ export interface UpdatePostInput {
   reading_time?: number;
   featured?: boolean;
   status?: "draft" | "published";
+  author?: string;
   published_at?: string;
   tag_ids?: string[];
   category_ids?: string[];

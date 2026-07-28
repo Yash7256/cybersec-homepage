@@ -8,13 +8,22 @@ import {
   createCategorySchema,
 } from "../lib/validations.js";
 
-function respond<T>(c: Context, data: T, status: number = 200, pagination?: ApiResponse<T>["pagination"]): Response {
+function respond<T>(
+  c: Context,
+  data: T,
+  status: number = 200,
+  pagination?: ApiResponse<T>["pagination"],
+): Response {
   const body: ApiResponse<T> = { success: true, data };
   if (pagination) body.pagination = pagination;
   return c.json(body, status as any);
 }
 
-function respondError(c: Context, message: string, status: number = 400): Response {
+function respondError(
+  c: Context,
+  message: string,
+  status: number = 400,
+): Response {
   return c.json({ success: false, error: message }, status as any);
 }
 
@@ -25,10 +34,19 @@ export const blogController = {
       const limit = Math.min(50, Math.max(1, Number(c.req.query("limit")) || 10));
       const tag = c.req.query("tag") ?? undefined;
       const category = c.req.query("category") ?? undefined;
-      const featured = c.req.query("featured") === "true" ? true : undefined;
+      const featured =
+        c.req.query("featured") === "true"
+          ? true
+          : c.req.query("featured") === "false"
+            ? false
+            : undefined;
       const search = c.req.query("search") ?? undefined;
 
-      const result = await blogService.listPosts({ tag, category, featured, search }, page, limit);
+      const result = await blogService.listPosts(
+        { tag, category, featured, search },
+        page,
+        limit,
+      );
       return respond(c, result.data, 200, result.pagination);
     } catch (err) {
       console.error("listPosts error:", err);
@@ -76,18 +94,17 @@ export const blogController = {
   async createPost(c: Context): Promise<Response> {
     try {
       const body = await c.req.json();
-      const authorId = c.get("userId") as string;
 
       const parsed = createPostSchema.safeParse(body);
       if (!parsed.success) {
-        return respondError(c, parsed.error.errors.map((e) => e.message).join(", "), 400);
+        return respondError(
+          c,
+          parsed.error.errors.map((e) => e.message).join(", "),
+          400,
+        );
       }
 
-      const post = await blogService.createPost({
-        ...parsed.data,
-        author_id: authorId,
-      });
-
+      const post = await blogService.createPost(parsed.data);
       return respond(c, post, 201);
     } catch (err) {
       console.error("createPost error:", err);
@@ -104,7 +121,11 @@ export const blogController = {
 
       const parsed = updatePostSchema.safeParse(body);
       if (!parsed.success) {
-        return respondError(c, parsed.error.errors.map((e) => e.message).join(", "), 400);
+        return respondError(
+          c,
+          parsed.error.errors.map((e) => e.message).join(", "),
+          400,
+        );
       }
 
       const post = await blogService.updatePost(id, parsed.data);
@@ -154,7 +175,11 @@ export const blogController = {
 
       const parsed = createTagSchema.safeParse(body);
       if (!parsed.success) {
-        return respondError(c, parsed.error.errors.map((e) => e.message).join(", "), 400);
+        return respondError(
+          c,
+          parsed.error.errors.map((e) => e.message).join(", "),
+          400,
+        );
       }
 
       const tag = await blogService.createTag(parsed.data.name, parsed.data.slug);
@@ -181,10 +206,17 @@ export const blogController = {
 
       const parsed = createCategorySchema.safeParse(body);
       if (!parsed.success) {
-        return respondError(c, parsed.error.errors.map((e) => e.message).join(", "), 400);
+        return respondError(
+          c,
+          parsed.error.errors.map((e) => e.message).join(", "),
+          400,
+        );
       }
 
-      const category = await blogService.createCategory(parsed.data.name, parsed.data.slug);
+      const category = await blogService.createCategory(
+        parsed.data.name,
+        parsed.data.slug,
+      );
       return respond(c, category, 201);
     } catch (err) {
       console.error("createCategory error:", err);

@@ -1,13 +1,3 @@
-export interface AuthorProfile {
-  id: string;
-  name: string | null;
-  avatar_url: string | null;
-  bio: string | null;
-  twitter: string | null;
-  linkedin: string | null;
-  github: string | null;
-}
-
 export interface Tag {
   id: string;
   name: string;
@@ -35,8 +25,8 @@ export interface Post {
   featured: boolean;
   views: number;
   status: "draft" | "published";
-  author_id: string;
-  author: AuthorProfile | null;
+  /** Plain text author name — no auth profile */
+  author: string;
   tags: Tag[];
   categories: Category[];
   published_at: string | null;
@@ -93,6 +83,7 @@ export async function fetchPosts(params: ListPostsParams = {}): Promise<PostsRes
   if (params.search) searchParams.set("search", params.search);
 
   const res = await fetch(`/api/blog/posts?${searchParams}`);
+  if (!res.ok) throw new Error(`Failed to fetch posts: ${res.status}`);
   return res.json();
 }
 

@@ -45,7 +45,10 @@ export const blogService = {
     return blogRepository.getPostById(post.id);
   },
 
-  async updatePost(id: string, input: UpdatePostInput): Promise<PostWithRelations | null> {
+  async updatePost(
+    id: string,
+    input: UpdatePostInput,
+  ): Promise<PostWithRelations | null> {
     const post = await blogRepository.updatePost(id, input);
     if (!post) return null;
     this.invalidatePostCache(post.slug);
@@ -62,11 +65,15 @@ export const blogService = {
     return result;
   },
 
-  async incrementViews(slug: string): Promise<void> {
-    const post = await blogRepository.getPostBySlug(slug);
-    if (post) {
-      await blogRepository.incrementViews(post.id);
-    }
+  /** Fire-and-forget — called after a public GET, no await needed */
+  incrementViews(slug: string): void {
+    blogRepository.getPostBySlug(slug).then((post) => {
+      if (post) {
+        blogRepository.incrementViews(post.id).catch(() => {
+          // Non-critical — swallow errors
+        });
+      }
+    });
   },
 
   async listTags(): Promise<Tag[]> {
@@ -105,5 +112,7 @@ export const blogService = {
     if (slug) {
       cache.del(`post:slug=${slug}`);
     }
+    // Bust all paginated list caches
+    cache.clear();
   },
 };
