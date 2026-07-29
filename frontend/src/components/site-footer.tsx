@@ -6,12 +6,20 @@ import privacyContent from "@/content/legal/Privacy_Policy.md?raw";
 import termsContent from "@/content/legal/Terms_of_Service.md?raw";
 import cookieContent from "@/content/legal/Cookie_Policy.md?raw";
 import noticesContent from "@/content/legal/Legal_Notices.md?raw";
+import responsibleDisclosureContent from "@/content/trust-center/Responsible_Disclosure_Policy.md?raw";
+import aiTransparencyContent from "@/content/trust-center/AI_Transparency_Policy.md?raw";
+import securityPolicyContent from "@/content/trust-center/Security_Policy.md?raw";
+import dataRetentionContent from "@/content/trust-center/Data_Retention_Policy.md?raw";
 
-const legalDocs: Record<string, { title: string; content: string }> = {
+const dialogContent: Record<string, { title: string; content: string }> = {
   "Privacy Policy": { title: "Privacy Policy", content: privacyContent },
   "Terms of Service": { title: "Terms of Service", content: termsContent },
   "Cookie Policy": { title: "Cookie Policy", content: cookieContent },
   "Legal Notices": { title: "Legal Notices", content: noticesContent },
+  "Responsible Disclosure Policy": { title: "Responsible Disclosure Policy", content: responsibleDisclosureContent },
+  "AI Transparency Policy": { title: "AI Transparency Policy", content: aiTransparencyContent },
+  "Security Policy": { title: "Security Policy", content: securityPolicyContent },
+  "Data Retention Policy": { title: "Data Retention Policy", content: dataRetentionContent },
 };
 
 const footerLinks = [
@@ -43,10 +51,19 @@ const footerLinks = [
       { label: "Legal Notices", href: "/legal-notices" },
     ],
   },
+  {
+    title: "TRUST CENTER",
+    links: [
+      { label: "Responsible Disclosure Policy", href: "/responsible-disclosure" },
+      { label: "AI Transparency Policy", href: "/ai-transparency" },
+      { label: "Security Policy", href: "/security" },
+      { label: "Data Retention Policy", href: "/data-retention" },
+    ],
+  },
 ];
 
 export function SiteFooter({ className = "" }: { className?: string }) {
-  const [legalDoc, setLegalDoc] = useState<string | null>(null);
+  const [dialogDoc, setDialogDoc] = useState<string | null>(null);
   return (
     <footer
       className={cn("font-body relative bg-[#13081f] px-6 font-normal text-[#efe8ff]", className)}
@@ -71,7 +88,7 @@ export function SiteFooter({ className = "" }: { className?: string }) {
 
         <div className="pointer-events-none mx-auto my-10 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
 
-        <div className="grid gap-10 border-b border-[#3d2959] py-12 md:grid-cols-[1.2fr_1fr_1fr_1fr] md:gap-8 md:py-14">
+        <div className="grid gap-10 border-b border-[#3d2959] py-12 md:grid-cols-[1.2fr_1fr_1fr_1fr_1fr] md:gap-8 md:py-14">
           <div className="max-w-[280px]">
             <img src={footerLogo} alt="CyberSec" className="h-auto w-60 object-contain" />
             <p className="mt-5 text-sm leading-relaxed font-normal text-[#bdb0cf]">
@@ -85,9 +102,9 @@ export function SiteFooter({ className = "" }: { className?: string }) {
               <ul className="mt-5 space-y-3">
                 {group.links.map((link) => (
                   <li key={link.label}>
-                    {group.title === "LEGAL" ? (
+                    {group.title === "LEGAL" || group.title === "TRUST CENTER" ? (
                       <button
-                        onClick={() => setLegalDoc(link.label)}
+                        onClick={() => setDialogDoc(link.label)}
                         className="text-sm font-normal text-[#c6bad5] transition hover:text-white"
                       >
                         {link.label}
@@ -138,10 +155,10 @@ export function SiteFooter({ className = "" }: { className?: string }) {
       </div>
 
       <LegalDialog
-        title={legalDoc ? legalDocs[legalDoc]?.title ?? "" : ""}
-        content={legalDoc ? legalDocs[legalDoc]?.content ?? "" : ""}
-        open={!!legalDoc}
-        onOpenChange={(open) => { if (!open) setLegalDoc(null); }}
+        title={dialogDoc ? dialogContent[dialogDoc]?.title ?? "" : ""}
+        content={dialogDoc ? dialogContent[dialogDoc]?.content ?? "" : ""}
+        open={!!dialogDoc}
+        onOpenChange={(open) => { if (!open) setDialogDoc(null); }}
       />
     </footer>
   );
