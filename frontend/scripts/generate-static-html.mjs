@@ -123,6 +123,42 @@ const staticRoutes = [
     desc: "Security insights, tutorials, and updates from the CyberSec team.",
     priority: 0.8,
   },
+  // ── Noindex routes (not added to sitemap) ────────────────
+  {
+    path: "/product",
+    title: "CyberSec Toolkit — Products",
+    desc: "Products and services offered by CyberSec Toolkit.",
+    priority: 0,
+    noindex: true,
+  },
+  {
+    path: "/dashboard",
+    title: "Dashboard",
+    desc: "Your CyberSec Toolkit dashboard.",
+    priority: 0,
+    noindex: true,
+  },
+  {
+    path: "/auth/login",
+    title: "Sign In",
+    desc: "Sign in to CyberSec Toolkit.",
+    priority: 0,
+    noindex: true,
+  },
+  {
+    path: "/auth/sso",
+    title: "SSO Login",
+    desc: "Single sign-on for CyberSec Toolkit.",
+    priority: 0,
+    noindex: true,
+  },
+  {
+    path: "/auth/callback",
+    title: "Authenticating…",
+    desc: "Completing authentication with CyberSec Toolkit.",
+    priority: 0,
+    noindex: true,
+  },
 ];
 
 for (const route of staticRoutes) {
@@ -131,6 +167,7 @@ for (const route of staticRoutes) {
     description: route.desc,
     path: route.path,
     isHome: route.isHome,
+    noindex: route.noindex,
   });
 
   const html = generateHTML(template, headTags);
@@ -214,10 +251,12 @@ for (const post of posts) {
 }
 
 // ── Sitemap ────────────────────────────────────────────────
-const sitemapUrls = staticRoutes.map((r) => ({
-  loc: r.path,
-  priority: r.priority,
-}));
+const sitemapUrls = staticRoutes
+  .filter((r) => !r.noindex)
+  .map((r) => ({
+    loc: r.path,
+    priority: r.priority,
+  }));
 
 for (const post of posts) {
   sitemapUrls.push({ loc: `/blog/${post.slug}`, priority: 0.7 });
