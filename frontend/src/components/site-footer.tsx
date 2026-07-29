@@ -2,6 +2,7 @@ import { useState } from "react";
 import footerLogo from "../../assets/logo.webp";
 import { cn } from "@/lib/utils";
 import { LegalDialog } from "@/components/legal-dialog";
+
 import privacyContent from "@/content/legal/Privacy_Policy.md?raw";
 import termsContent from "@/content/legal/Terms_of_Service.md?raw";
 import cookieContent from "@/content/legal/Cookie_Policy.md?raw";
@@ -38,6 +39,7 @@ const footerLinks = [
     links: [
       { label: "Blog", href: "/docs" },
       { label: "Tutorial", href: "/docs" },
+      { label: "Case Study", href: "https://www.behance.net/gallery/252963531/CyberSec-Toolkit-SaaS-Dashboard-UIUX-Case-Study" },
       { label: "Community", href: "/docs" },
       { label: "Support", href: "/support" },
     ],
@@ -64,6 +66,7 @@ const footerLinks = [
 
 export function SiteFooter({ className = "" }: { className?: string }) {
   const [dialogDoc, setDialogDoc] = useState<string | null>(null);
+
   return (
     <footer
       className={cn("font-body relative bg-[#13081f] px-6 font-normal text-[#efe8ff]", className)}
@@ -112,6 +115,8 @@ export function SiteFooter({ className = "" }: { className?: string }) {
                     ) : (
                       <a
                         href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
                         className="text-sm font-normal text-[#c6bad5] transition hover:text-white"
                       >
                         {link.label}
