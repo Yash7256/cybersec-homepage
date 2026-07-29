@@ -1,5 +1,18 @@
+import { useState } from "react";
 import footerLogo from "../../assets/logo.webp";
 import { cn } from "@/lib/utils";
+import { LegalDialog } from "@/components/legal-dialog";
+import privacyContent from "@/content/legal/Privacy_Policy.md?raw";
+import termsContent from "@/content/legal/Terms_of_Service.md?raw";
+import cookieContent from "@/content/legal/Cookie_Policy.md?raw";
+import noticesContent from "@/content/legal/Legal_Notices.md?raw";
+
+const legalDocs: Record<string, { title: string; content: string }> = {
+  "Privacy Policy": { title: "Privacy Policy", content: privacyContent },
+  "Terms of Service": { title: "Terms of Service", content: termsContent },
+  "Cookie Policy": { title: "Cookie Policy", content: cookieContent },
+  "Legal Notices": { title: "Legal Notices", content: noticesContent },
+};
 
 const footerLinks = [
   {
@@ -25,13 +38,15 @@ const footerLinks = [
     title: "LEGAL",
     links: [
       { label: "Privacy Policy", href: "/privacy" },
-      { label: "Terms Of Service", href: "/terms" },
-      { label: "Security", href: "/security" },
+      { label: "Terms of Service", href: "/terms" },
+      { label: "Cookie Policy", href: "/cookie-policy" },
+      { label: "Legal Notices", href: "/legal-notices" },
     ],
   },
 ];
 
 export function SiteFooter({ className = "" }: { className?: string }) {
+  const [legalDoc, setLegalDoc] = useState<string | null>(null);
   return (
     <footer
       className={cn("font-body relative bg-[#13081f] px-6 font-normal text-[#efe8ff]", className)}
@@ -70,12 +85,21 @@ export function SiteFooter({ className = "" }: { className?: string }) {
               <ul className="mt-5 space-y-3">
                 {group.links.map((link) => (
                   <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm font-normal text-[#c6bad5] transition hover:text-white"
-                    >
-                      {link.label}
-                    </a>
+                    {group.title === "LEGAL" ? (
+                      <button
+                        onClick={() => setLegalDoc(link.label)}
+                        className="text-sm font-normal text-[#c6bad5] transition hover:text-white"
+                      >
+                        {link.label}
+                      </button>
+                    ) : (
+                      <a
+                        href={link.href}
+                        className="text-sm font-normal text-[#c6bad5] transition hover:text-white"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -112,6 +136,13 @@ export function SiteFooter({ className = "" }: { className?: string }) {
           </p>
         </div>
       </div>
+
+      <LegalDialog
+        title={legalDoc ? legalDocs[legalDoc]?.title ?? "" : ""}
+        content={legalDoc ? legalDocs[legalDoc]?.content ?? "" : ""}
+        open={!!legalDoc}
+        onOpenChange={(open) => { if (!open) setLegalDoc(null); }}
+      />
     </footer>
   );
 }
