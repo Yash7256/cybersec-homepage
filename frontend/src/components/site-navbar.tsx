@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
+import { motion } from "motion/react";
 import navbarLogo from "../../assets/logo.webp";
 
 function Logo({ className = "" }: { className?: string }) {
   return <img src={navbarLogo} alt="CyberSec" className={`h-auto object-contain ${className}`} />;
 }
+
+const MotionLink = motion.create(Link);
 
 export function SiteNavbar({ small = false }: { small?: boolean }) {
   const location = useLocation();
@@ -21,6 +24,7 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
   );
   const [indicatorIndex, setIndicatorIndex] = useState(activeIndex);
   const [isVisible, setIsVisible] = useState(true);
+  const [scrolled, setScrolled] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
@@ -37,6 +41,7 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
         setIsVisible(true);
       }
 
+      setScrolled(currentScrollY > 20);
       setLastScrollY(currentScrollY);
     };
 
@@ -45,10 +50,10 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
   }, [lastScrollY]);
 
   return (
-    <div
-      className={`fixed left-0 right-0 top-0 z-50 transition-transform duration-300 ${
-        isVisible ? "translate-y-0" : "-translate-y-full"
-      }`}
+    <motion.div
+      className="fixed left-0 right-0 top-0 z-50"
+      animate={{ y: isVisible ? 0 : "-100%" }}
+      transition={{ type: "spring", stiffness: 400, damping: 40 }}
     >
       <div
         className={`grid grid-cols-[1fr_auto_1fr] items-center ${small ? "px-6 pt-4 pb-4" : "px-8 pt-5 pb-5"}`}
@@ -58,14 +63,11 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
             <Logo className={small ? "w-52" : "w-60"} />
           </a>
         </div>
-        <nav className="relative grid grid-cols-5 items-center justify-self-center overflow-hidden rounded-full border border-white/12 bg-[#7d61aa]/58 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-md">
-          <div
-            className="absolute top-1.5 bottom-1.5 left-1.5 rounded-full border border-white/20 bg-[#000000] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-            style={{
-              width: "calc((100% - 12px) / 5)",
-              transform: `translateX(${indicatorIndex * 100}%)`,
-            }}
-          />
+        <nav
+          className={`relative grid grid-cols-5 items-center justify-self-center overflow-hidden rounded-full border border-white/12 p-1.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.14)] backdrop-blur-md transition-colors duration-300 ${
+            scrolled ? "bg-[#7d61aa]/80" : "bg-[#7d61aa]/58"
+          }`}
+        >
           {navItems.map((item, index) =>
             item.label === "Product" ? (
               <a
@@ -79,6 +81,12 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
                     : "text-[#ded5ed] hover:bg-white/8 hover:text-white"
                 }`}
               >
+                {indicatorIndex === index ? (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute inset-0 -z-10 rounded-full border border-white/20 bg-[#000000]"
+                  />
+                ) : null}
                 {item.label}
               </a>
             ) : (
@@ -91,26 +99,36 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
                     : "text-[#ded5ed] hover:bg-white/8 hover:text-white"
                 }`}
               >
+                {indicatorIndex === index ? (
+                  <motion.div
+                    layoutId="nav-indicator"
+                    className="absolute inset-0 -z-10 rounded-full border border-white/20 bg-[#000000]"
+                  />
+                ) : null}
                 {item.label}
               </Link>
             ),
           )}
         </nav>
-<div className="flex items-center justify-end gap-3 pr-[28px]">
-          <Link
+        <div className="flex items-center justify-end gap-3 pr-[28px]">
+          <MotionLink
             to="/auth/login"
             className="font-body flex h-10 min-w-[110px] items-center justify-center rounded-full border border-white/70 bg-black/70 px-5 text-sm font-normal text-[#e8e3ec] transition hover:border-white hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
           >
             Sign Up
-          </Link>
-          <Link
+          </MotionLink>
+          <MotionLink
             to="/auth/login"
-            className="font-body flex h-10 min-w-[120px] items-center justify-center rounded-full border border-white/45 bg-gradient-to-b from-[#f4efff] to-[#b7b1bd] px-5 text-sm font-normal text-[#151019] shadow-[inset_0_1px_0_rgba(255,255,255,0.78)] transition hover:scale-[1.02] hover:from-white hover:to-[#cbc5d1] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            className="font-body flex h-10 min-w-[120px] items-center justify-center rounded-full border border-white/45 bg-gradient-to-b from-[#f4efff] to-[#b7b1bd] px-5 text-sm font-normal text-[#151019] shadow-[inset_0_1px_0_rgba(255,255,255,0.78)] transition hover:from-white hover:to-[#cbc5d1] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
           >
             Log In
-          </Link>
+          </MotionLink>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

@@ -1,6 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 import { createFileRoute, useLocation } from "@tanstack/react-router";
+import { motion } from "motion/react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { seoMeta, seoLinks } from "@/lib/seo";
 import {
   Crosshair,
@@ -392,7 +395,10 @@ function FeatureCard({
   image?: string;
 }) {
   return (
-    <div className="flex min-h-[138px] items-center gap-4 rounded-[20px] border border-[#5f4a82] bg-[#25193E] px-12 py-14 shadow-[0_22px_70px_rgba(0,0,0,0.24)] md:gap-5">
+    <div
+      data-feature-card
+      className="flex min-h-[138px] items-center gap-4 rounded-[20px] border border-[#5f4a82] bg-[#25193E] px-12 py-14 shadow-[0_22px_70px_rgba(0,0,0,0.24)] md:gap-5"
+    >
       {image ? (
         <img
           src={image}
@@ -424,7 +430,7 @@ function Step({
   Icon: typeof Crosshair;
 }) {
   return (
-    <div className="relative flex flex-col items-center text-center">
+    <div data-step className="relative flex flex-col items-center text-center">
       <div
         className="font-heading select-none text-[116px] font-black leading-none text-[#7f6aa5]/35 md:text-[140px]"
         style={{
@@ -446,6 +452,98 @@ function Step({
 }
 
 function Index() {
+  const previewRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      const reveal = (target: Element, start = "top 85%") => {
+        gsap.set(target, { opacity: 0, y: 30 });
+        gsap.to(target, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: target,
+            start,
+            toggleActions: "play none none none",
+          },
+        });
+      };
+
+      reveal(headingRef.current!);
+      reveal(sectionRef.current!.querySelector("h2")!);
+
+      const cards = gridRef.current!.querySelectorAll("[data-feature-card]");
+      gsap.set(cards, { opacity: 0, y: 40 });
+      ScrollTrigger.batch(cards, {
+        start: "top 85%",
+        once: true,
+        onEnter: (batch) =>
+          gsap.to(batch, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power2.out",
+            stagger: 0.12,
+            overwrite: true,
+          }),
+      });
+
+      const steps = stepsRef.current!.querySelectorAll("[data-step]");
+      const arrows = stepsRef.current!.querySelectorAll("[data-step-arrow]");
+      gsap.set(steps, { opacity: 0, y: 40 });
+      gsap.set(arrows, { opacity: 0, x: -10 });
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: stepsRef.current,
+            start: "top 75%",
+            toggleActions: "play none none none",
+          },
+          defaults: { duration: 0.6, ease: "power2.out" },
+        })
+        .to(steps[0], { opacity: 1, y: 0 })
+        .to(arrows[0], { opacity: 1, x: 0 }, "-=0.45")
+        .to(steps[1], { opacity: 1, y: 0 }, "-=0.45")
+        .to(arrows[1], { opacity: 1, x: 0 }, "-=0.45")
+        .to(steps[2], { opacity: 1, y: 0 }, "-=0.45");
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        previewRef.current,
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: previewRef.current,
+            start: "top 80%",
+            toggleActions: "play none none none",
+          },
+        },
+      );
+    }, previewRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="min-h-screen overflow-hidden bg-background text-foreground">
       <style>{`
@@ -509,35 +607,41 @@ function Index() {
           <div className="mt-5 flex items-center justify-center gap-5">
             <div className="scan-cta-glow relative inline-block rounded-full">
               <div className="scan-cta-gradient relative z-10 inline-block overflow-hidden rounded-full p-[1.5px]">
-                <a
+                <motion.a
                   href="https://cybersec1.tech"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="relative z-10 cursor-pointer rounded-full px-10 py-4 text-base font-medium text-[#efe9f8] transition-all duration-200 hover:scale-[1.03] hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+                  className="relative z-10 cursor-pointer rounded-full px-10 py-4 text-base font-medium text-[#efe9f8] transition-all duration-200 hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
                   style={{
                     borderRadius: "40px",
                     border: "none",
                     background: "#0a0810",
                   }}
+                  whileHover={{ scale: 1.04 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
                   Start Scanning
-                </a>
+                </motion.a>
               </div>
             </div>
-            <button
-              className="flex cursor-pointer items-center justify-center gap-2 px-10 py-4 text-base font-medium text-background transition-all duration-200 hover:scale-[1.03] hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
+            <motion.button
+              className="flex cursor-pointer items-center justify-center gap-2 px-10 py-4 text-base font-medium text-background transition-all duration-200 hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
               style={{
                 borderRadius: "40px",
                 border: "1px solid #FFF",
                 background: "linear-gradient(180deg, #EFE8FF 0%, #999 125.6%)",
               }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <img src={playIcon} alt="" className="h-7 w-7" /> Watch It Work
-            </button>
+            </motion.button>
           </div>
         </div>
 
-        <div className="relative z-10 mt-0">
+        <div ref={previewRef} className="relative z-10 mt-0">
           <img
             src={previewVector}
             alt=""
@@ -565,7 +669,10 @@ function Index() {
 
         <div className="post-strip-background relative z-10">
           <div className="mx-auto max-w-[700px] pt-[160px] pb-[80px] text-center">
-            <h2 className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]">
+            <h2
+              ref={headingRef}
+              className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]"
+            >
               Everything You Need,
               <br />
               <span className="bg-gradient-to-br from-primary to-white bg-clip-text text-transparent">
@@ -582,10 +689,13 @@ function Index() {
       </section>
 
       {/* Features + How it works */}
-      <section className="post-strip-background relative overflow-hidden px-6 pt-[20px] pb-[140px]">
+      <section
+        ref={sectionRef}
+        className="post-strip-background relative overflow-hidden px-6 pt-[20px] pb-[140px]"
+      >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_62%,rgba(168,85,247,0.18),transparent_30%)]" />
         <div className="relative mx-auto max-w-[1100px]">
-          <div className="grid gap-[16px] md:grid-cols-2">
+          <div ref={gridRef} className="grid gap-[16px] md:grid-cols-2">
             <FeatureCard
               image={ptIcon}
               title="Port Scanner"
@@ -614,21 +724,24 @@ function Index() {
             </h2>
           </div>
 
-          <div className="mt-[48px] grid grid-cols-1 items-start gap-[48px] md:grid-cols-[1fr_auto_1fr_auto_1fr] md:gap-[48px]">
+          <div
+            ref={stepsRef}
+            className="mt-[48px] grid grid-cols-1 items-start gap-[48px] md:grid-cols-[1fr_auto_1fr_auto_1fr] md:gap-[48px]"
+          >
             <Step
               num="01"
               title="Add Target"
               desc="Enter your target URL or IP address"
               Icon={Crosshair}
             />
-            <ArrowRight className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block" />
+            <ArrowRight data-step-arrow className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block" />
             <Step
               num="02"
               title="Choose Scans"
               desc="Select the scan you want to run."
               Icon={ListChecks}
             />
-            <ArrowRight className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block" />
+            <ArrowRight data-step-arrow className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block" />
             <Step
               num="03"
               title="Get Results"

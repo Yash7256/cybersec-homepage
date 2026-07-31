@@ -4,6 +4,7 @@ import {
   createRootRouteWithContext,
 } from "@tanstack/react-router";
 import { NotFoundPage } from "@/components/not-found-page";
+import { SmoothScrollProvider } from "@/lib/smooth-scroll";
 
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
@@ -49,7 +50,9 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <SmoothScrollProvider>
+        <Outlet />
+      </SmoothScrollProvider>
     </QueryClientProvider>
   );
 }
