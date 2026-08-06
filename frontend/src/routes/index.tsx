@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, RefObject } from "react";
 import { createFileRoute, useLocation } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { gsap } from "gsap";
@@ -451,7 +451,73 @@ function Step({
   );
 }
 
+const VIDEO_ASPECT_RATIO = 3838 / 2160;
+const VIDEO_URL = "https://res.cloudinary.com/deobpkggn/video/upload/main_zbelan.mp4";
+
+function VideoModal({
+  open,
+  videoRef,
+  onClose,
+}: {
+  open: boolean;
+  videoRef: RefObject<HTMLVideoElement | null>;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    if (!open) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", handleKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", handleKey);
+      document.body.style.overflow = "";
+    };
+  }, [open, onClose]);
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-opacity duration-200 ${
+        open ? "bg-black/80 opacity-100 backdrop-blur-sm" : "pointer-events-none opacity-0"
+      }`}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Product demo video"
+      aria-hidden={!open}
+      inert={!open}
+    >
+      <div
+        className="relative w-full"
+        style={{ maxWidth: "min(90vw, calc((85vh * 3838) / 2160))", aspectRatio: `${VIDEO_ASPECT_RATIO}` }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          onClick={onClose}
+          aria-label="Close video"
+          className="absolute -top-11 right-0 flex cursor-pointer items-center justify-center rounded-full bg-white/10 p-2 text-white transition-colors hover:bg-white/20"
+        >
+          <X className="h-5 w-5" />
+        </button>
+        <video
+          ref={videoRef}
+          src={VIDEO_URL}
+          preload="auto"
+          playsInline
+          controls={false}
+          controlsList="nodownload noremoteplayback noplaybackrate"
+          disablePictureInPicture
+          className="h-full w-full"
+        />
+      </div>
+    </div>
+  );
+}
+
 function Index() {
+  const [videoOpen, setVideoOpen] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -626,6 +692,10 @@ function Index() {
               </div>
             </div>
             <motion.button
+              onClick={() => {
+                setVideoOpen(true);
+                void videoRef.current?.play();
+              }}
               className="flex cursor-pointer items-center justify-center gap-2 px-10 py-4 text-base font-medium text-background transition-all duration-200 hover:text-primary-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
               style={{
                 borderRadius: "40px",
@@ -752,6 +822,14 @@ function Index() {
         </div>
       </section>
       <SiteFooter />
+      <VideoModal
+        open={videoOpen}
+        videoRef={videoRef}
+        onClose={() => {
+          videoRef.current?.pause();
+          setVideoOpen(false);
+        }}
+      />
     </div>
   );
 }
