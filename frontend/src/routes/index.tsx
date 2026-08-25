@@ -36,6 +36,7 @@ import srIcon from "../../assets/sr.webp";
 import allIcon from "../../assets/all.webp";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
+import { ProductCapabilities } from "@/components/product-capabilities";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -721,8 +722,13 @@ function Index() {
           <HeroPreview />
         </div>
 
+        {/* Product / Capabilities */}
+        <div className="relative z-10 mt-[80px]">
+          <ProductCapabilities />
+        </div>
+
         {/* Marquee */}
-        <div className="relative z-10 mt-[96px] overflow-hidden border-y border-border/40 bg-[#000000] py-3">
+        <div className="relative z-10 overflow-hidden border-y border-border/40 bg-[#000000] py-3">
           <div
             className="flex w-max gap-16 whitespace-nowrap text-xs text-[#ffffff]"
             style={{ "--gap": "4rem", animation: "marquee 60s linear infinite" } as CSSProperties}
