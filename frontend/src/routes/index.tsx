@@ -37,6 +37,8 @@ import allIcon from "../../assets/all.webp";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import { ProductCapabilities } from "@/components/product-capabilities";
+import { UseCasesSection } from "@/components/use-cases-section";
+
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -727,8 +729,13 @@ function Index() {
           <ProductCapabilities />
         </div>
 
-        {/* Marquee */}
-        <div className="relative z-10 overflow-hidden border-y border-border/40 bg-[#000000] py-3">
+      </section>
+
+      {/* Use Cases — outside overflow-hidden hero section */}
+      <UseCasesSection />
+
+      {/* Marquee */}
+      <div className="relative z-10 overflow-hidden border-y border-border/40 bg-[#000000] py-3">
           <div
             className="flex w-max gap-16 whitespace-nowrap text-xs text-[#ffffff]"
             style={{ "--gap": "4rem", animation: "marquee 60s linear infinite" } as CSSProperties}
@@ -743,7 +750,7 @@ function Index() {
           </div>
         </div>
 
-        <div className="post-strip-background relative z-10">
+      <div className="post-strip-background relative z-10">
           <div className="mx-auto max-w-[700px] pt-[160px] pb-[80px] text-center">
             <h2
               ref={headingRef}
@@ -762,7 +769,6 @@ function Index() {
             </p>
           </div>
         </div>
-      </section>
 
       {/* Features + How it works */}
       <section
