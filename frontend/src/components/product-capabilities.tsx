@@ -376,7 +376,7 @@ export function ProductCapabilities() {
 
           <h2
             ref={headingRef}
-            className="font-heading text-[clamp(2rem,4.5vw,3.25rem)] leading-[1.1] font-semibold tracking-tight text-foreground"
+            className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[64px]"
           >
             Built for security.
             <br />

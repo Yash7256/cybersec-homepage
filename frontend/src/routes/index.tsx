@@ -38,6 +38,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import { ProductCapabilities } from "@/components/product-capabilities";
 import { UseCasesSection } from "@/components/use-cases-section";
+import { WorkflowSection } from "@/components/workflow-section";
+import { SocialProof } from "@/components/social-proof";
+import { PricingTeaser } from "@/components/pricing-teaser";
+import { FounderNote } from "@/components/founder-note";
 
 
 export const Route = createFileRoute("/")({
@@ -522,72 +526,6 @@ function Index() {
   const [videoOpen, setVideoOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const stepsRef = useRef<HTMLDivElement>(null);
-
-  useLayoutEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    const ctx = gsap.context(() => {
-      const reveal = (target: Element, start = "top 85%") => {
-        gsap.set(target, { opacity: 0, y: 30 });
-        gsap.to(target, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: target,
-            start,
-            toggleActions: "play none none none",
-          },
-        });
-      };
-
-      reveal(headingRef.current!);
-      reveal(sectionRef.current!.querySelector("h2")!);
-
-      const cards = gridRef.current!.querySelectorAll("[data-feature-card]");
-      gsap.set(cards, { opacity: 0, y: 40 });
-      ScrollTrigger.batch(cards, {
-        start: "top 85%",
-        once: true,
-        onEnter: (batch) =>
-          gsap.to(batch, {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: "power2.out",
-            stagger: 0.12,
-            overwrite: true,
-          }),
-      });
-
-      const steps = stepsRef.current!.querySelectorAll("[data-step]");
-      const arrows = stepsRef.current!.querySelectorAll("[data-step-arrow]");
-      gsap.set(steps, { opacity: 0, y: 40 });
-      gsap.set(arrows, { opacity: 0, x: -10 });
-
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: stepsRef.current,
-            start: "top 75%",
-            toggleActions: "play none none none",
-          },
-          defaults: { duration: 0.6, ease: "power2.out" },
-        })
-        .to(steps[0], { opacity: 1, y: 0 })
-        .to(arrows[0], { opacity: 1, x: 0 }, "-=0.45")
-        .to(steps[1], { opacity: 1, y: 0 }, "-=0.45")
-        .to(arrows[1], { opacity: 1, x: 0 }, "-=0.45")
-        .to(steps[2], { opacity: 1, y: 0 }, "-=0.45");
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -724,8 +662,57 @@ function Index() {
           <HeroPreview />
         </div>
 
+        {/* Tool strip — "Powered by" row beneath the dashboard */}
+        <div className="relative z-10 mt-12 px-6">
+          <div className="mx-auto max-w-[860px] text-center">
+            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/45 mb-5">
+              Everything you need, in one scan
+            </p>
+            {/* Row 1 */}
+            <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2">
+              {[
+                { label: "Unified Scan",          dot: true  },
+                { label: "Port Scanner",           dot: true  },
+                { label: "Subdomain Enumeration",  dot: true  },
+                { label: "DNS Lookup",             dot: true  },
+                { label: "WHOIS",                  dot: true  },
+                { label: "GeoIP",                  dot: false },
+              ].map(({ label, dot }) => (
+                <span key={label} className="flex items-center gap-1">
+                  <span className="rounded-full border border-border/45 bg-black/40 px-4 py-1.5 font-body text-[12px] text-foreground/55 transition-colors duration-200 hover:border-primary/40 hover:text-foreground/80">
+                    {label}
+                  </span>
+                  {dot && (
+                    <span className="mx-1 h-1 w-1 shrink-0 rounded-full bg-border/50" />
+                  )}
+                </span>
+              ))}
+            </div>
+            {/* Row 2 */}
+            <div className="mt-2 flex flex-wrap items-center justify-center gap-x-1 gap-y-2">
+              {[
+                { label: "SSL Check",             dot: true  },
+                { label: "HTTP Headers",          dot: true  },
+                { label: "Ping",                  dot: true  },
+                { label: "Traceroute",            dot: true  },
+                { label: "Vulnerability Scanner", dot: true  },
+                { label: "AI Executive Report",   dot: false },
+              ].map(({ label, dot }) => (
+                <span key={label} className="flex items-center gap-1">
+                  <span className="rounded-full border border-border/45 bg-black/40 px-4 py-1.5 font-body text-[12px] text-foreground/55 transition-colors duration-200 hover:border-primary/40 hover:text-foreground/80">
+                    {label}
+                  </span>
+                  {dot && (
+                    <span className="mx-1 h-1 w-1 shrink-0 rounded-full bg-border/50" />
+                  )}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
         {/* Product / Capabilities */}
-        <div className="relative z-10 mt-[80px]">
+        <div className="relative z-10 mt-12">
           <ProductCapabilities />
         </div>
 
@@ -733,6 +720,18 @@ function Index() {
 
       {/* Use Cases — outside overflow-hidden hero section */}
       <UseCasesSection />
+
+      {/* Workflow — 12 tools · 1 answer */}
+      <WorkflowSection />
+
+      {/* Social Proof — community feedback bento */}
+      <SocialProof />
+
+      {/* Pricing Teaser */}
+      <PricingTeaser />
+
+      {/* Founder's Note */}
+      <FounderNote />
 
       {/* Marquee */}
       <div className="relative z-10 overflow-hidden border-y border-border/40 bg-[#000000] py-3">
@@ -750,89 +749,7 @@ function Index() {
           </div>
         </div>
 
-      <div className="post-strip-background relative z-10">
-          <div className="mx-auto max-w-[700px] pt-[160px] pb-[80px] text-center">
-            <h2
-              ref={headingRef}
-              className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]"
-            >
-              Everything You Need,
-              <br />
-              <span className="bg-gradient-to-br from-primary to-white bg-clip-text text-transparent">
-                In One Place
-              </span>
-            </h2>
-            <p className="mt-4 text-[16px] text-[#ffffff] font-body">
-              Powerful tools to find vulnerabilities, save time and
-              <br />
-              secure what matters
-            </p>
-          </div>
-        </div>
-
-      {/* Features + How it works */}
-      <section
-        ref={sectionRef}
-        className="post-strip-background relative overflow-hidden px-6 pt-[20px] pb-[140px]"
-      >
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_62%,rgba(168,85,247,0.18),transparent_30%)]" />
-        <div className="relative mx-auto max-w-[1100px]">
-          <div ref={gridRef} className="grid gap-[16px] md:grid-cols-2">
-            <FeatureCard
-              image={ptIcon}
-              title="Port Scanner"
-              desc="Discover open ports and services with fast, accurate scanning."
-            />
-            <FeatureCard
-              image={vsIcon}
-              title="Vulnerability Scanner"
-              desc="Detect security flaws in web apps and known vulnerabilities."
-            />
-            <FeatureCard
-              image={srIcon}
-              title="Smart Report"
-              desc="Get detailed, easy to understand reports with risk ratings."
-            />
-            <FeatureCard
-              image={allIcon}
-              title="All-in-one Dashboard"
-              desc="Run multiple scans, track results and manage everything in one place."
-            />
-          </div>
-
-          <div className="mt-[64px] flex justify-center">
-<h2 className="rounded-full bg-black px-7 py-2 text-sm text-[#d7d0df] shadow-[0_0_42px_rgba(168,85,247,0.72)]">
-              How it works
-            </h2>
-          </div>
-
-          <div
-            ref={stepsRef}
-            className="mt-[48px] grid grid-cols-1 items-start gap-[48px] md:grid-cols-[1fr_auto_1fr_auto_1fr] md:gap-[48px]"
-          >
-            <Step
-              num="01"
-              title="Add Target"
-              desc="Enter your target URL or IP address"
-              Icon={Crosshair}
-            />
-            <ArrowRight data-step-arrow className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block" />
-            <Step
-              num="02"
-              title="Choose Scans"
-              desc="Select the scan you want to run."
-              Icon={ListChecks}
-            />
-            <ArrowRight data-step-arrow className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block" />
-            <Step
-              num="03"
-              title="Get Results"
-              desc="View results instantly & export results."
-              Icon={CheckCheck}
-            />
-          </div>
-        </div>
-      </section>
+      {/* Features + How it works — removed */}
       <SiteFooter />
       <VideoModal
         open={videoOpen}
