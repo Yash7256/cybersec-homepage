@@ -9,26 +9,13 @@
  * cross-fades the next one in using GSAP. No scroll-pinning required.
  */
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { BentoFeatures } from "@/components/bento-features";
+import { ShieldAlert, AlertTriangle, Globe, CheckCircle2, Crosshair, Network, Search, FileText, Zap, Server, TrendingUp, Lock } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
-import {
-  AlertTriangle,
-  CheckCircle2,
-  Crosshair,
-  FileText,
-  Globe,
-  Lock,
-  Network,
-  Search,
-  Server,
-  ShieldAlert,
-  TrendingUp,
-  Zap,
-  ArrowRight,
-} from "lucide-react";
 
 /* ─── Persona data ───────────────────────────────────────────────────────── */
 
@@ -326,6 +313,240 @@ const dashboards: Record<PersonaId, React.FC> = {
 
 /* ─── Section ────────────────────────────────────────────────────────────── */
 
+/* ─── BentoMini — scaled-down bento grid for the right panel ────────────── */
+/*
+ * Same structural layout as BentoFeatures but:
+ *   - No Lottie (too heavy for a pinned sidebar)
+ *   - Fills 100% height of its container
+ *   - Mini illustrations only
+ *   - Columns: [1fr 2.12fr 1fr], rows fill available space via flex
+ */
+
+const MINI_CARD: React.CSSProperties = {
+  background: "#1d1d3b",
+  border: "1px solid rgba(255,255,255,0.05)",
+  borderRadius: "16px",
+  position: "relative",
+  overflow: "hidden",
+};
+const MINI_BG = "#03061c";
+
+function MiniAccent() {
+  return (
+    <div className="pointer-events-none absolute inset-x-0 top-0 h-px"
+      style={{ background: "linear-gradient(90deg,transparent,oklch(0.7 0.18 295/0.3),transparent)" }} />
+  );
+}
+
+function MiniScanBars() {
+  return (
+    <div className="mt-auto flex flex-col gap-1 pt-3">
+      {[100,72,91,52,84,38].map((w,i) => (
+        <div key={i} className="h-1 rounded-full" style={{
+          width:`${w}%`,
+          background: i%3===0?"oklch(0.7 0.18 295/0.5)":i%3===1?"oklch(0.85 0.25 145/0.35)":"oklch(0.42 0.04 285/0.3)",
+        }} />
+      ))}
+    </div>
+  );
+}
+
+function MiniRiskBars() {
+  return (
+    <div className="mt-auto flex items-end gap-0.5 pt-3" style={{height:36}}>
+      {[40,65,45,80,55,90,70,50,85,60].map((h,i) => (
+        <div key={i} className="flex-1 rounded-sm" style={{
+          height:`${h*0.36}px`,
+          background: h>75?"oklch(0.65 0.22 25/0.7)":h>55?"oklch(0.7 0.18 295/0.5)":"oklch(0.42 0.04 285/0.3)",
+        }} />
+      ))}
+    </div>
+  );
+}
+
+function MiniNetworkSVG() {
+  const nodes:[[number,number,number],...[number,number,number][]] = [[50,50,4],[14,20,2.5],[86,20,2.5],[14,80,2.5],[86,80,2.5]];
+  return (
+    <svg className="mt-auto w-full" height="52" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+      {nodes.slice(1).map(([cx,cy],i)=>(
+        <line key={i} x1={50} y1={50} x2={cx} y2={cy} stroke="oklch(0.7 0.18 295/0.35)" strokeWidth="1"/>
+      ))}
+      {nodes.map(([cx,cy,r],i)=>(
+        <circle key={i} cx={cx} cy={cy} r={r} fill="oklch(0.7 0.18 295)" opacity={i===0?1:0.6}/>
+      ))}
+    </svg>
+  );
+}
+
+function MiniLabel({n,t}:{n:string;t:string}) {
+  return <p className="mb-1.5 font-mono text-[7px] uppercase tracking-[0.15em] text-muted-foreground/40">{n}·{t}</p>;
+}
+
+function BentoMini() {
+  /*
+   * Fixed pixel heights scaled from Figma (1200×900) to fit ~560px total:
+   * Scale factor: 560 / (396+28+412) ≈ 0.666
+   *
+   * Row 1 (top): 396 * 0.666 ≈ 264px
+   * Row 2 (bot): 412 * 0.666 ≈ 274px
+   * Gap: 28 * 0.666 ≈ 18px (use 18px)
+   *
+   * Col 1 cards: A=264px, E=183px, F=73px  (219+165=384 * 0.666 ≈ 274, gap included)
+   *   Actually E=182px, F=74px, gap=18px  → 182+18+74=274 ✓
+   * Col 3 cards: C=104px, D=140px, H=274px → 104+18+140+18+274 = wait, only 2 gaps
+   *   C=104, gap=18, D=122, gap=18, H=286 → 104+18+122+18=262... adjust
+   *   Let's keep it simple: C=96, D=130, H=274 with gap=18 → 96+18+130+18+274=536 close enough
+   *
+   * Total height: 264 + 18 + 274 = 556 ≈ 560
+   */
+
+  const GAP      = 20;
+  const ROW1     = 340;
+  const ROW2     = 340;
+  const TOTAL    = ROW1 + GAP + ROW2;
+
+  /* Col 1 sub-heights */
+  const A_H      = ROW1;
+  const E_H      = 208;
+  const F_H      = ROW2 - E_H - GAP;
+
+  /* Col 3 sub-heights */
+  const C_H      = 113;
+  const D_H      = 154;
+  const H_H      = ROW1 + ROW2 + GAP - C_H - D_H - GAP * 2;
+
+  /* Circle size */
+  const CIR      = 100;
+
+  const mc = MINI_CARD;
+  return (
+    <div className="relative w-full" style={{ height: TOTAL }}>
+
+      {/* ── Circle overlay at row gap centre, col2 horizontal midpoint ── */}
+      <div className="pointer-events-none absolute z-20" style={{
+        width: CIR, height: CIR, borderRadius: "50%",
+        /* left: col1(~23.7%) + gap + col2_half(~23.7%) — 44px (half circle) */
+        left: `calc(23.7% + ${GAP}px + 23.7% - ${CIR / 2}px)`,
+        top: ROW1 - CIR / 2,
+        background: MINI_BG,
+        border: `3px solid ${MINI_BG}`,
+        boxShadow: `0 0 0 2.5px #1d1d3b, 0 0 0 5px oklch(0.7 0.18 295/0.2)`,
+      }} />
+
+      {/* ── 3-column grid ── */}
+      <div className="grid h-full" style={{ gridTemplateColumns: "1fr 2.12fr 1fr", gap: GAP, alignItems: "start" }}>
+
+        {/* Col 1: A → E → F */}
+        <div className="flex flex-col" style={{ gap: GAP }}>
+          {/* A */}
+          <div className="group flex flex-col" style={{ ...mc, height: A_H }}>
+            <MiniAccent />
+            <div className="p-3 pb-0 shrink-0">
+              <MiniLabel n="01" t="Infra" />
+              <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">Security Infrastructure</p>
+            </div>
+            <div className="mx-2 mb-2 mt-3 flex-1 overflow-hidden rounded-lg"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.25)", background: "oklch(0.1 0.03 285/0.5)" }}>
+              <div className="flex h-full flex-col justify-end gap-1 p-2">
+                {[100,72,91,52,84,38].map((w,i)=>(
+                  <div key={i} className="h-1 rounded-full" style={{ width:`${w}%`, background: i%3===0?"oklch(0.7 0.18 295/0.5)":i%3===1?"oklch(0.85 0.25 145/0.35)":"oklch(0.42 0.04 285/0.3)" }} />
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* E */}
+          <div className="group flex flex-col p-3" style={{ ...mc, height: E_H }}>
+            <MiniAccent />
+            <MiniLabel n="05" t="Agents" />
+            <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">AI Agents</p>
+            <MiniNetworkSVG />
+          </div>
+          {/* F */}
+          <div className="group flex flex-col p-3" style={{ ...mc, height: F_H }}>
+            <MiniAccent />
+            <MiniLabel n="06" t="Scan" />
+            <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">12 Tools</p>
+          </div>
+        </div>
+
+        {/* Col 2: B → G */}
+        <div className="flex flex-col" style={{ gap: GAP }}>
+          {/* B */}
+          <div className="group flex flex-col" style={{ ...mc, height: ROW1 }}>
+            <MiniAccent />
+            <div className="p-3 pb-0 shrink-0">
+              <MiniLabel n="02" t="AI Engine" />
+              <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">AI-Driven Analysis</p>
+              <p className="font-body mt-1 text-[9px] leading-relaxed text-muted-foreground/60">Cross-references results and surfaces narratives.</p>
+            </div>
+            <div className="mx-2 mb-2 mt-3 flex-1 overflow-hidden rounded-lg"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.25)", background: "oklch(0.1 0.03 285/0.5)" }}>
+              <div className="flex h-full flex-col gap-1 p-2">
+                {[["DISCOVER","oklch(0.7 0.18 295/0.7)"],["PROBE","oklch(0.7 0.18 295/0.5)"],["ASSESS","oklch(0.7 0.18 295/0.35)"],["REPORT","oklch(0.7 0.18 295/0.22)"]].map(([label,color])=>(
+                  <div key={label} className="flex items-center gap-1.5">
+                    <div className="h-1 w-1 rounded-full shrink-0" style={{background:color}}/>
+                    <span className="font-mono text-[7px] uppercase tracking-widest" style={{color}}>{label}</span>
+                    <div className="ml-auto h-px rounded-full" style={{background:color,width:36,opacity:0.4}}/>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          {/* G */}
+          <div className="group flex flex-col p-3" style={{ ...mc, height: ROW2 }}>
+            <MiniAccent />
+            <div className="pt-7">
+              <MiniLabel n="07" t="Speed" />
+              <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">High-Speed Intel</p>
+            </div>
+            <MiniRiskBars />
+            <div className="pb-1" />
+          </div>
+        </div>
+
+        {/* Col 3: C → D → H */}
+        <div className="flex flex-col" style={{ gap: GAP }}>
+          {/* C */}
+          <div className="group flex flex-col p-3" style={{ ...mc, height: C_H }}>
+            <MiniAccent />
+            <MiniLabel n="03" t="CVE" />
+            <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">CVE Correlation</p>
+            <div className="mt-auto flex gap-1 pt-1">
+              {["T1190","CVE"].map(t=>(
+                <span key={t} className="rounded border border-primary/20 bg-primary/5 px-1 py-0.5 font-mono text-[7px] text-primary/50">{t}</span>
+              ))}
+            </div>
+          </div>
+          {/* D */}
+          <div className="group flex flex-col p-3" style={{ ...mc, height: D_H }}>
+            <MiniAccent />
+            <MiniLabel n="04" t="Report" />
+            <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">Executive Report</p>
+            <MiniRiskBars />
+          </div>
+          {/* H */}
+          <div className="group flex flex-col" style={{ ...mc, height: H_H }}>
+            <MiniAccent />
+            <div className="p-3 pb-0 pt-7 shrink-0">
+              <MiniLabel n="08" t="Dev" />
+              <p className="font-heading text-[0.7rem] font-semibold leading-snug text-foreground">Built for Devs</p>
+            </div>
+            <div className="mx-2 mb-2 mt-2 flex-1 overflow-hidden rounded-lg"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.25)", background: "oklch(0.1 0.03 285/0.5)" }}>
+              <div className="flex h-full flex-col justify-end gap-1 p-2">
+                {["npm run scan","curl /api","./scan.sh"].map(cmd=>(
+                  <div key={cmd} className="rounded bg-black/40 px-1.5 py-0.5 font-mono text-[7px] text-muted-foreground/50">{cmd}</div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
+
 /**
  * Scroll behaviour:
  *  1. Section enters viewport → pins itself (stays fixed on screen)
@@ -338,224 +559,62 @@ const dashboards: Record<PersonaId, React.FC> = {
  *  Click on a persona button → instantly jumps to that state (manual override).
  */
 export function UseCasesSection() {
-  const [active, setActive] = useState<PersonaId>("developers");
-  const activeRef  = useRef<PersonaId>("developers");
-  const outerRef   = useRef<HTMLDivElement>(null);   // scroll-height spacer
-  const stickyRef  = useRef<HTMLDivElement>(null);   // pinned visual frame
-  const panelRefs  = useRef<Partial<Record<PersonaId, HTMLDivElement | null>>>({});
-  const dotRefs    = useRef<(HTMLSpanElement | null)[]>([null, null, null]);
-  const bodyRefs   = useRef<(HTMLParagraphElement | null)[]>([null, null, null]);
-
-  /* helper — crossfade panels without touching scroll position */
-  const crossfadeTo = (id: PersonaId, instant = false) => {
-    if (activeRef.current === id) return;
-    const dur = instant ? 0 : 0.28;
-    const delay = instant ? 0 : 0.15;
-
-    const outEl = panelRefs.current[activeRef.current];
-    const inEl  = panelRefs.current[id];
-    if (outEl) gsap.to(outEl,   { opacity: 0, y: -14, filter: "blur(6px)", duration: dur, ease: "power2.in",  overwrite: true });
-    if (inEl)  gsap.fromTo(inEl, { opacity: 0, y: 16, filter: "blur(6px)" },
-                                  { opacity: 1, y: 0,  filter: "blur(0px)", duration: dur + 0.08, ease: "power2.out", delay, overwrite: true });
-
-    // nav dots
-    const ids: PersonaId[] = ["developers", "founders", "pentesters"];
-    ids.forEach((pid, i) => {
-      const dot = dotRefs.current[i];
-      if (!dot) return;
-      gsap.to(dot, { scaleX: pid === id ? 1 : 0, opacity: pid === id ? 1 : 0.3, duration: 0.2 });
-    });
-
-    // body text
-    const idx  = ids.indexOf(id);
-    const prev = ids.indexOf(activeRef.current);
-    if (bodyRefs.current[prev]) gsap.to(bodyRefs.current[prev]!, { opacity: 0, duration: dur });
-    if (bodyRefs.current[idx])  gsap.to(bodyRefs.current[idx]!,  { opacity: 1, duration: dur, delay });
-
-    activeRef.current = id;
-    setActive(id);
-  };
+  const sectionRef = useRef<HTMLElement>(null);
+  const leftRef    = useRef<HTMLDivElement>(null);
+  const rightRef   = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    const ids: PersonaId[] = ["developers", "founders", "pentesters"];
-
-    /* ── initial states ───────────────────────────────────────────────── */
-    ids.forEach((id, i) => {
-      const el = panelRefs.current[id];
-      if (el) gsap.set(el, id === "developers"
-        ? { opacity: 1, y: 0, filter: "blur(0px)" }
-        : { opacity: 0, y: 16, filter: "blur(6px)" });
-
-      const dot = dotRefs.current[i];
-      if (dot) gsap.set(dot, { scaleX: id === "developers" ? 1 : 0, opacity: id === "developers" ? 1 : 0.3 });
-
-      const body = bodyRefs.current[i];
-      if (body) gsap.set(body, { opacity: id === "developers" ? 1 : 0 });
-    });
-
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     const ctx = gsap.context(() => {
-      /*
-       * outerRef has height = 300vh (one viewport per persona).
-       * stickyRef is the actual visible frame — GSAP pins it.
-       * scrub: true makes scroll directly drive the timeline.
-       */
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: outerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.8,
-          pin: stickyRef.current,
-          pinSpacing: false,
-          anticipatePin: 1,
-          onUpdate: (self) => {
-            const p = self.progress;
-            const next: PersonaId = p < 0.38 ? "developers" : p < 0.72 ? "founders" : "pentesters";
-            if (next !== activeRef.current) crossfadeTo(next);
-          },
-        },
-      });
-
-      // Add duration anchors so the timeline has length to scrub through
-      tl.to({}, { duration: 1 }); // developers dwell
-      tl.to({}, { duration: 1 }); // founders  dwell
-      tl.to({}, { duration: 1 }); // pentesters dwell
-    }, outerRef);
-
+      gsap.set([leftRef.current, rightRef.current], { opacity: 0 });
+      gsap.set(leftRef.current,  { x: -28 });
+      gsap.set(rightRef.current, { x: 28 });
+      const st = { trigger: sectionRef.current, start: "top 82%", toggleActions: "play none none none" };
+      gsap.to(leftRef.current,  { opacity: 1, x: 0, duration: 0.8, ease: "power2.out", scrollTrigger: st });
+      gsap.to(rightRef.current, { opacity: 1, x: 0, duration: 0.85, ease: "power2.out", delay: 0.1, scrollTrigger: st });
+    }, sectionRef);
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    /* outerRef: 300 vh — creates the scroll distance for 3 personas */
-    <div ref={outerRef} style={{ height: "300vh" }}>
-      {/* stickyRef: the visible pinned frame — GSAP pins this to the top */}
-      <div
-        ref={stickyRef}
-        className="relative bg-background"
-        style={{
-          height: "100vh",
-          borderTop: "1px solid oklch(0.28 0.05 285 / 0.7)",
-          borderBottom: "1px solid oklch(0.28 0.05 285 / 0.7)",
-          willChange: "transform",
-        }}
-      >
-        {/* Ambient glow */}
-        <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-1/2"
-          style={{ background: "radial-gradient(ellipse 80% 60% at 20% 50%, oklch(0.4 0.2 295 / 0.06), transparent 70%)" }}
-        />
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden bg-background px-6 py-20 lg:py-28"
+      style={{ borderTop: "1px solid oklch(0.28 0.05 285 / 0.7)" }}
+    >
+      {/* Ambient glow */}
+      <div className="pointer-events-none absolute inset-0"
+        style={{ background: "radial-gradient(ellipse 50% 40% at 50% 0%, oklch(0.4 0.2 295 / 0.06), transparent 70%)" }} />
 
-        <div className="relative mx-auto grid h-full max-w-[1440px] grid-cols-1 md:grid-cols-[1fr_1.15fr]">
+      <div className="relative mx-auto max-w-[1280px]">
 
-          {/* ─── LEFT ───────────────────────────────────────────────────── */}
-          <div className="flex flex-col justify-center gap-10 px-10 py-14 lg:px-16">
-
-            <div>
-              <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px]">
-                Security intelligence
-                <br />
-                <span style={{
-                  background: "linear-gradient(135deg, oklch(0.7 0.18 295), oklch(0.78 0.2 310), oklch(0.9 0.05 285))",
-                  WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
-                }}>
-                  for every workflow.
-                </span>
-              </h2>
-
-              {/* Body paragraphs — stacked, opacity driven by GSAP */}
-              <div className="relative mt-5 h-[80px]">
-                {personas.map((p, i) => (
-                  <p
-                    key={p.id}
-                    ref={(el) => { bodyRefs.current[i] = el; }}
-                    className="absolute inset-x-0 top-0 max-w-[380px] font-body text-[14px] leading-relaxed text-muted-foreground"
-                    aria-hidden={active !== p.id}
-                  >
-                    {p.body}
-                  </p>
-                ))}
-              </div>
-            </div>
-
-            {/* Persona nav */}
-            <nav className="flex flex-col gap-1" aria-label="Use-case personas">
-              {personas.map((p, i) => {
-                const isActive = active === p.id;
-                return (
-                  <button
-                    key={p.id}
-                    onClick={() => crossfadeTo(p.id)}
-                    aria-current={isActive ? "step" : undefined}
-                    className="group flex items-center gap-4 rounded-xl px-3 py-3 text-left transition-colors duration-200 hover:bg-white/[0.03] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                  >
-                    {/* animated progress bar dot */}
-                    <span className="relative h-px w-8 shrink-0 overflow-hidden rounded-full bg-border/40">
-                      <span
-                        ref={(el) => { dotRefs.current[i] = el; }}
-                        className="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-primary"
-                      />
-                    </span>
-                    <span className="font-mono text-[11px] tracking-widest transition-colors duration-200"
-                      style={{ color: isActive ? "oklch(0.7 0.18 295)" : "oklch(0.42 0.04 285)" }}>
-                      {p.num}
-                    </span>
-                    <span className="font-body text-[13px] transition-colors duration-200"
-                      style={{ color: isActive ? "oklch(0.98 0.005 285)" : "oklch(0.58 0.03 285)" }}>
-                      {p.label}
-                    </span>
-                    <ArrowRight
-                      className="ml-auto h-3.5 w-3.5 shrink-0 text-primary transition-opacity duration-200"
-                      style={{ opacity: isActive ? 1 : 0 }}
-                    />
-                  </button>
-                );
-              })}
-            </nav>
+        {/* ── Heading ── */}
+        <div ref={leftRef} className="mb-14">
+          <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="inline-block h-px w-5 bg-primary/60" />
+            Use Cases
           </div>
-
-          {/* ─── RIGHT: card that never moves ───────────────────────────── */}
-          <div
-            className="flex items-center py-10 pl-0 pr-0 md:py-12"
-            style={{ borderLeft: "1px solid oklch(0.28 0.05 285 / 0.45)" }}
-          >
-            <div
-              className="relative mx-6 flex-1 overflow-hidden rounded-2xl border border-border/55 bg-[#0d0618]/95 md:mx-8"
-              style={{
-                height: "calc(100vh - 96px)",
-                boxShadow: "0 0 0 1px oklch(0.28 0.05 285 / 0.4), 0 24px 80px -12px oklch(0.1 0.04 285 / 0.7), 0 -6px 40px oklch(0.7 0.18 295 / 0.06)",
-              }}
-            >
-              {/* Top glow line */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-px"
-                style={{ background: "linear-gradient(90deg, transparent 10%, oklch(0.7 0.18 295 / 0.4) 50%, transparent 90%)" }} />
-
-              {/* Dashboard layers */}
-              {(["developers", "founders", "pentesters"] as PersonaId[]).map((id) => {
-                const Dashboard = dashboards[id];
-                return (
-                  <div
-                    key={id}
-                    ref={(el) => { panelRefs.current[id] = el; }}
-                    className="absolute inset-0 p-7 md:p-8"
-                    style={{ pointerEvents: id === active ? "auto" : "none" }}
-                    aria-hidden={id !== active}
-                  >
-                    <Dashboard />
-                  </div>
-                );
-              })}
-
-              {/* Bottom fade */}
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 rounded-b-2xl"
-                style={{ background: "linear-gradient(to top, oklch(0.08 0.03 285 / 0.95), transparent)" }} />
-            </div>
-          </div>
-
+          <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px] whitespace-nowrap">
+            Security intelligence{" "}
+            <span style={{
+              background: "linear-gradient(135deg, oklch(0.7 0.18 295), oklch(0.78 0.2 310), oklch(0.9 0.05 285))",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
+            }}>
+              for every workflow.
+            </span>
+          </h2>
+          <p className="font-body mt-4 max-w-[480px] text-[14px] leading-relaxed text-muted-foreground">
+            Whether you're shipping code, running a company, or doing recon —
+            CyberSec Toolkit adapts to your workflow and delivers the answers you need.
+          </p>
         </div>
+
+        {/* ── Full-width bento grid ── */}
+        <div ref={rightRef}>
+          <BentoFeatures embedded />
+        </div>
+
       </div>
-    </div>
+    </section>
   );
 }

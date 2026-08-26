@@ -1,0 +1,465 @@
+/**
+ * BentoFeatures — pixel-faithful Figma bento grid
+ * Source: https://www.figma.com/design/REID0z9Gj2koestcgyLszB/...?node-id=2010-116
+ *
+ * Card layout (Figma 1200×900):
+ *   A  262×396  left tall
+ *   B  556×396  center wide tall
+ *   C  262×157  right top small
+ *   D  262×211  right mid
+ *   E  262×219  left bottom top
+ *   F  262×165  left bottom bottom
+ *   G  264×412  center bottom
+ *   H  554×412  right wide bottom
+ *   Circle: 270×270 centred at (600,450)
+ */
+
+import { useLayoutEffect, useRef, useCallback } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import type { DotLottie } from "@lottiefiles/dotlottie-web";
+import serverLottie      from "../../assets/server.lottie?url";
+import aiLottie          from "../../assets/AI.lottie?url";
+import developmentLottie from "../../assets/Development.lottie?url";
+import centerImg         from "../../assets/bento/center.png";
+import securityTeamImg   from "../../assets/bento/Securityteammain.png";
+import developerImg      from "../../assets/bento/Developermain.png";
+import secResearcherImg  from "../../assets/bento/securityresearchersmain.png";
+
+gsap.registerPlugin(ScrollTrigger);
+
+/* ─── Design tokens ──────────────────────────────────────────────────────── */
+const CARD_BG = "#1d1d3b";
+const BG      = "#03061c";
+
+const card: React.CSSProperties = {
+  background: CARD_BG,
+  border: "1px solid rgba(255,255,255,0.05)",
+  borderRadius: "24px",
+  position: "relative",
+  overflow: "hidden",
+};
+
+/* ─── Hover accent line ──────────────────────────────────────────────────── */
+function Accent() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+      style={{ background: "linear-gradient(90deg,transparent,oklch(0.7 0.18 295/0.55),transparent)" }}
+    />
+  );
+}
+
+/* ─── Scroll-scrubbed Lottie ─────────────────────────────────────────────── */
+function Lottie({
+  src,
+  triggerRef,
+}: {
+  src: string;
+  triggerRef: React.RefObject<HTMLDivElement | null>;
+}) {
+  const dlRef   = useRef<DotLottie | null>(null);
+  const stRef   = useRef<ScrollTrigger | null>(null);
+  const reduced =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+
+  const onReady = useCallback(
+    (dl: DotLottie | null) => {
+      if (!dl) { dlRef.current = null; return; }
+      dlRef.current = dl;
+      dl.pause();
+      if (reduced) {
+        const go = () => dl.setFrame(dl.totalFrames - 1);
+        dl.totalFrames > 0 ? go() : dl.addEventListener("load", go);
+        return;
+      }
+      const setup = () => {
+        const total = dl.totalFrames;
+        if (!total || !triggerRef.current) return;
+        stRef.current = ScrollTrigger.create({
+          trigger: triggerRef.current,
+          start: "top 75%",
+          end: "bottom 25%",
+          scrub: 1.2,
+          onUpdate: (s) => dlRef.current?.setFrame(s.progress * (total - 1)),
+        });
+        dl.setFrame(0);
+      };
+      dl.totalFrames > 0 ? setup() : dl.addEventListener("load", setup);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [reduced],
+  );
+
+  useLayoutEffect(() => () => { stRef.current?.kill(); }, []);
+
+  return (
+    <DotLottieReact
+      src={src}
+      autoplay={false}
+      loop={false}
+      dotLottieRefCallback={onReady}
+      style={{ width: "100%", height: "100%", display: "block" }}
+      aria-hidden="true"
+    />
+  );
+}
+
+/* ─── Card label ─────────────────────────────────────────────────────────── */
+function CL({ n, t }: { n: string; t: string }) {
+  return (
+    <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.18em] text-muted-foreground/40">
+      {n} · {t}
+    </p>
+  );
+}
+
+/* ─── Mini illustrations ─────────────────────────────────────────────────── */
+function ScanBars() {
+  return (
+    <div className="mt-auto flex flex-col gap-1.5 pt-4">
+      {[100, 72, 91, 52, 84, 38].map((w, i) => (
+        <div
+          key={i}
+          className="h-1.5 rounded-full"
+          style={{
+            width: `${w}%`,
+            background:
+              i % 3 === 0
+                ? "oklch(0.7 0.18 295/0.55)"
+                : i % 3 === 1
+                  ? "oklch(0.85 0.25 145/0.38)"
+                  : "oklch(0.42 0.04 285/0.35)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+function RiskBars() {
+  return (
+    <div className="mt-auto flex items-end gap-1 pt-4" style={{ height: 52 }}>
+      {[40, 65, 45, 80, 55, 90, 70, 50, 85, 60].map((h, i) => (
+        <div
+          key={i}
+          className="flex-1 rounded-sm"
+          style={{
+            height: `${h * 0.56}px`,
+            background:
+              h > 75
+                ? "oklch(0.65 0.22 25/0.7)"
+                : h > 55
+                  ? "oklch(0.7 0.18 295/0.5)"
+                  : "oklch(0.42 0.04 285/0.35)",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
+/* ─── Section ────────────────────────────────────────────────────────────── */
+export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
+  const sectionRef = useRef<HTMLElement>(null);
+  const headRef    = useRef<HTMLDivElement>(null);
+  const gridRef    = useRef<HTMLDivElement>(null);
+  const circleRef  = useRef<HTMLDivElement>(null);
+
+  const refA = useRef<HTMLDivElement>(null);
+  const refB = useRef<HTMLDivElement>(null);
+  const refH = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      if (!embedded && headRef.current) {
+        gsap.set(headRef.current, { opacity: 0, y: 24 });
+        gsap.to(headRef.current, {
+          opacity: 1, y: 0, duration: 0.75, ease: "power2.out",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 85%",
+            toggleActions: "play none none none",
+          },
+        });
+      }
+
+      const cards = gridRef.current?.querySelectorAll("[data-c]");
+      if (cards) {
+        gsap.set(cards, { opacity: 0, y: 32 });
+        ScrollTrigger.batch(cards, {
+          start: "top 93%", once: true,
+          onEnter: (b) =>
+            gsap.to(b, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", stagger: 0.06, overwrite: true }),
+        });
+      }
+
+      /* Circle rotates freely as you scroll — 720° over the section's scroll distance */
+      if (circleRef.current) {
+        gsap.to(circleRef.current, {
+          rotation: 720,
+          ease: "none",
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.5,
+          },
+        });
+      }
+    }, embedded ? gridRef : sectionRef);
+
+    return () => ctx.revert();
+  }, [embedded]);
+
+  /* ── The bento grid — shared between standalone and embedded modes ── */
+  const bentoGrid = (
+    <div className="relative" ref={gridRef}>
+      {/* THE CIRCLE — center.png fills it, rotates on scroll */}
+      <div
+        ref={circleRef}
+        className="absolute z-20 overflow-hidden"
+        style={{
+          width: 140,
+          height: 140,
+          borderRadius: "50%",
+          left: "calc((262 / 1080) * 100% + 20px + (556 / 1080) * 50% - 70px)",
+          top: 217,
+          border: `4px solid ${BG}`,
+          boxShadow: `0 0 0 3px ${CARD_BG}, 0 0 0 6px oklch(0.7 0.18 295/0.2)`,
+        }}
+      >
+        <img
+          src={centerImg}
+          alt="Platform centre"
+          className="h-full w-full object-cover object-center"
+        />
+      </div>
+
+      {/* 3-column grid */}
+      <div className="grid" style={{ gridTemplateColumns: "262fr 556fr 262fr", gap: 20 }}>
+
+        {/* ── COL 1 ── */}
+        <div className="flex flex-col gap-[20px]">
+          {/* Card A — 396px */}
+          <div data-c className="group flex flex-col" style={{ ...card, height: 277 }}>
+            <Accent />
+            <div className="shrink-0 p-6 pb-0">
+              <CL n="01" t="Infrastructure" />
+              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+                Security Infrastructure
+              </h3>
+              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
+                End-to-end visibility across ports, services, and network topology.
+              </p>
+            </div>
+            <div
+              ref={refA}
+              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
+            >
+              <img src={securityTeamImg} alt="Security team" className="h-full w-full object-cover object-top" />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 rounded-b-xl"
+                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
+              />
+            </div>
+          </div>
+
+          {/* Card E — 219px */}
+          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 153 }}>
+            <Accent />
+            <CL n="05" t="Agents" />
+            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+              AI-Powered Agents
+            </h3>
+            <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
+              Autonomous agents that surface actionable intelligence in real time.
+            </p>
+            <ScanBars />
+          </div>
+
+          {/* Card F — 165px */}
+          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 115 }}>
+            <Accent />
+            <CL n="06" t="Scanning" />
+            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+              12 Tools, One Scan
+            </h3>
+            <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
+              Port scan, WHOIS, SSL, DNS, CVE — all in parallel.
+            </p>
+          </div>
+        </div>
+
+        {/* ── COL 2 ── */}
+        <div className="flex flex-col gap-[20px]">
+          {/* Card B — 396px */}
+          <div data-c className="group flex flex-col" style={{ ...card, height: 277 }}>
+            <Accent />
+            <div className="shrink-0 p-6 pb-0">
+              <CL n="02" t="AI Engine" />
+              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+                AI-Driven Analysis
+              </h3>
+              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65 max-w-[280px]">
+                Cross-references scan results, identifies patterns, and generates concise security narratives.
+              </p>
+            </div>
+            <div
+              ref={refB}
+              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
+            >
+              <img src={centerImg} alt="Platform overview" className="h-full w-full object-cover object-top" />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 rounded-b-xl"
+                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
+              />
+            </div>
+          </div>
+
+          {/* Card G — 412px */}
+          <div data-c className="group flex flex-col" style={{ ...card, height: 288 }}>
+            <Accent />
+            <div className="shrink-0 p-6 pb-0 pt-10">
+              <CL n="07" t="Speed" />
+              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+                High-Speed Intelligence
+              </h3>
+              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
+                From target to full report in seconds, not hours.
+              </p>
+            </div>
+            <div
+              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
+            >
+              <img src={secResearcherImg} alt="Security researcher" className="h-full w-full object-cover object-top" />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-xl"
+                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* ── COL 3 ── */}
+        <div className="flex flex-col gap-[20px]">
+          {/* Card C — 157px */}
+          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 110 }}>
+            <Accent />
+            <CL n="03" t="Threat Intel" />
+            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+              CVE Correlation
+            </h3>
+            <div className="mt-auto flex flex-wrap gap-1 pt-2">
+              {["T1190", "T1068", "CVE-2024"].map((t) => (
+                <span
+                  key={t}
+                  className="rounded border border-primary/20 bg-primary/5 px-1.5 py-0.5 font-mono text-[8px] text-primary/50"
+                >
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Card D — 211px */}
+          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 148 }}>
+            <Accent />
+            <CL n="04" t="Reporting" />
+            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+              Executive Report
+            </h3>
+            <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
+              Plain-English risk summary, readable by anyone on the team.
+            </p>
+            <RiskBars />
+          </div>
+
+          {/* Card H — 412px */}
+          <div data-c className="group flex flex-col" style={{ ...card, height: 288 }}>
+            <Accent />
+            <div className="shrink-0 p-6 pb-0 pt-10">
+              <CL n="08" t="Dev Integration" />
+              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
+                Built for Developers
+              </h3>
+              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
+                Fits into your existing pipeline — CI/CD or on-demand.
+              </p>
+            </div>
+            <div
+              ref={refH}
+              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
+            >
+              <img src={developerImg} alt="Developer workflow" className="h-full w-full object-cover object-top" />
+              <div
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-xl"
+                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
+              />
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+
+  /* Embedded: just the grid, no section wrapper or heading */
+  if (embedded) {
+    return bentoGrid;
+  }
+
+  /* Standalone: full section with heading */
+  return (
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden px-6 py-[100px]"
+      style={{ background: BG, borderTop: "1px solid oklch(0.28 0.05 285/0.7)" }}
+    >
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 55% 40% at 50% 0%,oklch(0.4 0.2 295/0.08),transparent 65%)",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-[1100px]">
+        <div ref={headRef} className="mb-12">
+          <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+            <span className="inline-block h-px w-5 bg-primary/60" />
+            Platform Features
+          </div>
+          <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px]">
+            Everything you need.{" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(135deg,oklch(0.7 0.18 295),oklch(0.78 0.2 310),oklch(0.9 0.05 285))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              In one place.
+            </span>
+          </h2>
+          <p className="font-body mt-4 max-w-[480px] text-[14px] leading-relaxed text-muted-foreground">
+            Every tool you need to understand, assess, and act on your security
+            posture — unified in a single platform.
+          </p>
+        </div>
+
+        {bentoGrid}
+      </div>
+    </section>
+  );
+}

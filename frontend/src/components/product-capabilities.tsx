@@ -367,10 +367,9 @@ export function ProductCapabilities() {
 
           <h2
             ref={headingRef}
-            className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[64px]"
+            className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px] whitespace-nowrap"
           >
-            Built for security.
-            <br />
+            Built for{" "}
             <span
               style={{
                 background:
@@ -380,16 +379,28 @@ export function ProductCapabilities() {
                 backgroundClip: "text",
               }}
             >
-              Designed for intelligence.
+              Security
             </span>
+            . Designed for{" "}
+            <span
+              style={{
+                background:
+                  "linear-gradient(135deg, oklch(0.7 0.18 295), oklch(0.78 0.2 310), oklch(0.9 0.05 285))",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              Intelligence
+            </span>
+            .
           </h2>
 
           <p
             ref={descRef}
-            className="font-body mt-5 text-[15px] leading-relaxed text-muted-foreground max-w-[480px]"
+            className="font-body -mt-1 text-[15px] leading-relaxed text-[#aaaaaa]"
           >
-            CyberSec brings essential security intelligence, network analysis, and AI-powered
-            capabilities into one unified platform — so every scan produces actionable insight.
+            One Platform. Complete Security Intelligence.
           </p>
         </div>
 
