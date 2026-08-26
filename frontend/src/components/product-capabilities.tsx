@@ -281,23 +281,15 @@ export function ProductCapabilities() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
-  // Ref to the FIG. 01 illustration container — passed to the Lottie component
-  // so it can use the card as the ScrollTrigger target element
   const fig01ContainerRef = useRef<HTMLDivElement>(null);
-  // Ref to the FIG. 02 illustration container
   const fig02ContainerRef = useRef<HTMLDivElement>(null);
-  // Ref to the FIG. 03 illustration container
   const fig03ContainerRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
-      // Label + heading + desc stagger reveal
-      gsap.set([labelRef.current, headingRef.current, descRef.current], {
-        opacity: 0,
-        y: 24,
-      });
+      gsap.set([labelRef.current, headingRef.current, descRef.current], { opacity: 0, y: 24 });
       gsap
         .timeline({
           scrollTrigger: {
@@ -307,11 +299,10 @@ export function ProductCapabilities() {
           },
           defaults: { ease: "power2.out" },
         })
-        .to(labelRef.current, { opacity: 1, y: 0, duration: 0.6 })
+        .to(labelRef.current,   { opacity: 1, y: 0, duration: 0.6 })
         .to(headingRef.current, { opacity: 1, y: 0, duration: 0.7 }, "-=0.4")
-        .to(descRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.4");
+        .to(descRef.current,    { opacity: 1, y: 0, duration: 0.6 }, "-=0.4");
 
-      // Cards stagger
       const cards = cardsRef.current.filter(Boolean);
       gsap.set(cards, { opacity: 0, y: 40 });
       ScrollTrigger.batch(cards, {
@@ -461,10 +452,8 @@ export function ProductCapabilities() {
                     {index === 0 ? (
                       <ServerLottieIllustration containerRef={fig01ContainerRef} />
                     ) : index === 1 ? (
-                      // FIG. 02 — Lottie scroll-scrubbed illustration
                       <AILottieIllustration containerRef={fig02ContainerRef} />
                     ) : (
-                      // FIG. 03 — Lottie scroll-scrubbed illustration
                       <DevelopmentLottieIllustration containerRef={fig03ContainerRef} />
                     )}
                   </div>
@@ -482,8 +471,6 @@ export function ProductCapabilities() {
             </div>
           ))}
         </div>
-
-        {/* ── Bottom rule ── */}
       </div>
 
       {/* Bottom gradient fade into marquee */}
@@ -497,3 +484,5 @@ export function ProductCapabilities() {
     </section>
   );
 }
+
+

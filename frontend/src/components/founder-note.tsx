@@ -114,7 +114,7 @@ export function FounderNote() {
             </div>
 
             {/* Headline */}
-            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[64px]">
+            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px]">
               I built CyberSec Toolkit because security answers
               <br className="hidden md:block" />{" "}
               <span

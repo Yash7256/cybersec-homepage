@@ -39,6 +39,7 @@ import { SiteNavbar } from "@/components/site-navbar";
 import { ProductCapabilities } from "@/components/product-capabilities";
 import { UseCasesSection } from "@/components/use-cases-section";
 import { WorkflowSection } from "@/components/workflow-section";
+import { BentoFeatures } from "@/components/bento-features";
 import { SocialProof } from "@/components/social-proof";
 import { PricingTeaser } from "@/components/pricing-teaser";
 import { FounderNote } from "@/components/founder-note";
@@ -712,6 +713,9 @@ function Index() {
 
       {/* Workflow — 12 tools · 1 answer */}
       <WorkflowSection />
+
+      {/* Bento Features — platform capabilities grid */}
+      <BentoFeatures />
 
       {/* Social Proof — community feedback bento */}
       <SocialProof />

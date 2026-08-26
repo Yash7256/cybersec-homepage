@@ -454,7 +454,7 @@ export function UseCasesSection() {
           <div className="flex flex-col justify-center gap-10 px-10 py-14 lg:px-16">
 
             <div>
-              <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[64px]">
+              <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px]">
                 Security intelligence
                 <br />
                 <span style={{

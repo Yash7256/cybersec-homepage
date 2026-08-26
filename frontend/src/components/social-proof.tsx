@@ -157,11 +157,11 @@ export function SocialProof() {
 
         {/* ── Section heading ── */}
         <div ref={headRef} className="mb-12 max-w-[560px]">
-          <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]">
             <span className="inline-block h-px w-5 bg-primary/60" />
             Community
           </div>
-          <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[64px]">
+          <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px]">
             The signal is{" "}
             <span
               style={{

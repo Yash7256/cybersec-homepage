@@ -147,11 +147,11 @@ export function PricingTeaser() {
 
         {/* ── Heading ── */}
         <div ref={headRef} className="mb-12">
-          <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+          <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]">
             <span className="inline-block h-px w-5 bg-primary/60" />
             Pricing
           </div>
-          <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[64px]">
+          <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px]">
             Start with{" "}
             <span
               style={{
