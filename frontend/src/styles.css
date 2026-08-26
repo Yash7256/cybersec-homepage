@@ -413,3 +413,10 @@
     transform: rotate(1turn);
   }
 }
+
+.red-rose {
+  font-family: "Red Rose", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}

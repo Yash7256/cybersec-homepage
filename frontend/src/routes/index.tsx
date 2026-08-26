@@ -663,50 +663,39 @@ function Index() {
         </div>
 
         {/* Tool strip — "Powered by" row beneath the dashboard */}
-        <div className="relative z-10 mt-12 px-6">
-          <div className="mx-auto max-w-[860px] text-center">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground/45 mb-5">
-              Everything you need, in one scan
-            </p>
-            {/* Row 1 */}
-            <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-2">
-              {[
-                { label: "Unified Scan",          dot: true  },
-                { label: "Port Scanner",           dot: true  },
-                { label: "Subdomain Enumeration",  dot: true  },
-                { label: "DNS Lookup",             dot: true  },
-                { label: "WHOIS",                  dot: true  },
-                { label: "GeoIP",                  dot: false },
-              ].map(({ label, dot }) => (
-                <span key={label} className="flex items-center gap-1">
-                  <span className="rounded-full border border-border/45 bg-black/40 px-4 py-1.5 font-body text-[12px] text-foreground/55 transition-colors duration-200 hover:border-primary/40 hover:text-foreground/80">
-                    {label}
-                  </span>
-                  {dot && (
-                    <span className="mx-1 h-1 w-1 shrink-0 rounded-full bg-border/50" />
-                  )}
-                </span>
-              ))}
-            </div>
-            {/* Row 2 */}
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-x-1 gap-y-2">
-              {[
-                { label: "SSL Check",             dot: true  },
-                { label: "HTTP Headers",          dot: true  },
-                { label: "Ping",                  dot: true  },
-                { label: "Traceroute",            dot: true  },
-                { label: "Vulnerability Scanner", dot: true  },
-                { label: "AI Executive Report",   dot: false },
-              ].map(({ label, dot }) => (
-                <span key={label} className="flex items-center gap-1">
-                  <span className="rounded-full border border-border/45 bg-black/40 px-4 py-1.5 font-body text-[12px] text-foreground/55 transition-colors duration-200 hover:border-primary/40 hover:text-foreground/80">
-                    {label}
-                  </span>
-                  {dot && (
-                    <span className="mx-1 h-1 w-1 shrink-0 rounded-full bg-border/50" />
-                  )}
-                </span>
-              ))}
+        <div className="relative z-10 mt-16 px-6">
+          <div className="mx-auto max-w-[1100px] text-center">
+            <div className="overflow-hidden whitespace-nowrap" style={{ maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)" }}>
+              <div
+                className="flex w-max gap-12"
+                style={{ "--gap": "3rem", animation: "marquee 80s linear infinite" } as React.CSSProperties}
+              >
+                {[...Array(2)].map((_, groupIndex) => (
+                  <div key={groupIndex} className="flex gap-12" aria-hidden={groupIndex === 1}>
+                    {[
+                      { label: "Unified Scan", highlight: true },
+                      { label: "Port Scanner" },
+                      { label: "Subdomain Enumeration" },
+                      { label: "DNS Lookup" },
+                      { label: "WHOIS" },
+                      { label: "GeoIP" },
+                      { label: "SSL Check" },
+                      { label: "HTTP Headers" },
+                      { label: "Ping" },
+                      { label: "Traceroute" },
+                      { label: "Vulnerability Scanner" },
+                      { label: "AI Executive Report" },
+                    ].map(({ label, highlight }) => (
+                      <span key={label} className="flex items-center gap-4">
+                        <span className={`red-rose font-body text-[22px] transition-colors duration-200 ${highlight ? 'text-foreground/90 font-semibold' : 'text-foreground/70'}`}>
+                          {label}
+                        </span>
+                        <span className="h-1 w-1 shrink-0 rounded-full bg-border/30" />
+                      </span>
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
