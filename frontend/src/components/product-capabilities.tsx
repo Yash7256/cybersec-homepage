@@ -403,28 +403,18 @@ export function ProductCapabilities() {
         </div>
 
         {/* ── Capability columns ── */}
-        <div className="grid grid-cols-1 gap-px md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           {capabilityMeta.map(({ fig, title, desc }, index) => (
             <div
               key={fig}
               ref={(el) => { cardsRef.current[index] = el; }}
-              className="group relative flex flex-col"
+              className="group relative flex flex-col overflow-hidden"
               style={{
-                borderLeft: index === 0 ? "1px solid oklch(0.28 0.05 285 / 0.7)" : undefined,
-                borderRight: "1px solid oklch(0.28 0.05 285 / 0.7)",
+                background: "#25193E",
+                borderRadius: "15px",
+                border: "1px solid rgba(255, 255, 255, 0.4)",
               }}
             >
-              {/* Top border */}
-              <div
-                className="absolute inset-x-0 top-0 h-px"
-                style={{
-                  background:
-                    index === 1
-                      ? "linear-gradient(90deg, oklch(0.28 0.05 285 / 0.5), oklch(0.7 0.18 295 / 0.5), oklch(0.28 0.05 285 / 0.5))"
-                      : "oklch(0.28 0.05 285 / 0.7)",
-                }}
-              />
-
               {/* Hover top accent */}
               <div
                 className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -494,12 +484,6 @@ export function ProductCapabilities() {
         </div>
 
         {/* ── Bottom rule ── */}
-        <div
-          className="mt-0 h-px"
-          style={{
-            background: "oklch(0.28 0.05 285 / 0.7)",
-          }}
-        />
       </div>
 
       {/* Bottom gradient fade into marquee */}
