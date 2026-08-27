@@ -595,17 +595,16 @@ export function UseCasesSection() {
             Use Cases
           </div>
           <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-[48px] whitespace-nowrap">
-            Security intelligence{" "}
+            Security intelligence for every{" "}
             <span style={{
               background: "linear-gradient(135deg, oklch(0.7 0.18 295), oklch(0.78 0.2 310), oklch(0.9 0.05 285))",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text",
             }}>
-              for every workflow.
+              workflow.
             </span>
           </h2>
           <p className="font-body mt-4 max-w-[480px] text-[14px] leading-relaxed text-muted-foreground">
-            Whether you're shipping code, running a company, or doing recon —
-            CyberSec Toolkit adapts to your workflow and delivers the answers you need.
+            Built for developers. Ready for defenders.
           </p>
         </div>
 

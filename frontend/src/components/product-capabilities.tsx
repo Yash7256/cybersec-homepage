@@ -261,17 +261,17 @@ const capabilityMeta = [
   {
     fig: "FIG. 01",
     title: "Security Infrastructure",
-    desc: "End-to-end visibility across ports, services, and network topology — layered defenses built for scale.",
+    desc: "Full Visibility. Layered Defense. Built to Scale.",
   },
   {
     fig: "FIG. 02",
-    title: "AI-Powered Agents",
-    desc: "Autonomous agents that correlate findings, map attack surfaces, and surface actionable intelligence in real time.",
+    title: "AI Agents",
+    desc: "That Turn Findings Into Action.",
   },
   {
     fig: "FIG. 03",
     title: "High-Speed Intelligence",
-    desc: "Stream-process scan data at machine speed. Results in seconds, not hours — from target to full report.",
+    desc: "Scan at machine speed. Get answers in seconds.",
   },
 ] as const;
 

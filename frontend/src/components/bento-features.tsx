@@ -245,165 +245,78 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
 
         {/* ── COL 1 ── */}
         <div className="flex flex-col gap-[20px]">
-          {/* Card A — 396px */}
+          {/* Card A */}
           <div data-c className="group flex flex-col" style={{ ...card, height: 277 }}>
             <Accent />
-            <div className="shrink-0 p-6 pb-0">
-              <CL n="01" t="Infrastructure" />
-              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-                Security Infrastructure
-              </h3>
-              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
-                End-to-end visibility across ports, services, and network topology.
-              </p>
-            </div>
             <div
               ref={refA}
-              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
               style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
             >
-              <img src={securityTeamImg} alt="Security team" className="h-full w-full object-cover object-top" />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 rounded-b-xl"
-                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
-              />
+              <img src={securityTeamImg} alt="" className="h-full w-full object-cover object-top" />
             </div>
           </div>
 
-          {/* Card E — 219px */}
+          {/* Card E */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 153 }}>
             <Accent />
-            <CL n="05" t="Agents" />
-            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-              AI-Powered Agents
-            </h3>
-            <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
-              Autonomous agents that surface actionable intelligence in real time.
-            </p>
             <ScanBars />
           </div>
 
-          {/* Card F — 165px */}
+          {/* Card F */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 115 }}>
             <Accent />
-            <CL n="06" t="Scanning" />
-            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-              12 Tools, One Scan
-            </h3>
-            <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
-              Port scan, WHOIS, SSL, DNS, CVE — all in parallel.
-            </p>
           </div>
         </div>
 
         {/* ── COL 2 ── */}
         <div className="flex flex-col gap-[20px]">
-          {/* Card B — 396px */}
+          {/* Card B */}
           <div data-c className="group flex flex-col" style={{ ...card, height: 277 }}>
             <Accent />
-            <div className="shrink-0 p-6 pb-0">
-              <CL n="02" t="AI Engine" />
-              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-                AI-Driven Analysis
-              </h3>
-              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65 max-w-[280px]">
-                Cross-references scan results, identifies patterns, and generates concise security narratives.
-              </p>
-            </div>
             <div
               ref={refB}
-              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
               style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
             >
-              <img src={centerImg} alt="Platform overview" className="h-full w-full object-cover object-top" />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-16 rounded-b-xl"
-                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
-              />
+              <img src={centerImg} alt="" className="h-full w-full object-cover object-top" />
             </div>
           </div>
 
-          {/* Card G — 412px */}
+          {/* Card G */}
           <div data-c className="group flex flex-col" style={{ ...card, height: 288 }}>
             <Accent />
-            <div className="shrink-0 p-6 pb-0 pt-10">
-              <CL n="07" t="Speed" />
-              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-                High-Speed Intelligence
-              </h3>
-              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
-                From target to full report in seconds, not hours.
-              </p>
-            </div>
             <div
-              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
               style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
             >
-              <img src={secResearcherImg} alt="Security researcher" className="h-full w-full object-cover object-top" />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-xl"
-                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
-              />
+              <img src={secResearcherImg} alt="" className="h-full w-full object-cover object-top" />
             </div>
           </div>
         </div>
 
         {/* ── COL 3 ── */}
         <div className="flex flex-col gap-[20px]">
-          {/* Card C — 157px */}
+          {/* Card C */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 110 }}>
             <Accent />
-            <CL n="03" t="Threat Intel" />
-            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-              CVE Correlation
-            </h3>
-            <div className="mt-auto flex flex-wrap gap-1 pt-2">
-              {["T1190", "T1068", "CVE-2024"].map((t) => (
-                <span
-                  key={t}
-                  className="rounded border border-primary/20 bg-primary/5 px-1.5 py-0.5 font-mono text-[8px] text-primary/50"
-                >
-                  {t}
-                </span>
-              ))}
-            </div>
           </div>
 
-          {/* Card D — 211px */}
+          {/* Card D */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 148 }}>
             <Accent />
-            <CL n="04" t="Reporting" />
-            <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-              Executive Report
-            </h3>
-            <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
-              Plain-English risk summary, readable by anyone on the team.
-            </p>
             <RiskBars />
           </div>
 
-          {/* Card H — 412px */}
+          {/* Card H */}
           <div data-c className="group flex flex-col" style={{ ...card, height: 288 }}>
             <Accent />
-            <div className="shrink-0 p-6 pb-0 pt-10">
-              <CL n="08" t="Dev Integration" />
-              <h3 className="font-heading text-[1rem] font-semibold leading-snug text-foreground">
-                Built for Developers
-              </h3>
-              <p className="font-body mt-1.5 text-[11px] leading-relaxed text-muted-foreground/65">
-                Fits into your existing pipeline — CI/CD or on-demand.
-              </p>
-            </div>
             <div
               ref={refH}
-              className="relative mx-3 mb-3 mt-4 flex-1 overflow-hidden rounded-xl"
+              className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
               style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
             >
-              <img src={developerImg} alt="Developer workflow" className="h-full w-full object-cover object-top" />
-              <div
-                className="pointer-events-none absolute inset-x-0 bottom-0 h-10 rounded-b-xl"
-                style={{ background: `linear-gradient(to top,${CARD_BG},transparent)` }}
-              />
+              <img src={developerImg} alt="" className="h-full w-full object-cover object-top" />
             </div>
           </div>
         </div>
