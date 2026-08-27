@@ -24,6 +24,13 @@ import aiLottie          from "../../assets/AI.lottie?url";
 import developmentLottie from "../../assets/Development.lottie?url";
 import centerImg         from "../../assets/bento/center.png";
 import securityTeamImg   from "../../assets/bento/Securityteammain.png";
+import card1Img          from "../../assets/bento/1.png";
+import card2Img          from "../../assets/bento/2.png";
+import card3Img          from "../../assets/bento/3.png";
+import card4Img          from "../../assets/bento/4.png";
+import card5Img          from "../../assets/bento/5.png";
+import card6Img          from "../../assets/bento/6.png";
+import card9Img          from "../../assets/bento/9.png";
 import developerImg      from "../../assets/bento/Developermain.png";
 import secResearcherImg  from "../../assets/bento/securityresearchersmain.png";
 
@@ -253,7 +260,7 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
               className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
               style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
             >
-              <img src={securityTeamImg} alt="" className="h-full w-full object-cover object-top" />
+              <img src={card1Img} alt="" className="h-full w-full object-cover object-top" />
             </div>
           </div>
 
@@ -266,6 +273,7 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
           {/* Card F */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 115 }}>
             <Accent />
+            <img src={card5Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
           </div>
         </div>
 
@@ -279,19 +287,14 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
               className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
               style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
             >
-              <img src={centerImg} alt="" className="h-full w-full object-cover object-top" />
+              <img src={card2Img} alt="" className="h-full w-full object-cover object-top" />
             </div>
           </div>
 
           {/* Card G */}
-          <div data-c className="group flex flex-col" style={{ ...card, height: 288 }}>
+          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 288 }}>
             <Accent />
-            <div
-              className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
-              style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
-            >
-              <img src={secResearcherImg} alt="" className="h-full w-full object-cover object-top" />
-            </div>
+            <img src={card6Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
           </div>
         </div>
 
@@ -300,24 +303,19 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
           {/* Card C */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 110 }}>
             <Accent />
+            <img src={card3Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
           </div>
 
           {/* Card D */}
           <div data-c className="group flex flex-col p-6" style={{ ...card, height: 148 }}>
             <Accent />
-            <RiskBars />
+            <img src={card4Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
           </div>
 
-          {/* Card H */}
-          <div data-c className="group flex flex-col" style={{ ...card, height: 288 }}>
+          {/* Card 9 (below Card D) */}
+          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 288 }}>
             <Accent />
-            <div
-              ref={refH}
-              className="relative mx-3 my-3 flex-1 overflow-hidden rounded-xl"
-              style={{ border: "1px solid oklch(0.28 0.05 285/0.3)" }}
-            >
-              <img src={developerImg} alt="" className="h-full w-full object-cover object-top" />
-            </div>
+            <img src={card9Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
           </div>
         </div>
 
