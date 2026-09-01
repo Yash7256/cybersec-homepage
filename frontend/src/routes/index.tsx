@@ -36,9 +36,8 @@ import srIcon from "../../assets/sr.webp";
 import allIcon from "../../assets/all.webp";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
-import { ProductCapabilities } from "@/components/product-capabilities";
+import { SecurityStandardSection } from "@/components/security-standard-section";
 import { UseCasesSection } from "@/components/use-cases-section";
-import { WorkflowSection } from "@/components/workflow-section";
 import { SocialProof } from "@/components/social-proof";
 import { PricingTeaser } from "@/components/pricing-teaser";
 import { FounderNote } from "@/components/founder-note";
@@ -700,18 +699,12 @@ function Index() {
           </div>
         </div>
 
-        {/* Product / Capabilities */}
-        <div className="relative z-10 mt-12">
-          <ProductCapabilities />
-        </div>
-
       </section>
+
+      <SecurityStandardSection />
 
       {/* Use Cases — outside overflow-hidden hero section */}
       <UseCasesSection />
-
-      {/* Workflow — 12 tools · 1 answer */}
-      <WorkflowSection />
 
       {/* Social Proof — community feedback bento */}
       <SocialProof />
