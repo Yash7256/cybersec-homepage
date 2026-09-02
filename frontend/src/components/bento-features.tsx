@@ -19,26 +19,26 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import type { DotLottie } from "@lottiefiles/dotlottie-web";
-import serverLottie      from "../../assets/server.lottie?url";
-import aiLottie          from "../../assets/AI.lottie?url";
+import serverLottie from "../../assets/server.lottie?url";
+import aiLottie from "../../assets/AI.lottie?url";
 import developmentLottie from "../../assets/Development.lottie?url";
-import centerImg         from "../../assets/bento/center.png";
-import securityTeamImg   from "../../assets/bento/Securityteammain.png";
-import card1Img          from "../../assets/bento/1.png";
-import card2Img          from "../../assets/bento/2.png";
-import card3Img          from "../../assets/bento/3.png";
-import card4Img          from "../../assets/bento/4.png";
-import card5Img          from "../../assets/bento/5.png";
-import card6Img          from "../../assets/bento/6.png";
-import card9Img          from "../../assets/bento/9.png";
-import developerImg      from "../../assets/bento/Developermain.png";
-import secResearcherImg  from "../../assets/bento/securityresearchersmain.png";
+import centerImg from "../../assets/bento/center.png";
+import securityTeamImg from "../../assets/bento/Securityteammain.png";
+import card1Img from "../../assets/bento/1.png";
+import card2Img from "../../assets/bento/2.png";
+import card3Img from "../../assets/bento/3.png";
+import card4Img from "../../assets/bento/4.png";
+import card5Img from "../../assets/bento/5.png";
+import card6Img from "../../assets/bento/6.png";
+import card9Img from "../../assets/bento/9.png";
+import developerImg from "../../assets/bento/Developermain.png";
+import secResearcherImg from "../../assets/bento/securityresearchersmain.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
 /* ─── Design tokens ──────────────────────────────────────────────────────── */
 const CARD_BG = "#1d1d3b";
-const BG      = "#03061c";
+const BG = "#03061c";
 
 const card: React.CSSProperties = {
   background: CARD_BG,
@@ -53,7 +53,9 @@ function Accent() {
   return (
     <div
       className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-      style={{ background: "linear-gradient(90deg,transparent,oklch(0.7 0.18 295/0.55),transparent)" }}
+      style={{
+        background: "linear-gradient(90deg,transparent,oklch(0.7 0.18 295/0.55),transparent)",
+      }}
     />
   );
 }
@@ -66,15 +68,17 @@ function Lottie({
   src: string;
   triggerRef: React.RefObject<HTMLDivElement | null>;
 }) {
-  const dlRef   = useRef<DotLottie | null>(null);
-  const stRef   = useRef<ScrollTrigger | null>(null);
+  const dlRef = useRef<DotLottie | null>(null);
+  const stRef = useRef<ScrollTrigger | null>(null);
   const reduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion:reduce)").matches;
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion:reduce)").matches;
 
   const onReady = useCallback(
     (dl: DotLottie | null) => {
-      if (!dl) { dlRef.current = null; return; }
+      if (!dl) {
+        dlRef.current = null;
+        return;
+      }
       dlRef.current = dl;
       dl.pause();
       if (reduced) {
@@ -100,7 +104,12 @@ function Lottie({
     [reduced],
   );
 
-  useLayoutEffect(() => () => { stRef.current?.kill(); }, []);
+  useLayoutEffect(
+    () => () => {
+      stRef.current?.kill();
+    },
+    [],
+  );
 
   return (
     <DotLottieReact
@@ -171,9 +180,9 @@ function RiskBars() {
 /* ─── Section ────────────────────────────────────────────────────────────── */
 export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
   const sectionRef = useRef<HTMLElement>(null);
-  const headRef    = useRef<HTMLDivElement>(null);
-  const gridRef    = useRef<HTMLDivElement>(null);
-  const circleRef  = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const circleRef = useRef<HTMLDivElement>(null);
 
   const refA = useRef<HTMLDivElement>(null);
   const refB = useRef<HTMLDivElement>(null);
@@ -182,43 +191,57 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion:reduce)").matches) return;
 
-    const ctx = gsap.context(() => {
-      if (!embedded && headRef.current) {
-        gsap.set(headRef.current, { opacity: 0, y: 24 });
-        gsap.to(headRef.current, {
-          opacity: 1, y: 0, duration: 0.75, ease: "power2.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 85%",
-            toggleActions: "play none none none",
-          },
-        });
-      }
+    const ctx = gsap.context(
+      () => {
+        if (!embedded && headRef.current) {
+          gsap.set(headRef.current, { opacity: 0, y: 24 });
+          gsap.to(headRef.current, {
+            opacity: 1,
+            y: 0,
+            duration: 0.75,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: sectionRef.current,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          });
+        }
 
-      const cards = gridRef.current?.querySelectorAll("[data-c]");
-      if (cards) {
-        gsap.set(cards, { opacity: 0, y: 32 });
-        ScrollTrigger.batch(cards, {
-          start: "top 93%", once: true,
-          onEnter: (b) =>
-            gsap.to(b, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", stagger: 0.06, overwrite: true }),
-        });
-      }
+        const cards = gridRef.current?.querySelectorAll("[data-c]");
+        if (cards) {
+          gsap.set(cards, { opacity: 0, y: 32 });
+          ScrollTrigger.batch(cards, {
+            start: "top 93%",
+            once: true,
+            onEnter: (b) =>
+              gsap.to(b, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out",
+                stagger: 0.06,
+                overwrite: true,
+              }),
+          });
+        }
 
-      /* Circle rotates freely as you scroll — 720° over the section's scroll distance */
-      if (circleRef.current) {
-        gsap.to(circleRef.current, {
-          rotation: 720,
-          ease: "none",
-          scrollTrigger: {
-            trigger: gridRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.5,
-          },
-        });
-      }
-    }, embedded ? gridRef : sectionRef);
+        /* Circle rotates freely as you scroll — 720° over the section's scroll distance */
+        if (circleRef.current) {
+          gsap.to(circleRef.current, {
+            rotation: 720,
+            ease: "none",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.5,
+            },
+          });
+        }
+      },
+      embedded ? gridRef : sectionRef,
+    );
 
     return () => ctx.revert();
   }, [embedded]);
@@ -249,11 +272,14 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
 
       {/* 3-column grid */}
       <div className="grid" style={{ gridTemplateColumns: "262fr 556fr 262fr", gap: 20 }}>
-
         {/* ── COL 1 ── */}
         <div className="flex flex-col gap-[20px]">
           {/* Card A */}
-          <div data-c className="group flex flex-col" style={{ ...card, height: 277 }}>
+          <div
+            data-c
+            className="group flex flex-col transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 277 }}
+          >
             <Accent />
             <div
               ref={refA}
@@ -265,22 +291,38 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
           </div>
 
           {/* Card E */}
-          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 153 }}>
+          <div
+            data-c
+            className="group flex flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 153 }}
+          >
             <Accent />
             <ScanBars />
           </div>
 
           {/* Card F */}
-          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 115 }}>
+          <div
+            data-c
+            className="group flex flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 115 }}
+          >
             <Accent />
-            <img src={card5Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
+            <img
+              src={card5Img}
+              alt=""
+              className="h-full w-full object-cover object-top rounded-xl"
+            />
           </div>
         </div>
 
         {/* ── COL 2 ── */}
         <div className="flex flex-col gap-[20px]">
           {/* Card B */}
-          <div data-c className="group flex flex-col" style={{ ...card, height: 277 }}>
+          <div
+            data-c
+            className="group flex flex-col transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 277 }}
+          >
             <Accent />
             <div
               ref={refB}
@@ -292,33 +334,64 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
           </div>
 
           {/* Card G */}
-          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 288 }}>
+          <div
+            data-c
+            className="group flex flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 288 }}
+          >
             <Accent />
-            <img src={card6Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
+            <img
+              src={card6Img}
+              alt=""
+              className="h-full w-full object-cover object-top rounded-xl"
+            />
           </div>
         </div>
 
         {/* ── COL 3 ── */}
         <div className="flex flex-col gap-[20px]">
           {/* Card C */}
-          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 110 }}>
+          <div
+            data-c
+            className="group flex flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 110 }}
+          >
             <Accent />
-            <img src={card3Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
+            <img
+              src={card3Img}
+              alt=""
+              className="h-full w-full object-cover object-top rounded-xl"
+            />
           </div>
 
           {/* Card D */}
-          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 148 }}>
+          <div
+            data-c
+            className="group flex flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 148 }}
+          >
             <Accent />
-            <img src={card4Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
+            <img
+              src={card4Img}
+              alt=""
+              className="h-full w-full object-cover object-top rounded-xl"
+            />
           </div>
 
           {/* Card 9 (below Card D) */}
-          <div data-c className="group flex flex-col p-6" style={{ ...card, height: 288 }}>
+          <div
+            data-c
+            className="group flex flex-col p-6 transition-transform duration-500 ease-out hover:-translate-y-1.5"
+            style={{ ...card, height: 288 }}
+          >
             <Accent />
-            <img src={card9Img} alt="" className="h-full w-full object-cover object-top rounded-xl" />
+            <img
+              src={card9Img}
+              alt=""
+              className="h-full w-full object-cover object-top rounded-xl"
+            />
           </div>
         </div>
-
       </div>
     </div>
   );
@@ -364,8 +437,8 @@ export function BentoFeatures({ embedded = false }: { embedded?: boolean }) {
             </span>
           </h2>
           <p className="font-body mt-4 max-w-[480px] text-[14px] leading-relaxed text-muted-foreground">
-            Every tool you need to understand, assess, and act on your security
-            posture — unified in a single platform.
+            Every tool you need to understand, assess, and act on your security posture — unified in
+            a single platform.
           </p>
         </div>
 

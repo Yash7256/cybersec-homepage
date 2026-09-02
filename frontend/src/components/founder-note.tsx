@@ -54,8 +54,8 @@ function IdentityMark() {
 
 export function FounderNote() {
   const sectionRef = useRef<HTMLElement>(null);
-  const noteRef    = useRef<HTMLDivElement>(null);
-  const cardRef    = useRef<HTMLDivElement>(null);
+  const noteRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -65,15 +65,22 @@ export function FounderNote() {
       gsap.set(cardRef.current, { opacity: 0, y: 20 });
 
       const trigger = sectionRef.current;
-      const start   = "top 82%";
+      const start = "top 82%";
       const actions = "play none none none" as const;
 
       gsap.to(noteRef.current, {
-        opacity: 1, y: 0, duration: 0.8, ease: "power2.out",
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
         scrollTrigger: { trigger, start, toggleActions: actions },
       });
       gsap.to(cardRef.current, {
-        opacity: 1, y: 0, duration: 0.75, ease: "power2.out", delay: 0.2,
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        ease: "power2.out",
+        delay: 0.2,
         scrollTrigger: { trigger, start, toggleActions: actions },
       });
     }, sectionRef);
@@ -84,7 +91,7 @@ export function FounderNote() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-background px-6 py-[96px]"
+      className="relative overflow-hidden px-6 py-[96px]"
       style={{ borderTop: "1px solid oklch(0.28 0.05 285 / 0.7)" }}
     >
       {/* Very faint left-side ambient */}
@@ -98,10 +105,8 @@ export function FounderNote() {
 
       <div className="relative mx-auto max-w-[1100px]">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:gap-16">
-
           {/* ── LEFT: founder note ──────────────────────────────────────── */}
           <div ref={noteRef} className="flex flex-col gap-8 lg:w-[66%]">
-
             {/* Technical label */}
             <div className="flex items-center gap-2">
               <span
@@ -139,39 +144,33 @@ export function FounderNote() {
               </p>
 
               <p className="font-body text-[15px] leading-[1.8] text-muted-foreground">
-                I kept seeing the same workflow: open a tool, run a check, copy
-                the result, switch tabs, repeat — then manually figure out what
-                actually matters. Security professionals were spending more time
-                stitching outputs together than understanding what they were
-                looking at.
+                I kept seeing the same workflow: open a tool, run a check, copy the result, switch
+                tabs, repeat — then manually figure out what actually matters. Security
+                professionals were spending more time stitching outputs together than understanding
+                what they were looking at.
               </p>
 
               <p className="font-body text-[15px] leading-[1.8] text-foreground/75">
-                CyberSec Toolkit is my attempt to bring that workflow into one
-                place and turn scattered security data into a{" "}
-                <span
-                  className="font-medium"
-                  style={{ color: "oklch(0.78 0.15 295)" }}
-                >
+                CyberSec Toolkit is my attempt to bring that workflow into one place and turn
+                scattered security data into a{" "}
+                <span className="font-medium" style={{ color: "oklch(0.78 0.15 295)" }}>
                   clearer answer
                 </span>
-                . Not a report that reads like a log file — one that tells you
-                what to fix and why it matters.
+                . Not a report that reads like a log file — one that tells you what to fix and why
+                it matters.
               </p>
 
               <p className="font-body text-[15px] leading-[1.8] text-muted-foreground">
-                It's still early. Feedback has shaped every release so far, and
-                that's not changing. If you're using it — thank you. If
-                something isn't working for you, I want to know.
+                It's still early. Feedback has shaped every release so far, and that's not changing.
+                If you're using it — thank you. If something isn't working for you, I want to know.
               </p>
             </div>
-
           </div>
 
           {/* ── RIGHT: identity card ─────────────────────────────────────── */}
           <div ref={cardRef} className="lg:w-[34%]">
             <div
-              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card p-7 transition-colors duration-300 hover:border-border/75"
+              className="group relative overflow-hidden rounded-2xl border border-border/50 bg-card p-7 transition-all duration-300 hover:-translate-y-1 hover:border-border/75"
               style={{ boxShadow: "0 0 0 1px oklch(0.22 0.04 285 / 0.4)" }}
             >
               {/* Hover top accent */}
@@ -201,10 +200,7 @@ export function FounderNote() {
                 </div>
 
                 {/* Divider */}
-                <div
-                  className="h-px w-full"
-                  style={{ background: "oklch(0.28 0.05 285 / 0.7)" }}
-                />
+                <div className="h-px w-full" style={{ background: "oklch(0.28 0.05 285 / 0.7)" }} />
 
                 {/* Status line */}
                 <div className="flex items-center gap-2.5">
@@ -219,13 +215,11 @@ export function FounderNote() {
 
                 {/* Short quote */}
                 <p className="font-body text-[12px] leading-relaxed text-muted-foreground/60 italic">
-                  "Every feature started as a frustration with an existing
-                  workflow."
+                  "Every feature started as a frustration with an existing workflow."
                 </p>
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </section>

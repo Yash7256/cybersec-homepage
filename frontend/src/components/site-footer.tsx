@@ -2,6 +2,7 @@ import { useState } from "react";
 import footerLogo from "../../assets/logo.webp";
 import { cn } from "@/lib/utils";
 import { LegalDialog } from "@/components/legal-dialog";
+import { Reveal } from "@/components/reveal";
 
 import privacyContent from "@/content/legal/Privacy_Policy.md?raw";
 import termsContent from "@/content/legal/Terms_of_Service.md?raw";
@@ -17,7 +18,10 @@ const dialogContent: Record<string, { title: string; content: string }> = {
   "Terms of Service": { title: "Terms of Service", content: termsContent },
   "Cookie Policy": { title: "Cookie Policy", content: cookieContent },
   "Legal Notices": { title: "Legal Notices", content: noticesContent },
-  "Responsible Disclosure Policy": { title: "Responsible Disclosure Policy", content: responsibleDisclosureContent },
+  "Responsible Disclosure Policy": {
+    title: "Responsible Disclosure Policy",
+    content: responsibleDisclosureContent,
+  },
   "AI Transparency Policy": { title: "AI Transparency Policy", content: aiTransparencyContent },
   "Security Policy": { title: "Security Policy", content: securityPolicyContent },
   "Data Retention Policy": { title: "Data Retention Policy", content: dataRetentionContent },
@@ -39,7 +43,10 @@ const footerLinks = [
     links: [
       { label: "Blog", href: "/docs" },
       { label: "Tutorial", href: "/docs" },
-      { label: "Case Study", href: "https://www.behance.net/gallery/252963531/CyberSec-Toolkit-SaaS-Dashboard-UIUX-Case-Study" },
+      {
+        label: "Case Study",
+        href: "https://www.behance.net/gallery/252963531/CyberSec-Toolkit-SaaS-Dashboard-UIUX-Case-Study",
+      },
       { label: "Community", href: "/docs" },
       { label: "Support", href: "/support" },
     ],
@@ -72,22 +79,24 @@ export function SiteFooter({ className = "" }: { className?: string }) {
       className={cn("font-body relative bg-[#13081f] px-6 font-normal text-[#efe8ff]", className)}
     >
       <div className="pt-10 pb-8 md:pt-12">
-        <div className="rounded-lg border border-[#5f4a82] bg-[#07050d]/55 px-6 py-14 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:px-10">
-          <h2 className="text-3xl leading-tight font-normal text-white md:text-4xl">
-            Ready to scan your first target?
-          </h2>
-          <p className="mt-2 text-sm font-normal text-[#cfc4de]">
-            Start a vulnerability assessment in under 60 seconds.
-          </p>
-          <a
-            href="https://cybersec1.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-block rounded-full border border-[#f97316]/70 bg-black px-9 py-3 text-sm font-normal text-white shadow-[0_0_28px_rgba(249,115,22,0.26)] transition hover:scale-[1.03] hover:border-[#c084fc] focus-visible:ring-2 focus-visible:ring-[#c084fc] focus-visible:ring-offset-2 focus-visible:ring-offset-[#13081f] focus-visible:outline-none"
-          >
-            Start Scanning
-          </a>
-        </div>
+        <Reveal>
+          <div className="rounded-lg border border-[#5f4a82] bg-[#07050d]/55 px-6 py-14 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] md:px-10">
+            <h2 className="text-3xl leading-tight font-normal text-white md:text-4xl">
+              Ready to scan your first target?
+            </h2>
+            <p className="mt-2 text-sm font-normal text-[#cfc4de]">
+              Start a vulnerability assessment in under 60 seconds.
+            </p>
+            <a
+              href="https://cybersec1.tech"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-6 inline-block rounded-full border border-[#f97316]/70 bg-black px-9 py-3 text-sm font-normal text-white shadow-[0_0_28px_rgba(249,115,22,0.26)] transition hover:scale-[1.03] hover:border-[#c084fc] focus-visible:ring-2 focus-visible:ring-[#c084fc] focus-visible:ring-offset-2 focus-visible:ring-offset-[#13081f] focus-visible:outline-none"
+            >
+              Start Scanning
+            </a>
+          </div>
+        </Reveal>
 
         <div className="pointer-events-none mx-auto my-10 h-px max-w-[90%] bg-gradient-to-r from-transparent via-[#3d2959] to-transparent" />
 
@@ -160,10 +169,12 @@ export function SiteFooter({ className = "" }: { className?: string }) {
       </div>
 
       <LegalDialog
-        title={dialogDoc ? dialogContent[dialogDoc]?.title ?? "" : ""}
-        content={dialogDoc ? dialogContent[dialogDoc]?.content ?? "" : ""}
+        title={dialogDoc ? (dialogContent[dialogDoc]?.title ?? "") : ""}
+        content={dialogDoc ? (dialogContent[dialogDoc]?.content ?? "") : ""}
         open={!!dialogDoc}
-        onOpenChange={(open) => { if (!open) setDialogDoc(null); }}
+        onOpenChange={(open) => {
+          if (!open) setDialogDoc(null);
+        }}
       />
     </footer>
   );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import navbarLogo from "../../assets/logo.webp";
 
 function Logo({ className = "" }: { className?: string }) {
@@ -11,6 +11,7 @@ const MotionLink = motion.create(Link);
 
 export function SiteNavbar({ small = false }: { small?: boolean }) {
   const location = useLocation();
+  const reduceMotion = useReducedMotion();
   const navItems = [
     { label: "Home", path: "/" },
     { label: "Pricing", path: "/pricing" },
@@ -51,8 +52,12 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
 
   return (
     <motion.div
-      className="fixed left-0 right-0 top-0 z-50"
-      animate={{ y: isVisible ? 0 : "-100%" }}
+      className={`fixed left-0 right-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled
+          ? "bg-[#0c0717]/60 shadow-[0_12px_32px_rgba(0,0,0,0.4)] backdrop-blur-md"
+          : "bg-transparent"
+      }`}
+      animate={{ y: reduceMotion ? 0 : isVisible ? 0 : "-100%" }}
       transition={{ type: "spring", stiffness: 400, damping: 40 }}
     >
       <div
@@ -114,16 +119,16 @@ export function SiteNavbar({ small = false }: { small?: boolean }) {
           <MotionLink
             to="/auth/login"
             className="font-body flex h-10 min-w-[110px] items-center justify-center rounded-full border border-white/70 bg-black/70 px-5 text-sm font-normal text-[#e8e3ec] transition hover:border-white hover:text-white focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.96 }}
           >
             Sign Up
           </MotionLink>
           <MotionLink
             to="/auth/login"
             className="font-body flex h-10 min-w-[120px] items-center justify-center rounded-full border border-white/45 bg-gradient-to-b from-[#f4efff] to-[#b7b1bd] px-5 text-sm font-normal text-[#151019] shadow-[inset_0_1px_0_rgba(255,255,255,0.78)] transition hover:from-white hover:to-[#cbc5d1] focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black focus-visible:outline-none"
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.96 }}
+            whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+            whileTap={reduceMotion ? undefined : { scale: 0.96 }}
           >
             Log In
           </MotionLink>

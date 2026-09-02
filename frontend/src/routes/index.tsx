@@ -1,9 +1,8 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { CSSProperties, RefObject } from "react";
 import { createFileRoute, useLocation } from "@tanstack/react-router";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { seoMeta, seoLinks } from "@/lib/seo";
 import {
   Crosshair,
@@ -30,10 +29,6 @@ import {
 import heroGrid from "../../assets/GRID.webp";
 import previewVector from "../../assets/Vector.webp";
 import playIcon from "../../assets/play icon.png";
-import ptIcon from "../../assets/pt.webp";
-import vsIcon from "../../assets/vs.webp";
-import srIcon from "../../assets/sr.webp";
-import allIcon from "../../assets/all.webp";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteNavbar } from "@/components/site-navbar";
 import { SecurityStandardSection } from "@/components/security-standard-section";
@@ -42,14 +37,12 @@ import { SocialProof } from "@/components/social-proof";
 import { PricingTeaser } from "@/components/pricing-teaser";
 import { FounderNote } from "@/components/founder-note";
 
-
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
       ...seoMeta({
-        title:
-          "CyberSec Toolkit — Async Vulnerability Scanning with Live AI Analysis",
+        title: "CyberSec Toolkit — Async Vulnerability Scanning with Live AI Analysis",
         description:
           "Async vulnerability scanning with live AI analysis built for security professionals who don't wait for batch reports.",
         path: "/",
@@ -389,41 +382,6 @@ function SummaryCard({ title, big, tag }: { title: string; big: string; tag?: st
   );
 }
 
-function FeatureCard({
-  Icon,
-  title,
-  desc,
-  image,
-}: {
-  Icon?: typeof Crosshair;
-  title: string;
-  desc: string;
-  image?: string;
-}) {
-  return (
-    <div
-      data-feature-card
-      className="flex min-h-[138px] items-center gap-4 rounded-[20px] border border-[#5f4a82] bg-[#25193E] px-12 py-14 shadow-[0_22px_70px_rgba(0,0,0,0.24)] md:gap-5"
-    >
-      {image ? (
-        <img
-          src={image}
-          alt={title}
-          className="h-[80px] w-[80px] shrink-0 md:h-[80px] md:w-[80px]"
-        />
-      ) : Icon ? (
-        <div className="flex h-[52px] w-[52px] shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#dbc5ff] via-[#ae7aff] to-[#9b48f4] shadow-[0_12px_22px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.45)] md:h-[58px] md:w-[58px]">
-          <Icon className="h-5 w-5 text-[#13091f] md:h-6 md:w-6" />
-        </div>
-      ) : null}
-      <div>
-        <h3 className="font-heading text-lg leading-tight font-medium text-[#f8f5ff]">{title}</h3>
-        <p className="font-body mt-2 max-w-[300px] text-sm leading-snug text-[#d4cde3]">{desc}</p>
-      </div>
-    </div>
-  );
-}
-
 function Step({
   num,
   title,
@@ -450,7 +408,7 @@ function Step({
       </div>
       <div className="mt-4 flex items-baseline gap-1.5">
         <span className="font-heading text-4xl leading-none font-bold text-[#f8f5ff]">{num}</span>
-<h3 className="font-body text-lg text-[#d4cde3]">{title}</h3>
+        <h3 className="font-body text-lg text-[#d4cde3]">{title}</h3>
       </div>
       <p className="font-body mt-2 max-w-[200px] text-sm leading-snug text-[#bcb2cd]">{desc}</p>
     </div>
@@ -496,7 +454,10 @@ function VideoModal({
     >
       <div
         className="relative w-full"
-        style={{ maxWidth: "min(90vw, calc((85vh * 3838) / 2160))", aspectRatio: `${VIDEO_ASPECT_RATIO}` }}
+        style={{
+          maxWidth: "min(90vw, calc((85vh * 3838) / 2160))",
+          aspectRatio: `${VIDEO_ASPECT_RATIO}`,
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -525,6 +486,36 @@ function Index() {
   const [videoOpen, setVideoOpen] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const previewRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const stepsRef = useRef<HTMLDivElement>(null);
+  const heroCopyRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  /* Hero entrance — subtle staggered rise on load */
+  useLayoutEffect(() => {
+    if (reduceMotion) return;
+
+    const ctx = gsap.context(() => {
+      const els = heroCopyRef.current?.querySelectorAll("[data-hero-rise]");
+      if (els?.length) {
+        gsap.fromTo(
+          els,
+          { y: 26, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.85,
+            ease: "power3.out",
+            stagger: 0.11,
+            delay: 0.12,
+            overwrite: true,
+          },
+        );
+      }
+    }, heroCopyRef);
+
+    return () => ctx.revert();
+  }, [reduceMotion]);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -546,6 +537,51 @@ function Index() {
         },
       );
     }, previewRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useLayoutEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const ctx = gsap.context(() => {
+      const reveal = (target: Element, start = "top 85%") => {
+        gsap.set(target, { opacity: 0, y: 30 });
+        gsap.to(target, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: target,
+            start,
+            toggleActions: "play none none none",
+          },
+        });
+      };
+
+      reveal(sectionRef.current!.querySelector("h2")!);
+
+      const steps = stepsRef.current!.querySelectorAll("[data-step]");
+      const arrows = stepsRef.current!.querySelectorAll("[data-step-arrow]");
+      gsap.set(steps, { opacity: 0, y: 40 });
+      gsap.set(arrows, { opacity: 0, x: -10 });
+
+      gsap
+        .timeline({
+          scrollTrigger: {
+            trigger: stepsRef.current,
+            start: "top 75%",
+            toggleActions: "play none none none",
+          },
+          defaults: { duration: 0.6, ease: "power2.out" },
+        })
+        .to(steps[0], { opacity: 1, y: 0 })
+        .to(arrows[0], { opacity: 1, x: 0 }, "-=0.45")
+        .to(steps[1], { opacity: 1, y: 0 }, "-=0.45")
+        .to(arrows[1], { opacity: 1, x: 0 }, "-=0.45")
+        .to(steps[2], { opacity: 1, y: 0 }, "-=0.45");
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
@@ -602,15 +638,24 @@ function Index() {
         <div className="relative z-10">
           <SiteNavbar />
         </div>
-        <div className="relative z-10 mx-auto max-w-4xl px-6 pt-14 text-center md:pt-16">
-          <h1 className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]">
+        <div
+          ref={heroCopyRef}
+          className="relative z-10 mx-auto max-w-4xl px-6 pt-14 text-center md:pt-16"
+        >
+          <h1
+            data-hero-rise
+            className="font-heading text-4xl leading-tight font-medium tracking-normal whitespace-nowrap md:text-[70px]"
+          >
             Scan. Analyze. Understand.
           </h1>
-          <p className="font-body mx-auto mt-2.5 max-w-[520px] text-lg leading-relaxed text-[#d7d0df]">
+          <p
+            data-hero-rise
+            className="font-body mx-auto mt-2.5 max-w-[520px] text-lg leading-relaxed text-[#d7d0df]"
+          >
             Async vulnerability scanning with live AI analysis built for security professionals who
             don't wait for batch reports.
           </p>
-          <div className="mt-5 flex items-center justify-center gap-5">
+          <div data-hero-rise className="mt-5 flex items-center justify-center gap-5">
             <div className="scan-cta-glow relative inline-block rounded-full">
               <div className="scan-cta-gradient relative z-10 inline-block overflow-hidden rounded-full p-[1.5px]">
                 <motion.a
@@ -623,8 +668,8 @@ function Index() {
                     border: "none",
                     background: "#0a0810",
                   }}
-                  whileHover={{ scale: 1.04 }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+                  whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
                   Start Scanning
@@ -642,8 +687,8 @@ function Index() {
                 border: "1px solid #FFF",
                 background: "linear-gradient(180deg, #EFE8FF 0%, #999 125.6%)",
               }}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
               <img src={playIcon} alt="" className="h-7 w-7" /> Watch It Work
@@ -664,10 +709,23 @@ function Index() {
         {/* Tool strip — "Powered by" row beneath the dashboard */}
         <div className="relative z-10 mt-16 px-6">
           <div className="mx-auto max-w-[1100px] text-center">
-            <div className="overflow-hidden whitespace-nowrap" style={{ maskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)", WebkitMaskImage: "linear-gradient(to right, transparent, black 15%, black 85%, transparent)" }}>
+            <div
+              className="overflow-hidden whitespace-nowrap"
+              style={{
+                maskImage:
+                  "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+                WebkitMaskImage:
+                  "linear-gradient(to right, transparent, black 15%, black 85%, transparent)",
+              }}
+            >
               <div
-                className="flex w-max gap-12"
-                style={{ "--gap": "3rem", animation: "marquee 80s linear infinite" } as React.CSSProperties}
+                className="flex w-max gap-12 hover:[animation-play-state:paused]"
+                style={
+                  {
+                    "--gap": "3rem",
+                    animation: "marquee 80s linear infinite",
+                  } as React.CSSProperties
+                }
               >
                 {[...Array(2)].map((_, groupIndex) => (
                   <div key={groupIndex} className="flex gap-12" aria-hidden={groupIndex === 1}>
@@ -686,7 +744,9 @@ function Index() {
                       { label: "AI Executive Report" },
                     ].map(({ label, highlight }) => (
                       <span key={label} className="flex items-center gap-4">
-                        <span className={`red-rose font-body text-[22px] transition-colors duration-200 ${highlight ? 'text-foreground/90 font-semibold' : 'text-foreground/70'}`}>
+                        <span
+                          className={`red-rose font-body text-[22px] transition-colors duration-200 ${highlight ? "text-foreground/90 font-semibold" : "text-foreground/70"}`}
+                        >
                           {label}
                         </span>
                         <span className="h-1 w-1 shrink-0 rounded-full bg-border/30" />
@@ -698,38 +758,84 @@ function Index() {
             </div>
           </div>
         </div>
-
       </section>
 
       <SecurityStandardSection />
 
-      {/* Use Cases — outside overflow-hidden hero section */}
-      <UseCasesSection />
+      {/* Post-strip background — continuous gradient from Use Cases → Founder's Note */}
+      <div className="post-strip-background relative overflow-hidden">
+        {/* Use Cases — outside overflow-hidden hero section */}
+        <UseCasesSection />
 
-      {/* Social Proof — community feedback bento */}
-      <SocialProof />
+        {/* Features + How it works */}
+        <section ref={sectionRef} className="relative overflow-hidden px-6 pt-[20px] pb-[140px]">
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_62%,rgba(168,85,247,0.18),transparent_30%)]" />
+          <div className="relative mx-auto max-w-[1100px]">
+            <div className="mt-[64px] flex justify-center">
+              <h2 className="rounded-full bg-black px-7 py-2 text-sm text-[#d7d0df] shadow-[0_0_42px_rgba(168,85,247,0.72)]">
+                How it works
+              </h2>
+            </div>
 
-      {/* Pricing Teaser */}
-      <PricingTeaser />
+            <div
+              ref={stepsRef}
+              className="mt-[48px] grid grid-cols-1 items-start gap-[48px] md:grid-cols-[1fr_auto_1fr_auto_1fr] md:gap-[48px]"
+            >
+              <Step
+                num="01"
+                title="Add Target"
+                desc="Enter your target URL or IP address"
+                Icon={Crosshair}
+              />
+              <ArrowRight
+                data-step-arrow
+                className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block"
+              />
+              <Step
+                num="02"
+                title="Choose Scans"
+                desc="Select the scan you want to run."
+                Icon={ListChecks}
+              />
+              <ArrowRight
+                data-step-arrow
+                className="hidden h-8 w-8 self-center text-[#f8f5ff] md:block"
+              />
+              <Step
+                num="03"
+                title="Get Results"
+                desc="View results instantly & export results."
+                Icon={CheckCheck}
+              />
+            </div>
+          </div>
+        </section>
 
-      {/* Founder's Note */}
-      <FounderNote />
+        {/* Social Proof — community feedback bento */}
+        <SocialProof />
+
+        {/* Pricing Teaser */}
+        <PricingTeaser />
+
+        {/* Founder's Note */}
+        <FounderNote />
+      </div>
 
       {/* Marquee */}
       <div className="relative z-10 overflow-hidden border-y border-border/40 bg-[#000000] py-3">
-          <div
-            className="flex w-max gap-16 whitespace-nowrap text-xs text-[#ffffff]"
-            style={{ "--gap": "4rem", animation: "marquee 60s linear infinite" } as CSSProperties}
-          >
-            {Array.from({ length: 2 }).map((_, groupIndex) => (
-              <div key={groupIndex} className="flex gap-16" aria-hidden={groupIndex === 1}>
-                {Array.from({ length: 8 }).map((_, itemIndex) => (
-                  <span key={itemIndex}>From target to full report in under 60 seconds.</span>
-                ))}
-              </div>
-            ))}
-          </div>
+        <div
+          className="flex w-max gap-16 whitespace-nowrap text-xs text-[#ffffff] hover:[animation-play-state:paused]"
+          style={{ "--gap": "4rem", animation: "marquee 60s linear infinite" } as CSSProperties}
+        >
+          {Array.from({ length: 2 }).map((_, groupIndex) => (
+            <div key={groupIndex} className="flex gap-16" aria-hidden={groupIndex === 1}>
+              {Array.from({ length: 8 }).map((_, itemIndex) => (
+                <span key={itemIndex}>From target to full report in under 60 seconds.</span>
+              ))}
+            </div>
+          ))}
         </div>
+      </div>
 
       {/* Features + How it works — removed */}
       <SiteFooter />

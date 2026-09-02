@@ -48,8 +48,12 @@ function FeedbackImage({ src, alt, className = "" }: FeedbackImageProps) {
             }}
           >
             <svg
-              width="24" height="24" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" strokeWidth="1.2"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.2"
               className="text-muted-foreground/30"
             >
               <rect x="3" y="3" width="18" height="18" rx="2" />
@@ -82,17 +86,17 @@ function BentoCell({ children, className = "", style, padded = false, ...rest }:
   return (
     <div
       {...rest}
-      className={`group relative overflow-hidden rounded-2xl border border-border/50 bg-card transition-transform duration-300 ease-out hover:-translate-y-[2px] ${className}`}
+      className={`group relative overflow-hidden rounded-2xl border border-border/50 bg-card transition-transform duration-300 ease-out hover:-translate-y-1 hover:border-primary/25 ${className}`}
       style={style}
     >
       {/* Top accent line on hover */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        style={{ background: "linear-gradient(90deg, transparent, oklch(0.7 0.18 295 / 0.6), transparent)" }}
+        style={{
+          background: "linear-gradient(90deg, transparent, oklch(0.7 0.18 295 / 0.6), transparent)",
+        }}
       />
-      <div className={padded ? "h-full p-5" : "h-full"}>
-        {children}
-      </div>
+      <div className={padded ? "h-full p-5" : "h-full"}>{children}</div>
     </div>
   );
 }
@@ -101,8 +105,8 @@ function BentoCell({ children, className = "", style, padded = false, ...rest }:
 
 export function SocialProof() {
   const sectionRef = useRef<HTMLElement>(null);
-  const headRef    = useRef<HTMLDivElement>(null);
-  const gridRef    = useRef<HTMLDivElement>(null);
+  const headRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -110,7 +114,10 @@ export function SocialProof() {
     const ctx = gsap.context(() => {
       gsap.set(headRef.current, { opacity: 0, y: 24 });
       gsap.to(headRef.current, {
-        opacity: 1, y: 0, duration: 0.75, ease: "power2.out",
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        ease: "power2.out",
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 85%",
@@ -126,8 +133,10 @@ export function SocialProof() {
           once: true,
           onEnter: (batch) =>
             gsap.to(batch, {
-              opacity: 1, y: 0,
-              duration: 0.65, ease: "power2.out",
+              opacity: 1,
+              y: 0,
+              duration: 0.65,
+              ease: "power2.out",
               stagger: 0.08,
               overwrite: true,
             }),
@@ -141,7 +150,7 @@ export function SocialProof() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-background px-6 py-[100px]"
+      className="relative overflow-hidden px-6 py-[100px]"
       style={{ borderTop: "1px solid oklch(0.28 0.05 285 / 0.7)" }}
     >
       {/* Ambient glow */}
@@ -154,7 +163,6 @@ export function SocialProof() {
       />
 
       <div className="relative mx-auto max-w-[1200px]">
-
         {/* ── Section heading ── */}
         <div ref={headRef} className="mb-12 max-w-[560px]">
           <div className="mb-4 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-[#aaaaaa]">
@@ -176,8 +184,8 @@ export function SocialProof() {
             </span>
           </h2>
           <p className="font-body mt-4 max-w-[440px] text-[14px] leading-relaxed text-muted-foreground">
-            Early feedback from developers and cybersecurity professionals
-            building, testing, and exploring CyberSec Toolkit.
+            Early feedback from developers and cybersecurity professionals building, testing, and
+            exploring CyberSec Toolkit.
           </p>
         </div>
 
@@ -201,29 +209,18 @@ export function SocialProof() {
             gridTemplateRows: "280px 220px 240px",
           }}
         >
-
           {/* A — large feature cell */}
-          <BentoCell
-            data-bento
-            style={{ gridColumn: "1 / 7", gridRow: "1 / 3" }}
-          >
+          <BentoCell data-bento style={{ gridColumn: "1 / 7", gridRow: "1 / 3" }}>
             <FeedbackImage alt="Feature feedback screenshot" />
           </BentoCell>
 
           {/* B — medium top-right */}
-          <BentoCell
-            data-bento
-            style={{ gridColumn: "7 / 10", gridRow: "1 / 2" }}
-          >
+          <BentoCell data-bento style={{ gridColumn: "7 / 10", gridRow: "1 / 2" }}>
             <FeedbackImage alt="Developer feedback screenshot" />
           </BentoCell>
 
           {/* C — small utility cell */}
-          <BentoCell
-            data-bento
-            padded
-            style={{ gridColumn: "10 / 13", gridRow: "1 / 2" }}
-          >
+          <BentoCell data-bento padded style={{ gridColumn: "10 / 13", gridRow: "1 / 2" }}>
             <div className="flex h-full flex-col justify-between">
               <div>
                 <div className="mb-3 font-mono text-[9px] uppercase tracking-[0.2em] text-muted-foreground/60">
@@ -235,9 +232,7 @@ export function SocialProof() {
                   not assumptions.
                 </p>
               </div>
-              <div
-                className="inline-flex items-center gap-1.5 self-start rounded-full border border-border/50 px-3 py-1.5"
-              >
+              <div className="inline-flex items-center gap-1.5 self-start rounded-full border border-border/50 px-3 py-1.5">
                 <span
                   className="h-1.5 w-1.5 rounded-full bg-[oklch(0.85_0.25_145)]"
                   style={{ boxShadow: "0 0 5px oklch(0.85 0.25 145 / 0.6)" }}
@@ -250,44 +245,30 @@ export function SocialProof() {
           </BentoCell>
 
           {/* D — medium, second row left of right half */}
-          <BentoCell
-            data-bento
-            style={{ gridColumn: "7 / 10", gridRow: "2 / 3" }}
-          >
+          <BentoCell data-bento style={{ gridColumn: "7 / 10", gridRow: "2 / 3" }}>
             <FeedbackImage alt="Security professional feedback" />
           </BentoCell>
 
           {/* E — medium, second row right */}
-          <BentoCell
-            data-bento
-            style={{ gridColumn: "10 / 13", gridRow: "2 / 3" }}
-          >
+          <BentoCell data-bento style={{ gridColumn: "10 / 13", gridRow: "2 / 3" }}>
             <FeedbackImage alt="Community reaction screenshot" />
           </BentoCell>
 
           {/* F — medium, third row left */}
-          <BentoCell
-            data-bento
-            style={{ gridColumn: "1 / 6", gridRow: "3 / 4" }}
-          >
+          <BentoCell data-bento style={{ gridColumn: "1 / 6", gridRow: "3 / 4" }}>
             <FeedbackImage alt="Developer comment screenshot" />
           </BentoCell>
 
           {/* G — wide, third row right */}
-          <BentoCell
-            data-bento
-            style={{ gridColumn: "6 / 13", gridRow: "3 / 4" }}
-          >
+          <BentoCell data-bento style={{ gridColumn: "6 / 13", gridRow: "3 / 4" }}>
             <FeedbackImage alt="Extended feedback thread screenshot" />
           </BentoCell>
-
         </div>
 
         {/* ── Footer note ── */}
         <p className="mt-8 text-center font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground/40">
           Screenshots shared with permission · identifying details removed where requested
         </p>
-
       </div>
     </section>
   );
